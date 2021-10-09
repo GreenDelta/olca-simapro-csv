@@ -6,23 +6,24 @@ import java.util.Optional;
 
 import org.apache.commons.csv.CSVParser;
 
-public class SimaProHeader {
+public class CsvHeader {
 
   private String version;
   private String date;
   private String time;
   private String project;
   private String formatVersion;
-  private char csvSeparator;
-  private char decimalSeparator;
-  private char dateSeparator;
   private String shortDateFormat;
+
+  private char csvSeparator = ';';
+  private char decimalSeparator = '.';
+  private char dateSeparator = '-';
 
   public String version() {
     return version;
   }
 
-  public SimaProHeader version(String version) {
+  public CsvHeader version(String version) {
     this.version = version;
     return this;
   }
@@ -31,7 +32,7 @@ public class SimaProHeader {
     return date;
   }
 
-  public SimaProHeader date(String date) {
+  public CsvHeader date(String date) {
     this.date = date;
     return this;
   }
@@ -40,7 +41,7 @@ public class SimaProHeader {
     return time;
   }
 
-  public SimaProHeader time(String time) {
+  public CsvHeader time(String time) {
     this.time = time;
     return this;
   }
@@ -49,7 +50,7 @@ public class SimaProHeader {
     return project;
   }
 
-  public SimaProHeader project(String project) {
+  public CsvHeader project(String project) {
     this.project = project;
     return this;
   }
@@ -58,7 +59,7 @@ public class SimaProHeader {
     return formatVersion;
   }
 
-  public SimaProHeader formatVersion(String formatVersion) {
+  public CsvHeader formatVersion(String formatVersion) {
     this.formatVersion = formatVersion;
     return this;
   }
@@ -67,7 +68,7 @@ public class SimaProHeader {
     return csvSeparator;
   }
 
-  public SimaProHeader csvSeparator(char csvSeparator) {
+  public CsvHeader csvSeparator(char csvSeparator) {
     this.csvSeparator = csvSeparator;
     return this;
   }
@@ -76,7 +77,7 @@ public class SimaProHeader {
     return decimalSeparator;
   }
 
-  public SimaProHeader decimalSeparator(char decimalSeparator) {
+  public CsvHeader decimalSeparator(char decimalSeparator) {
     this.decimalSeparator = decimalSeparator;
     return this;
   }
@@ -85,7 +86,7 @@ public class SimaProHeader {
     return dateSeparator;
   }
 
-  public SimaProHeader dateSeparator(char dateSeparator) {
+  public CsvHeader dateSeparator(char dateSeparator) {
     this.dateSeparator = dateSeparator;
     return this;
   }
@@ -94,13 +95,13 @@ public class SimaProHeader {
     return shortDateFormat;
   }
 
-  public SimaProHeader shortDateFormat(String shortDateFormat) {
+  public CsvHeader shortDateFormat(String shortDateFormat) {
     this.shortDateFormat = shortDateFormat;
     return this;
   }
 
-  public static SimaProHeader readFrom(Reader reader) {
-    var header = new SimaProHeader();
+  public static CsvHeader readFrom(Reader reader) {
+    var header = new CsvHeader();
     if (reader == null)
       return header;
 
@@ -141,19 +142,35 @@ public class SimaProHeader {
           continue;
         }
 
-        var separator = match(s, "CSV separator: ");
-        if (separator.isPresent()) {
-          var del = separator.get().toLowerCase();
-
-          header.csvSeparator(
-            switch (del) {
-              case "semicolon" -> ';';
-              case "comma" -> ',';
-              default -> ';';
-            });
+        var csvSeparator = match(s, "CSV separator: ");
+        if (csvSeparator.isPresent()) {
+          var del = csvSeparator.get().toLowerCase();
+          header.csvSeparator(del.equals("comma")
+            ? ','
+            : ';');
           continue;
         }
 
+        var decimalSeparator = match(s, "Decimal separator: ");
+        if (decimalSeparator.isPresent()) {
+          var sep = decimalSeparator.get();
+          header.decimalSeparator(sep.length() == 0
+            ? '.'
+            : sep.charAt(0));
+          continue;
+        }
+
+        var dateSeparator = match(s, "Date separator: ");
+        if (dateSeparator.isPresent()) {
+          var sep = dateSeparator.get();
+          header.dateSeparator(sep.length() == 0
+            ? '-'
+            : sep.charAt(0));
+          continue;
+        }
+
+        var dateFormat = match(s, "Short date format: ");
+        dateFormat.ifPresent(header::shortDateFormat);
 
       }
 

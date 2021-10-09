@@ -1,7 +1,10 @@
 package org.openlca.simapro.csv;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
@@ -39,12 +42,21 @@ public final class SimaProCsv {
   public static Reader readerOf(File file, Charset charset) {
     if (file == null)
       return null;
-
-    return null;
+    try {
+      var stream = new FileInputStream(file);
+      return readerOf(stream, charset);
+    } catch (IOException e) {
+      throw new RuntimeException("failed to read file: " + file, e);
+    }
   }
 
   public static Reader readerOf(InputStream stream, Charset charset) {
-    return null;
+    if (stream == null)
+      return null;
+    var cs = charset == null
+      ? defaultCharset()
+      : charset;
+    return new InputStreamReader(stream, cs);
   }
 
 }
