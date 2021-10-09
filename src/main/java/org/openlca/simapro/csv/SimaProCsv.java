@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import org.apache.commons.csv.CSVFormat;
+
 public final class SimaProCsv {
 
   private SimaProCsv() {
@@ -17,6 +19,17 @@ public final class SimaProCsv {
    */
   public static Charset defaultCharset() {
     return Charset.forName("windows-1252");
+  }
+
+  public static CSVFormat formatOf(char delimiter) {
+    return CSVFormat.Builder.create()
+      .setDelimiter(delimiter)
+      .setTrim(true)
+      .setIgnoreEmptyLines(false)
+      .setQuote('"')
+      .setEscape('"')
+      .setIgnoreSurroundingSpaces(true)
+      .build();
   }
 
   public static Reader readerOf(File file) {
