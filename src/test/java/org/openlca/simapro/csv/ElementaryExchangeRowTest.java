@@ -1,6 +1,7 @@
 package org.openlca.simapro.csv;
 
 import org.junit.Test;
+import org.openlca.simapro.csv.process.ElementaryExchangeRow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

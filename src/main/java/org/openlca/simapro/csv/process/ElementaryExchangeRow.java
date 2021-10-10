@@ -1,4 +1,10 @@
-package org.openlca.simapro.csv;
+package org.openlca.simapro.csv.process;
+
+import org.openlca.simapro.csv.CsvBuffer;
+import org.openlca.simapro.csv.CsvLine;
+import org.openlca.simapro.csv.CsvRecord;
+import org.openlca.simapro.csv.Numeric;
+import org.openlca.simapro.csv.UncertaintyRecord;
 
 public class ElementaryExchangeRow implements CsvRecord {
 
