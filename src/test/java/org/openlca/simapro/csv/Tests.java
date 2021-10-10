@@ -1,6 +1,7 @@
 package org.openlca.simapro.csv;
 
 import java.io.IOException;
+import java.io.StringWriter;
 
 import org.apache.commons.csv.CSVParser;
 
@@ -18,6 +19,17 @@ class Tests {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  static String toCsv(CsvRecord record) {
+    if (record == null)
+      return "";
+    var writer = new StringWriter();
+    var buffer = new CsvBuffer(writer, new CsvHeader());
+    record.write(buffer);
+    buffer.writeln();
+    writer.flush();
+    return writer.toString().trim();
   }
 
 }

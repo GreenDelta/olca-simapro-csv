@@ -18,10 +18,12 @@ final class CsvLine {
     return new CsvLine(csv, header);
   }
 
+
+
 	String getString(int pos) {
-		return pos >= 0 && pos < csv.size()
-				? csv.get(pos)
-				: "";
+    if (pos < 0 || pos >= csv.size())
+      return "";
+    return csv.get(pos).replace((char) 127, '\n');
 	}
 
 	double getDouble(int pos) {

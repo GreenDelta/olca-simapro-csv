@@ -46,4 +46,14 @@ public class CsvLineTest {
     assertFalse(num3.hasFormula());
     assertEquals(0.0, num3.value(), 1e-10);
   }
+
+  @Test
+  public void testReadMultiLineStrings() {
+    var line = Tests.lineOf(
+      "this\u007F has\u007F; multi-line\u007F; \u007Fstrings");
+    assertEquals("this\n has\n", line.getString(0));
+    assertEquals("multi-line\n", line.getString(1));
+    assertEquals("\nstrings", line.getString(2));
+  }
+
 }
