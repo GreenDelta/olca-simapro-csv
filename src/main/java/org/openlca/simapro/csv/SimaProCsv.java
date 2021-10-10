@@ -30,7 +30,6 @@ public final class SimaProCsv {
       .setTrim(true)
       .setIgnoreEmptyLines(false)
       .setQuote('"')
-      .setEscape('"')
       .setIgnoreSurroundingSpaces(true)
       .build();
   }
