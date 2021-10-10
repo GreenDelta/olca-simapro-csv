@@ -5,7 +5,7 @@ package org.openlca.simapro.csv;
  * slot contains the distribution type ({@code Undefined, Lognormal, Normal,
  * Triangle, Uniform}). The other slots contain the distribution parameters.
  */
-public abstract class Uncertainty {
+public abstract class UncertaintyRecord implements CsvRecord {
 
   public final boolean isUndefined() {
     return this instanceof Undefined;
@@ -73,7 +73,7 @@ public abstract class Uncertainty {
    * Reads the uncertainty distribution from the given CSV line starting at
    * the given position for the distribution type.
    */
-  public static Uncertainty read(CsvLine line, int pos) {
+  public static UncertaintyRecord read(CsvLine line, int pos) {
     var type = line.getString(pos).toLowerCase();
     switch (type) {
       case "lognormal":
@@ -89,15 +89,26 @@ public abstract class Uncertainty {
     }
   }
 
-  public static final class Undefined extends Uncertainty {
+  @Override
+  public abstract void write(CsvBuffer buffer);
+
+  public static final class Undefined extends UncertaintyRecord {
 
     private static final Undefined instance = new Undefined();
 
     private Undefined() {
     }
+
+    @Override
+    public void write(CsvBuffer buffer) {
+      buffer.putString("Undefined")
+        .putDouble(0)
+        .putDouble(0)
+        .putDouble(0);
+    }
   }
 
-  public static final class LogNormal extends Uncertainty {
+  public static final class LogNormal extends UncertaintyRecord {
 
     private final double xsd;
 
@@ -111,9 +122,17 @@ public abstract class Uncertainty {
     public double xsd() {
       return xsd;
     }
+
+    @Override
+    public void write(CsvBuffer buffer) {
+      buffer.putString("Lognormal")
+        .putDouble(xsd)
+        .putDouble(0)
+        .putDouble(0);
+    }
   }
 
-  public static final class Normal extends Uncertainty {
+  public static final class Normal extends UncertaintyRecord {
 
     private final double xsd;
 
@@ -124,9 +143,17 @@ public abstract class Uncertainty {
     public double xsd() {
       return xsd;
     }
+
+    @Override
+    public void write(CsvBuffer buffer) {
+      buffer.putString("Normal")
+        .putDouble(xsd)
+        .putDouble(0)
+        .putDouble(0);
+    }
   }
 
-  public static final class Uniform extends Uncertainty {
+  public static final class Uniform extends UncertaintyRecord {
 
     private final double min;
     private final double max;
@@ -143,9 +170,17 @@ public abstract class Uncertainty {
     public double max() {
       return max;
     }
+
+    @Override
+    public void write(CsvBuffer buffer) {
+      buffer.putString("Uniform")
+        .putDouble(0)
+        .putDouble(min)
+        .putDouble(max);
+    }
   }
 
-  public static final class Triangle extends Uncertainty {
+  public static final class Triangle extends UncertaintyRecord {
 
     private final double min;
     private final double max;
@@ -161,6 +196,14 @@ public abstract class Uncertainty {
 
     public double max() {
       return max;
+    }
+
+    @Override
+    public void write(CsvBuffer buffer) {
+      buffer.putString("Triangle")
+        .putDouble(0)
+        .putDouble(min)
+        .putDouble(max);
     }
   }
 
