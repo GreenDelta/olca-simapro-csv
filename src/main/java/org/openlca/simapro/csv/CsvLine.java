@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import org.apache.commons.csv.CSVRecord;
 
-final class CsvLine {
+public final class CsvLine {
 
 	private final CSVRecord csv;
 	private final char decimalSeparator;
@@ -18,22 +18,20 @@ final class CsvLine {
     return new CsvLine(csv, header);
   }
 
-
-
-	String getString(int pos) {
+  public String getString(int pos) {
     if (pos < 0 || pos >= csv.size())
       return "";
     return csv.get(pos).replace((char) 127, '\n');
 	}
 
-	double getDouble(int pos) {
+  public double getDouble(int pos) {
 		var str = getString(pos);
 		return str.length() == 0
 				? 0
 				: Double.parseDouble(decimalPoint(str));
 	}
 
-	Numeric getNumeric(int pos) {
+  public Numeric getNumeric(int pos) {
 		var cleaned = decimalPoint(getString(pos));
 		if (cleaned.length() == 0)
 			return Numeric.of(0);
@@ -45,9 +43,14 @@ final class CsvLine {
 		}
 	}
 
-	String getFormula(int pos) {
+  public String getFormula(int pos) {
 		return decimalPoint(getString(pos));
 	}
+
+  public boolean getBoolean(int pos) {
+    var s = getString(pos);
+    return s.equals("yes");
+  }
 
 	private String decimalPoint(String s) {
 		if (decimalSeparator == '.')
