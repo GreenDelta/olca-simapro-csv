@@ -17,9 +17,42 @@ public abstract class Uncertainty {
       : Undefined.instance;
   }
 
+  public boolean isLogNormal() {
+    return this instanceof LogNormal;
+  }
+
+  public LogNormal getAsLogNormal() {
+    return (LogNormal) this;
+  }
+
+  public boolean isNormal() {
+    return this instanceof Normal;
+  }
+
+  public Normal getAsNormal() {
+    return (Normal) this;
+  }
+
+  public boolean isTriangle() {
+    return this instanceof Triangle;
+  }
+
+  public Triangle getAsTriangle() {
+    return (Triangle) this;
+  }
+
+  public boolean isUniform() {
+    return this instanceof Uniform;
+  }
+
+  public Uniform getAsUniform() {
+    return (Uniform) this;
+  }
+
   public static Undefined undefined() {
     return Undefined.instance;
   }
+
   public static LogNormal logNormal(double xsd) {
     return new LogNormal(xsd);
   }
@@ -32,10 +65,29 @@ public abstract class Uncertainty {
     return new Uniform(min, max);
   }
 
-  public static Triangular triangular(double min, double max) {
-    return new Triangular(min, max);
+  public static Triangle triangular(double min, double max) {
+    return new Triangle(min, max);
   }
 
+  /**
+   * Reads the uncertainty distribution from the given CSV line starting at
+   * the given position for the distribution type.
+   */
+  public static Uncertainty read(CsvLine line, int pos) {
+    var type = line.getString(pos).toLowerCase();
+    switch (type) {
+      case "lognormal":
+        return new LogNormal(line.getDouble(pos + 1));
+      case "normal":
+        return new Normal(line.getDouble(pos + 1));
+      case "triangle":
+        return new Triangle(line.getDouble(pos + 2), line.getDouble(pos + 3));
+      case "uniform":
+        return new Uniform(line.getDouble(pos + 2), line.getDouble(pos + 3));
+      default:
+        return Undefined.instance;
+    }
+  }
 
   public static final class Undefined extends Uncertainty {
 
@@ -93,12 +145,12 @@ public abstract class Uncertainty {
     }
   }
 
-  public static final class Triangular extends Uncertainty {
+  public static final class Triangle extends Uncertainty {
 
     private final double min;
     private final double max;
 
-    private Triangular(double min, double max) {
+    private Triangle(double min, double max) {
       this.min = min;
       this.max = max;
     }
