@@ -58,6 +58,10 @@ public class CsvBuffer {
     return this;
   }
 
+  public CsvBuffer putBoolean(boolean b) {
+    return putString(b ? "Yes" : "No");
+  }
+
   private String decimalPoint(String s) {
     if (s == null || s.length() == 0)
       return "";

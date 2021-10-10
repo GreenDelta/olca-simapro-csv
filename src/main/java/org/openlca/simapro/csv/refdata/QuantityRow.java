@@ -36,7 +36,7 @@ public class QuantityRow implements CsvRecord {
   @Override
   public void write(CsvBuffer buffer) {
     buffer.putString(name)
-      .putString(hasDimension ? "Yes" : "No")
+      .putBoolean(hasDimension)
       .writeln();
   }
 }
