@@ -1,7 +1,7 @@
 package org.openlca.simapro.csv.enums;
 
 
-public enum ProcessCategoryType {
+public enum ProcessCategory {
 
 	MATERIAL("material"),
 
@@ -19,19 +19,20 @@ public enum ProcessCategoryType {
 
 	private final String value;
 
-	ProcessCategoryType(String value) {
+	ProcessCategory(String value) {
 		this.value = value;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public static ProcessCategoryType forValue(String value) {
+	public static ProcessCategory of(String value) {
 		for (var category : values()) {
-      if (category.getValue().equalsIgnoreCase((value)))
+      if (category.value.equalsIgnoreCase((value)))
         return category;
     }
-		return null;
+		return MATERIAL;
 	}
+
+  @Override
+  public String toString() {
+    return value;
+  }
 }

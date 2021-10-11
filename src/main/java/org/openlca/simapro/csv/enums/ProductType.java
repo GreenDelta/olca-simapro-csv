@@ -21,16 +21,16 @@ public enum ProductType {
 		this.header = header;
 	}
 
-	public String getHeader() {
-		return header;
-	}
-
-	public static ProductType forHeader(String header) {
+	public static ProductType of(String header) {
 		for (var type : values()) {
-      if (type.getHeader().equalsIgnoreCase(header))
+      if (type.header.equalsIgnoreCase(header))
         return type;
     }
-		return null;
+		return MATERIAL_FUELS;
 	}
 
+  @Override
+  public String toString() {
+    return header;
+  }
 }

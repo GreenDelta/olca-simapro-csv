@@ -12,15 +12,15 @@ public enum ProcessType {
 		this.value = value;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public static ProcessType forValue(String value) {
+	public static ProcessType of(String value) {
 		for (ProcessType type : values())
-			if (type.getValue().equals(value))
+			if (type.value.equals(value))
 				return type;
-		return null;
+		return UNIT_PROCESS;
 	}
 
+  @Override
+  public String toString() {
+    return value;
+  }
 }
