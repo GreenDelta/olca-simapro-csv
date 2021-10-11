@@ -2,7 +2,6 @@ package org.openlca.simapro.csv.process;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.openlca.simapro.csv.CsvLine;
@@ -352,29 +351,16 @@ public class ProcessRecord {
   public static ProcessRecord read(Iterable<CsvLine> lines) {
     var iter = lines.iterator();
     var process = new ProcessRecord();
-
-    // utility functions
-    Supplier<String> nextFirst = () -> {
-      if (!iter.hasNext())
-        return "";
-      var next = iter.next();
-      return next.first();
-    };
-    Supplier<CsvLine> next = () -> iter.hasNext()
-      ? iter.next()
-      : null;
-    Consumer<Consumer<CsvLine>> nextRows = fn -> {
-      while (iter.hasNext()) {
-        var n = iter.next();
-        if(n.isEmpty())
-          break;
-        fn.accept(n);
-      }
-    };
+    Supplier<String> nextFirst = () -> CsvLine.nextOf(iter)
+      .map(CsvLine::first)
+      .orElse("");
 
     while (iter.hasNext()) {
 
-      var header = nextFirst.get();
+      var next = iter.next();
+      if (next.isEmpty())
+        continue;
+      var header = next.first();
       if (header.equalsIgnoreCase("End"))
         break;
       if (header.isEmpty()) {
@@ -442,10 +428,8 @@ public class ProcessRecord {
           break;
 
         case "Infrastructure":
-          var infrastructureVal = next.get();
-          if (infrastructureVal != null) {
-            process.infrastructure(infrastructureVal.getBoolean(0));
-          }
+          CsvLine.nextOf(iter).ifPresent(
+            line -> process.infrastructure(line.getBoolean(0)));
           break;
 
         case "Date":
@@ -461,7 +445,8 @@ public class ProcessRecord {
           break;
 
         case "Literature references":
-          nextRows.accept(n -> process.literatures.add(LiteratureRow.read(n)));
+          CsvLine.untilEmpty(iter,
+            line -> process.literatures.add(LiteratureRow.read(line)));
           break;
 
         case "Collection method":
@@ -481,10 +466,8 @@ public class ProcessRecord {
           break;
 
         case "System description":
-          var systemRow = next.get();
-          if (systemRow != null) {
-            process.systemDescription(SystemDescriptionRow.read(systemRow));
-          }
+          CsvLine.nextOf(iter).ifPresent(
+            line -> process.systemDescription(SystemDescriptionRow.read(line)));
           break;
 
         case "Data treatment":
@@ -492,72 +475,85 @@ public class ProcessRecord {
           break;
 
         case "Products":
-          nextRows.accept(line
-            -> process.products().add(ProductOutputRow.read(line)));
+          CsvLine.untilEmpty(iter,
+            line -> process.products.add(ProductOutputRow.read(line)));
           break;
 
         case "Waste treatment":
-
-          process.wasteTreatment(nextFirst.get());
+          CsvLine.nextOf(iter).ifPresent(
+            line -> process.wasteTreatment(WasteTreatmentRow.read(line)));
           break;
 
         case "Avoided products":
-          // TODO: inner loop for avoidedProducts
+          CsvLine.untilEmpty(iter,
+            line -> process.avoidedProducts.add(ProductExchangeRow.read(line)));
           break;
 
         case "Materials/fuels":
-          // TODO: inner loop for materialsAndFuels
+          CsvLine.untilEmpty(iter,
+            line -> process.materialsAndFuels.add(ProductExchangeRow.read(line)));
           break;
 
         case "Electricity/heat":
-          // TODO: inner loop for electricityAndHeat
+          CsvLine.untilEmpty(iter,
+            line -> process.electricityAndHeat.add(ProductExchangeRow.read(line)));
           break;
 
         case "Waste to treatment":
-          // TODO: inner loop for wasteToTreatment
+          CsvLine.untilEmpty(iter,
+            line -> process.wasteToTreatment.add(ProductExchangeRow.read(line)));
           break;
 
         case "Resources":
-          // TODO: inner loop for resources
+          CsvLine.untilEmpty(iter,
+            line -> process.resources.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Emissions to air":
-          // TODO: inner loop for emissionsToAir
+          CsvLine.untilEmpty(iter,
+            line -> process.emissionsToAir.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Emissions to water":
-          // TODO: inner loop for emissionsToWater
+          CsvLine.untilEmpty(iter,
+            line -> process.emissionsToWater.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Emissions to soil":
-          // TODO: inner loop for emissionsToSoil
+          CsvLine.untilEmpty(iter,
+            line -> process.emissionsToSoil.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Final waste flows":
-          // TODO: inner loop for finalWasteFlows
+          CsvLine.untilEmpty(iter,
+            line -> process.finalWasteFlows.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Non material emissions":
-          // TODO: inner loop for nonMaterialEmissions
+          CsvLine.untilEmpty(iter,
+            line -> process.nonMaterialEmissions.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Social issues":
-          // TODO: inner loop for socialIssues
+          CsvLine.untilEmpty(iter,
+            line -> process.socialIssues.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Economic issues":
-          // TODO: inner loop for economicIssues
+          CsvLine.untilEmpty(iter,
+            line -> process.economicIssues.add(ElementaryExchangeRow.read(line)));
           break;
 
         case "Input parameters":
-          // TODO: inner loop for inputParameters
+          CsvLine.untilEmpty(iter,
+            line -> process.inputParameters.add(InputParameterRow.read(line)));
           break;
 
         case "Calculated parameters":
-          // TODO: inner loop for calculatedParameters
+          CsvLine.untilEmpty(iter,
+            line -> process.calculatedParameters.add(CalculatedParameterRow.read(line)));
           break;
       }
-
     }
 
     return process;

@@ -3,6 +3,8 @@ package org.openlca.simapro.csv;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.apache.commons.csv.CSVRecord;
 
@@ -22,6 +24,23 @@ public final class CsvLine {
 
   public static Iterable<CsvLine> iter(CsvHeader header, Reader reader) {
     return new CsvScanner(header, reader);
+  }
+
+  public static Optional<CsvLine> nextOf(Iterator<CsvLine> it) {
+    return it == null || !it.hasNext()
+      ? Optional.empty()
+      : Optional.ofNullable(it.next());
+  }
+
+  public static void untilEmpty(Iterator<CsvLine> it, Consumer<CsvLine> fn) {
+    if (it == null || fn == null)
+      return;
+    while (it.hasNext()) {
+      var next = it.next();
+      if (next.isEmpty())
+        break;
+      fn.accept(next);
+    }
   }
 
   public String getString(int pos) {
