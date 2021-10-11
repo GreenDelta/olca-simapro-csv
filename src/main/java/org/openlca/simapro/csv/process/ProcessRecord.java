@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.openlca.simapro.csv.CsvLine;
+import org.openlca.simapro.csv.enums.ElementaryFlowType;
 import org.openlca.simapro.csv.enums.ProcessCategory;
 import org.openlca.simapro.csv.enums.ProcessType;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
@@ -559,4 +560,30 @@ public class ProcessRecord {
     return process;
 
   }
+
+  public List<ElementaryExchangeRow> getExchangesOf(ElementaryFlowType type) {
+    if (type == null)
+      return new ArrayList<>();
+    switch (type) {
+      case ECONOMIC_ISSUES:
+        return economicIssues;
+      case EMISSIONS_TO_AIR:
+        return emissionsToAir;
+      case EMISSIONS_TO_SOIL:
+        return emissionsToSoil;
+      case EMISSIONS_TO_WATER:
+        return emissionsToWater;
+      case FINAL_WASTE_FLOWS:
+        return finalWasteFlows;
+      case NON_MATERIAL_EMISSIONS:
+        return nonMaterialEmissions;
+      case RESOURCES:
+        return resources;
+      case SOCIAL_ISSUES:
+        return socialIssues;
+      default:
+        return new ArrayList<>();
+    }
+  }
+
 }

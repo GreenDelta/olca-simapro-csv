@@ -1,9 +1,11 @@
 package org.openlca.simapro.csv;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Optional;
 
+import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
 public class CsvHeader {
@@ -98,6 +100,14 @@ public class CsvHeader {
   public CsvHeader shortDateFormat(String shortDateFormat) {
     this.shortDateFormat = shortDateFormat;
     return this;
+  }
+
+  public static CsvHeader readFrom(File file) {
+    try (var reader = Csv.readerOf(file)) {
+      return readFrom(reader);
+    } catch (IOException e) {
+      throw new RuntimeException("failed to read header from " + file, e);
+    }
   }
 
   public static CsvHeader readFrom(Reader reader) {

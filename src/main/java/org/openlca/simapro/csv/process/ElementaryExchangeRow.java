@@ -6,7 +6,7 @@ import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.Numeric;
 import org.openlca.simapro.csv.UncertaintyRecord;
 
-public class ElementaryExchangeRow implements CsvRecord {
+public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
 
   private String name;
   private String subCompartment;
@@ -16,6 +16,7 @@ public class ElementaryExchangeRow implements CsvRecord {
   private String comment;
   private String pedigree;
 
+  @Override
   public String name() {
     return name;
   }
@@ -34,6 +35,7 @@ public class ElementaryExchangeRow implements CsvRecord {
     return this;
   }
 
+  @Override
   public String unit() {
     return unit;
   }
@@ -43,6 +45,7 @@ public class ElementaryExchangeRow implements CsvRecord {
     return this;
   }
 
+  @Override
   public Numeric amount() {
     return amount;
   }
