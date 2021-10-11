@@ -10,9 +10,9 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.csv.CSVFormat;
 
-public final class SimaProCsv {
+public final class Csv {
 
-  private SimaProCsv() {
+  private Csv() {
   }
 
   /**

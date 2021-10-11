@@ -9,7 +9,7 @@ class Tests {
 
   static CsvLine lineOf(String line) {
     try {
-      var r = CSVParser.parse(line, SimaProCsv.formatOf(';'))
+      var r = CSVParser.parse(line, Csv.formatOf(';'))
         .iterator()
         .next();
       var h = new CsvHeader()

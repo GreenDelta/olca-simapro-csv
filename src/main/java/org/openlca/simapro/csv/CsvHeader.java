@@ -106,7 +106,7 @@ public class CsvHeader {
       return header;
 
     try {
-      var parser = CSVParser.parse(reader, SimaProCsv.formatOf(';'));
+      var parser = CSVParser.parse(reader, Csv.formatOf(';'));
       for (var record : parser) {
         var s = unbraced(record.get(0));
         if (s.isEmpty())

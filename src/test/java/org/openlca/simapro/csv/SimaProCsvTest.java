@@ -8,7 +8,7 @@ public class SimaProCsvTest {
 
   @Test
   public void testDefaultCharset() {
-    var charset = SimaProCsv.defaultCharset();
+    var charset = Csv.defaultCharset();
     assertNotNull(charset);
     assertEquals("windows-1252", charset.name());
   }

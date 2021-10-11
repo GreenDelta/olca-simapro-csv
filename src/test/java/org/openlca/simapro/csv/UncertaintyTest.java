@@ -45,7 +45,7 @@ public class UncertaintyTest {
   @Test
   public void testWriteUncertainty() throws Exception {
     var buffer = new StringWriter();
-    var printer = new CSVPrinter(buffer, SimaProCsv.formatOf(';'));
+    var printer = new CSVPrinter(buffer, Csv.formatOf(';'));
 
   }
 

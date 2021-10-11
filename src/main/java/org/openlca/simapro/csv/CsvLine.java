@@ -70,4 +70,33 @@ public final class CsvLine {
 		}
 		return buffer.toString();
 	}
+
+  /**
+   * Returns true if this line is empty. It is empty when every cell of this
+   * line contains an empty string. Note that in some SimaPro exports empty
+   * lines could also be a sequence of separators like {@code ;;;;;;}.
+   *
+   * @return {@code true} when this line is empty, otherwise {@code false}
+   */
+  public boolean isEmpty() {
+    for (int i = 0; i < csv.size(); i++) {
+      var s = csv.get(i);
+      if (s.length() > 0)
+        return false;
+    }
+    return true;
+  }
+
+  public String first() {
+    return getString(0);
+  }
+
+  public boolean isProcessStart() {
+    return first().equals("Process");
+  }
+
+  public boolean isUnitsStart() {
+    return first().equals("Units");
+  }
+
 }

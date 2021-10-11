@@ -20,7 +20,7 @@ public class CsvHeaderTest {
   public void testParseHeader() throws Exception {
     var stream = getClass().getResourceAsStream("header.csv");
     assertNotNull(stream);
-    try (var reader = SimaProCsv.readerOf(stream, StandardCharsets.UTF_8)) {
+    try (var reader = Csv.readerOf(stream, StandardCharsets.UTF_8)) {
       var header = CsvHeader.readFrom(reader);
 
       assertEquals("8.5.0.0", header.version());
