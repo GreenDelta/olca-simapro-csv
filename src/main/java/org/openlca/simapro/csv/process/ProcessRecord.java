@@ -1,6 +1,7 @@
 package org.openlca.simapro.csv.process;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -8,6 +9,7 @@ import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.enums.ElementaryFlowType;
 import org.openlca.simapro.csv.enums.ProcessCategory;
 import org.openlca.simapro.csv.enums.ProcessType;
+import org.openlca.simapro.csv.enums.ProductType;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
@@ -561,9 +563,9 @@ public class ProcessRecord {
 
   }
 
-  public List<ElementaryExchangeRow> getExchangesOf(ElementaryFlowType type) {
+  public List<ElementaryExchangeRow> exchangesOf(ElementaryFlowType type) {
     if (type == null)
-      return new ArrayList<>();
+      return Collections.emptyList();
     switch (type) {
       case ECONOMIC_ISSUES:
         return economicIssues;
@@ -582,7 +584,24 @@ public class ProcessRecord {
       case SOCIAL_ISSUES:
         return socialIssues;
       default:
-        return new ArrayList<>();
+        return Collections.emptyList();
+    }
+  }
+
+  public List<ProductExchangeRow> exchangesOf(ProductType type) {
+    if (type == null)
+      return Collections.emptyList();
+    switch (type) {
+      case AVOIDED_PRODUCTS:
+        return avoidedProducts;
+      case ELECTRICITY_HEAT:
+        return electricityAndHeat;
+      case MATERIAL_FUELS:
+        return materialsAndFuels;
+      case WASTE_TO_TREATMENT:
+        return wasteToTreatment;
+      default:
+        return Collections.emptyList();
     }
   }
 
