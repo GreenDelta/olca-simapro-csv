@@ -185,7 +185,7 @@ g;Mass;0,001;kg
 kWh;Energy;3,6;MJ
 MJ;Energy;1;MJ
 ton;Mass;1000;kg
-�g;Mass;0,000000001;kg
+µg;Mass;0,000000001;kg
 mg;Mass;0,000001;kg
 GJ;Energy;1000;MJ
 J;Energy;0,000001;MJ
@@ -207,7 +207,7 @@ m;Length;1;m
 cm;Length;0,01;m
 dm;Length;0,1;m
 mm;Length;0,001;m
-�m;Length;0,000001;m
+µm;Length;0,000001;m
 ft;Length;0,3048;m
 inch;Length;0,0254;m
 yard;Length;0,9144;m

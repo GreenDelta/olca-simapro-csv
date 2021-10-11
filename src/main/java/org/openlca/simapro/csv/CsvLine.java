@@ -1,5 +1,7 @@
 package org.openlca.simapro.csv;
 
+import java.io.Reader;
+import java.util.Iterator;
 import java.util.Objects;
 
 import org.apache.commons.csv.CSVRecord;
@@ -16,6 +18,10 @@ public final class CsvLine {
 
   static CsvLine of(CSVRecord csv, CsvHeader header) {
     return new CsvLine(csv, header);
+  }
+
+  public static Iterable<CsvLine> iter(CsvHeader header, Reader reader) {
+    return new CsvScanner(header, reader);
   }
 
   public String getString(int pos) {

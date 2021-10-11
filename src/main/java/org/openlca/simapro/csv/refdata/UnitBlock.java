@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openlca.simapro.csv.CsvBuffer;
+import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
-import org.openlca.simapro.csv.CsvScanner;
 
 public class UnitBlock implements CsvRecord {
 
@@ -15,10 +15,9 @@ public class UnitBlock implements CsvRecord {
     return units;
   }
 
-  public static UnitBlock read(CsvScanner scanner) {
+  public static UnitBlock read(Iterable<CsvLine> lines) {
     var block = new UnitBlock();
-    for (var l = scanner.next(); l.isPresent(); l = scanner.next()) {
-      var line = l.get();
+    for (var line : lines) {
       if (line.isUnitsStart())
         continue;
       if (line.isEmpty())
@@ -31,7 +30,8 @@ public class UnitBlock implements CsvRecord {
 
   @Override
   public void write(CsvBuffer buffer) {
-    buffer.putString("Units");
+    buffer.putString("Units")
+      .writeln();
     for (var row : units) {
       row.write(buffer);
     }
