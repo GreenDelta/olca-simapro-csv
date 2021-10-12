@@ -1,7 +1,5 @@
 package org.openlca.simapro.csv;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.Objects;

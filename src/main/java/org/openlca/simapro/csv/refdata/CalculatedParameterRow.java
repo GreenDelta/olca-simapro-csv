@@ -40,7 +40,7 @@ public class CalculatedParameterRow implements CsvRecord {
   public static CalculatedParameterRow read(CsvLine line) {
     return new CalculatedParameterRow()
       .name(line.getString(0))
-      .expression(line.getString(1))
+      .expression(line.getFormula(1))
       .comment(line.getString(2));
   }
 
