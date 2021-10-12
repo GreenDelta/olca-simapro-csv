@@ -52,6 +52,9 @@ public class ProcessBlock implements CsvBlock {
   private final List<ProductExchangeRow> electricityAndHeat = new ArrayList<>();
   private final List<ProductExchangeRow> wasteToTreatment = new ArrayList<>();
 
+  private final List<WasteFractionRow> separatedWaste = new ArrayList<>();
+  private final List<WasteFractionRow> remainingWaste = new ArrayList<>();
+
   private final List<ElementaryExchangeRow> resources = new ArrayList<>();
   private final List<ElementaryExchangeRow> emissionsToAir = new ArrayList<>();
   private final List<ElementaryExchangeRow> emissionsToWater = new ArrayList<>();
@@ -322,6 +325,14 @@ public class ProcessBlock implements CsvBlock {
     return wasteToTreatment;
   }
 
+  public List<WasteFractionRow> separatedWaste() {
+    return separatedWaste;
+  }
+
+  public List<WasteFractionRow> remainingWaste() {
+    return remainingWaste;
+  }
+
   public List<ElementaryExchangeRow> resources() {
     return resources;
   }
@@ -520,6 +531,16 @@ public class ProcessBlock implements CsvBlock {
         case "Waste to treatment":
           CsvLine.untilEmpty(iter,
             line -> process.wasteToTreatment.add(ProductExchangeRow.read(line)));
+          break;
+
+        case "Separated waste":
+          CsvLine.untilEmpty(iter,
+            line -> process.separatedWaste.add(WasteFractionRow.read(line)));
+          break;
+
+        case "Remaining waste":
+          CsvLine.untilEmpty(iter,
+            line -> process.remainingWaste.add(WasteFractionRow.read(line)));
           break;
 
         case "Resources":

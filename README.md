@@ -7,6 +7,7 @@ https://github.com/massimopizzol/Simapro-CSV-converter
 
 ## TODO:
 
+* what is the 4th column of a WasteFractionRow?
 * header: check which separators could occur
 * header: add a write-method, and write necessary defaults
 * need a clean definition how we handle decimal separators and how this
