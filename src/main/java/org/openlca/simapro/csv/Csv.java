@@ -7,8 +7,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.function.Consumer;
 
 import org.apache.commons.csv.CSVFormat;
+import org.openlca.simapro.csv.process.ProcessBlock;
+import org.openlca.simapro.csv.refdata.UnitBlock;
 
 public final class Csv {
 
@@ -56,6 +59,30 @@ public final class Csv {
       ? defaultCharset()
       : charset;
     return new InputStreamReader(stream, cs);
+  }
+
+  public static void eachBlock(File file, Consumer<CsvBlock> fn) {
+    var header = CsvHeader.readFrom(file);
+    try (var reader = readerOf(file)) {
+      var iter = CsvLine.iter(header, reader);
+      for (var line : iter) {
+
+        if (line.first().equals("Process")) {
+          var process = ProcessBlock.read(iter);
+          fn.accept(process);
+          continue;
+        }
+
+        if (line.first().equals("Units")) {
+          var units = UnitBlock.read(iter);
+          fn.accept(units);
+        }
+
+      }
+
+    } catch (IOException e) {
+      throw new RuntimeException("failed to read blocks from file: " + file, e);
+    }
   }
 
 }

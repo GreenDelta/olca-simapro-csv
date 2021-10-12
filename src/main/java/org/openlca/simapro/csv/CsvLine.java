@@ -117,13 +117,4 @@ public final class CsvLine {
   public String first() {
     return getString(0);
   }
-
-  public boolean isProcessStart() {
-    return first().equals("Process");
-  }
-
-  public boolean isUnitsStart() {
-    return first().equals("Units");
-  }
-
 }

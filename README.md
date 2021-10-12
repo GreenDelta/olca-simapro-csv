@@ -11,3 +11,5 @@ https://github.com/massimopizzol/Simapro-CSV-converter
 * header: add a write-method, and write necessary defaults
 * need a clean definition how we handle decimal separators and how this
   works with function parameter separators
+* make it `null` friendly: **no** getter should **ever** return `null` but accept
+  `null` in the setters

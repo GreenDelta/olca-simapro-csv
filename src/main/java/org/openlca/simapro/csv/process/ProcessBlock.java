@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.openlca.simapro.csv.CsvBlock;
 import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.enums.ElementaryFlowType;
 import org.openlca.simapro.csv.enums.ProcessCategory;
@@ -13,7 +14,7 @@ import org.openlca.simapro.csv.enums.ProductType;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
-public class ProcessRecord {
+public class ProcessBlock implements CsvBlock {
 
   private ProcessCategory category;
   private String identifier;
@@ -41,6 +42,7 @@ public class ProcessRecord {
 
   private SystemDescriptionRow systemDescription;
   private WasteTreatmentRow wasteTreatment;
+  private WasteTreatmentRow wasteScenario;
 
   private final List<LiteratureRow> literatures = new ArrayList<>();
   private final List<ProductOutputRow> products = new ArrayList<>();
@@ -66,7 +68,7 @@ public class ProcessRecord {
     return category;
   }
 
-  public ProcessRecord category(ProcessCategory category) {
+  public ProcessBlock category(ProcessCategory category) {
     this.category = category;
     return this;
   }
@@ -75,7 +77,7 @@ public class ProcessRecord {
     return identifier;
   }
 
-  public ProcessRecord identifier(String identifier) {
+  public ProcessBlock identifier(String identifier) {
     this.identifier = identifier;
     return this;
   }
@@ -84,7 +86,7 @@ public class ProcessRecord {
     return processType;
   }
 
-  public ProcessRecord processType(ProcessType processType) {
+  public ProcessBlock processType(ProcessType processType) {
     this.processType = processType;
     return this;
   }
@@ -93,7 +95,7 @@ public class ProcessRecord {
     return name;
   }
 
-  public ProcessRecord name(String name) {
+  public ProcessBlock name(String name) {
     this.name = name;
     return this;
   }
@@ -102,7 +104,7 @@ public class ProcessRecord {
     return status;
   }
 
-  public ProcessRecord status(String status) {
+  public ProcessBlock status(String status) {
     this.status = status;
     return this;
   }
@@ -111,7 +113,7 @@ public class ProcessRecord {
     return time;
   }
 
-  public ProcessRecord time(String time) {
+  public ProcessBlock time(String time) {
     this.time = time;
     return this;
   }
@@ -120,7 +122,7 @@ public class ProcessRecord {
     return geography;
   }
 
-  public ProcessRecord geography(String geography) {
+  public ProcessBlock geography(String geography) {
     this.geography = geography;
     return this;
   }
@@ -129,7 +131,7 @@ public class ProcessRecord {
     return technology;
   }
 
-  public ProcessRecord technology(String technology) {
+  public ProcessBlock technology(String technology) {
     this.technology = technology;
     return this;
   }
@@ -138,7 +140,7 @@ public class ProcessRecord {
     return representativeness;
   }
 
-  public ProcessRecord representativeness(String representativeness) {
+  public ProcessBlock representativeness(String representativeness) {
     this.representativeness = representativeness;
     return this;
   }
@@ -147,7 +149,7 @@ public class ProcessRecord {
     return allocation;
   }
 
-  public ProcessRecord allocation(String allocation) {
+  public ProcessBlock allocation(String allocation) {
     this.allocation = allocation;
     return this;
   }
@@ -156,7 +158,7 @@ public class ProcessRecord {
     return substitution;
   }
 
-  public ProcessRecord substitution(String substitution) {
+  public ProcessBlock substitution(String substitution) {
     this.substitution = substitution;
     return this;
   }
@@ -165,7 +167,7 @@ public class ProcessRecord {
     return cutoff;
   }
 
-  public ProcessRecord cutoff(String cutoff) {
+  public ProcessBlock cutoff(String cutoff) {
     this.cutoff = cutoff;
     return this;
   }
@@ -174,7 +176,7 @@ public class ProcessRecord {
     return capitalGoods;
   }
 
-  public ProcessRecord capitalGoods(String capitalGoods) {
+  public ProcessBlock capitalGoods(String capitalGoods) {
     this.capitalGoods = capitalGoods;
     return this;
   }
@@ -183,7 +185,7 @@ public class ProcessRecord {
     return boundaryWithNature;
   }
 
-  public ProcessRecord boundaryWithNature(String boundaryWithNature) {
+  public ProcessBlock boundaryWithNature(String boundaryWithNature) {
     this.boundaryWithNature = boundaryWithNature;
     return this;
   }
@@ -192,7 +194,7 @@ public class ProcessRecord {
     return infrastructure;
   }
 
-  public ProcessRecord infrastructure(Boolean infrastructure) {
+  public ProcessBlock infrastructure(Boolean infrastructure) {
     this.infrastructure = infrastructure;
     return this;
   }
@@ -201,7 +203,7 @@ public class ProcessRecord {
     return date;
   }
 
-  public ProcessRecord date(String date) {
+  public ProcessBlock date(String date) {
     this.date = date;
     return this;
   }
@@ -210,7 +212,7 @@ public class ProcessRecord {
     return record;
   }
 
-  public ProcessRecord record(String record) {
+  public ProcessBlock record(String record) {
     this.record = record;
     return this;
   }
@@ -219,7 +221,7 @@ public class ProcessRecord {
     return generator;
   }
 
-  public ProcessRecord generator(String generator) {
+  public ProcessBlock generator(String generator) {
     this.generator = generator;
     return this;
   }
@@ -228,7 +230,7 @@ public class ProcessRecord {
     return collectionMethod;
   }
 
-  public ProcessRecord collectionMethod(String collectionMethod) {
+  public ProcessBlock collectionMethod(String collectionMethod) {
     this.collectionMethod = collectionMethod;
     return this;
   }
@@ -237,7 +239,7 @@ public class ProcessRecord {
     return verification;
   }
 
-  public ProcessRecord verification(String verification) {
+  public ProcessBlock verification(String verification) {
     this.verification = verification;
     return this;
   }
@@ -246,7 +248,7 @@ public class ProcessRecord {
     return comment;
   }
 
-  public ProcessRecord comment(String comment) {
+  public ProcessBlock comment(String comment) {
     this.comment = comment;
     return this;
   }
@@ -255,7 +257,7 @@ public class ProcessRecord {
     return allocationRules;
   }
 
-  public ProcessRecord allocationRules(String allocationRules) {
+  public ProcessBlock allocationRules(String allocationRules) {
     this.allocationRules = allocationRules;
     return this;
   }
@@ -264,7 +266,7 @@ public class ProcessRecord {
     return dataTreatment;
   }
 
-  public ProcessRecord dataTreatment(String dataTreatment) {
+  public ProcessBlock dataTreatment(String dataTreatment) {
     this.dataTreatment = dataTreatment;
     return this;
   }
@@ -273,7 +275,7 @@ public class ProcessRecord {
     return systemDescription;
   }
 
-  public ProcessRecord systemDescription(SystemDescriptionRow systemDescription) {
+  public ProcessBlock systemDescription(SystemDescriptionRow systemDescription) {
     this.systemDescription = systemDescription;
     return this;
   }
@@ -282,8 +284,17 @@ public class ProcessRecord {
     return wasteTreatment;
   }
 
-  public ProcessRecord wasteTreatment(WasteTreatmentRow wasteTreatment) {
+  public ProcessBlock wasteTreatment(WasteTreatmentRow wasteTreatment) {
     this.wasteTreatment = wasteTreatment;
+    return this;
+  }
+
+  public WasteTreatmentRow wasteScenario() {
+    return wasteScenario;
+  }
+
+  public ProcessBlock wasteScenario(WasteTreatmentRow wasteScenario) {
+    this.wasteScenario = wasteScenario;
     return this;
   }
 
@@ -351,9 +362,9 @@ public class ProcessRecord {
     return calculatedParameters;
   }
 
-  public static ProcessRecord read(Iterable<CsvLine> lines) {
+  public static ProcessBlock read(Iterable<CsvLine> lines) {
     var iter = lines.iterator();
-    var process = new ProcessRecord();
+    var process = new ProcessBlock();
     Supplier<String> nextFirst = () -> CsvLine.nextOf(iter)
       .map(CsvLine::first)
       .orElse("");
@@ -486,6 +497,10 @@ public class ProcessRecord {
           CsvLine.nextOf(iter).ifPresent(
             line -> process.wasteTreatment(WasteTreatmentRow.read(line)));
           break;
+
+        case "Waste scenario":
+          CsvLine.nextOf(iter).ifPresent(
+            line -> process.wasteScenario(WasteTreatmentRow.read(line)));
 
         case "Avoided products":
           CsvLine.untilEmpty(iter,

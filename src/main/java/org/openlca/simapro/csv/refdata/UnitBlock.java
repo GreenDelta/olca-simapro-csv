@@ -3,11 +3,12 @@ package org.openlca.simapro.csv.refdata;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openlca.simapro.csv.CsvBlock;
 import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
 
-public class UnitBlock implements CsvRecord {
+public class UnitBlock implements CsvRecord, CsvBlock {
 
   private final List<UnitRow> units = new ArrayList<>();
 
@@ -18,7 +19,7 @@ public class UnitBlock implements CsvRecord {
   public static UnitBlock read(Iterable<CsvLine> lines) {
     var block = new UnitBlock();
     for (var line : lines) {
-      if (line.isUnitsStart())
+      if (line.first().equals("Units"))
         continue;
       if (line.isEmpty())
         break;

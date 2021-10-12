@@ -43,7 +43,7 @@ public class UnitBlockTest {
   private UnitBlock readBlock(Reader reader, CsvHeader header) {
     var lines = CsvLine.iter(header, reader);
     for (var line : lines) {
-      if (line.isUnitsStart()) {
+      if (line.first().equals("Units")) {
         return UnitBlock.read(lines);
       }
     }

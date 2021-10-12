@@ -10,7 +10,7 @@ public class ProductOutputRow implements CsvRecord, ExchangeRow {
   private String name;
   private String unit;
   private Numeric amount;
-  private String allocation;
+  private Numeric allocation;
   private String wasteType;
   private String category;
   private String comment;
@@ -37,7 +37,9 @@ public class ProductOutputRow implements CsvRecord, ExchangeRow {
 
   @Override
   public Numeric amount() {
-    return amount;
+    return amount == null
+      ? Numeric.zero()
+      : amount;
   }
 
   public ProductOutputRow amount(Numeric amount) {
@@ -45,11 +47,13 @@ public class ProductOutputRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
-  public String allocation() {
-    return allocation;
+  public Numeric allocation() {
+    return allocation == null
+      ? Numeric.zero()
+      : allocation;
   }
 
-  public ProductOutputRow allocation(String allocation) {
+  public ProductOutputRow allocation(Numeric allocation) {
     this.allocation = allocation;
     return this;
   }
@@ -86,7 +90,7 @@ public class ProductOutputRow implements CsvRecord, ExchangeRow {
       .name(line.getString(0))
       .unit(line.getString(1))
       .amount(line.getNumeric(2))
-      .allocation(line.getString(3))
+      .allocation(line.getNumeric(3))
       .wasteType(line.getString(4))
       .category(line.getString(5))
       .comment(line.getString(6));
@@ -97,7 +101,7 @@ public class ProductOutputRow implements CsvRecord, ExchangeRow {
     buffer.putString(name)
       .putString(unit)
       .putNumeric(amount)
-      .putString(allocation)
+      .putNumeric(allocation)
       .putString(wasteType)
       .putString(category)
       .putString(comment)
