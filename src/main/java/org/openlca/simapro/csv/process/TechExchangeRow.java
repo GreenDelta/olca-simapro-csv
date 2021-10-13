@@ -6,7 +6,7 @@ import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.Numeric;
 import org.openlca.simapro.csv.UncertaintyRecord;
 
-public class ProductExchangeRow implements CsvRecord, ExchangeRow {
+public class TechExchangeRow implements CsvRecord, ExchangeRow {
 
   private String name;
   private String unit;
@@ -20,7 +20,7 @@ public class ProductExchangeRow implements CsvRecord, ExchangeRow {
     return name;
   }
 
-  public ProductExchangeRow name(String name) {
+  public TechExchangeRow name(String name) {
     this.name = name;
     return this;
   }
@@ -30,7 +30,7 @@ public class ProductExchangeRow implements CsvRecord, ExchangeRow {
     return unit;
   }
 
-  public ProductExchangeRow unit(String unit) {
+  public TechExchangeRow unit(String unit) {
     this.unit = unit;
     return this;
   }
@@ -40,7 +40,7 @@ public class ProductExchangeRow implements CsvRecord, ExchangeRow {
     return amount;
   }
 
-  public ProductExchangeRow amount(Numeric amount) {
+  public TechExchangeRow amount(Numeric amount) {
     this.amount = amount;
     return this;
   }
@@ -49,7 +49,7 @@ public class ProductExchangeRow implements CsvRecord, ExchangeRow {
     return uncertainty;
   }
 
-  public ProductExchangeRow uncertainty(UncertaintyRecord uncertainty) {
+  public TechExchangeRow uncertainty(UncertaintyRecord uncertainty) {
     this.uncertainty = uncertainty;
     return this;
   }
@@ -58,7 +58,7 @@ public class ProductExchangeRow implements CsvRecord, ExchangeRow {
     return comment;
   }
 
-  public ProductExchangeRow comment(String comment) {
+  public TechExchangeRow comment(String comment) {
     this.comment = comment;
     return this;
   }
@@ -67,13 +67,13 @@ public class ProductExchangeRow implements CsvRecord, ExchangeRow {
     return pedigree;
   }
 
-  public ProductExchangeRow pedigree(String pedigree) {
+  public TechExchangeRow pedigree(String pedigree) {
     this.pedigree = pedigree;
     return this;
   }
 
-  public static ProductExchangeRow read(CsvLine line) {
-    var row = new ProductExchangeRow()
+  public static TechExchangeRow read(CsvLine line) {
+    var row = new TechExchangeRow()
       .name(line.getString(0))
       .unit(line.getString(1))
       .amount(line.getNumeric(2))

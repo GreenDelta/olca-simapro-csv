@@ -47,10 +47,10 @@ public class ProcessBlock implements CsvBlock {
   private final List<LiteratureRow> literatures = new ArrayList<>();
   private final List<ProductOutputRow> products = new ArrayList<>();
 
-  private final List<ProductExchangeRow> avoidedProducts = new ArrayList<>();
-  private final List<ProductExchangeRow> materialsAndFuels = new ArrayList<>();
-  private final List<ProductExchangeRow> electricityAndHeat = new ArrayList<>();
-  private final List<ProductExchangeRow> wasteToTreatment = new ArrayList<>();
+  private final List<TechExchangeRow> avoidedProducts = new ArrayList<>();
+  private final List<TechExchangeRow> materialsAndFuels = new ArrayList<>();
+  private final List<TechExchangeRow> electricityAndHeat = new ArrayList<>();
+  private final List<TechExchangeRow> wasteToTreatment = new ArrayList<>();
 
   private final List<WasteFractionRow> separatedWaste = new ArrayList<>();
   private final List<WasteFractionRow> remainingWaste = new ArrayList<>();
@@ -309,19 +309,19 @@ public class ProcessBlock implements CsvBlock {
     return products;
   }
 
-  public List<ProductExchangeRow> avoidedProducts() {
+  public List<TechExchangeRow> avoidedProducts() {
     return avoidedProducts;
   }
 
-  public List<ProductExchangeRow> materialsAndFuels() {
+  public List<TechExchangeRow> materialsAndFuels() {
     return materialsAndFuels;
   }
 
-  public List<ProductExchangeRow> electricityAndHeat() {
+  public List<TechExchangeRow> electricityAndHeat() {
     return electricityAndHeat;
   }
 
-  public List<ProductExchangeRow> wasteToTreatment() {
+  public List<TechExchangeRow> wasteToTreatment() {
     return wasteToTreatment;
   }
 
@@ -515,22 +515,22 @@ public class ProcessBlock implements CsvBlock {
 
         case "Avoided products":
           CsvLine.untilEmpty(iter,
-            line -> process.avoidedProducts.add(ProductExchangeRow.read(line)));
+            line -> process.avoidedProducts.add(TechExchangeRow.read(line)));
           break;
 
         case "Materials/fuels":
           CsvLine.untilEmpty(iter,
-            line -> process.materialsAndFuels.add(ProductExchangeRow.read(line)));
+            line -> process.materialsAndFuels.add(TechExchangeRow.read(line)));
           break;
 
         case "Electricity/heat":
           CsvLine.untilEmpty(iter,
-            line -> process.electricityAndHeat.add(ProductExchangeRow.read(line)));
+            line -> process.electricityAndHeat.add(TechExchangeRow.read(line)));
           break;
 
         case "Waste to treatment":
           CsvLine.untilEmpty(iter,
-            line -> process.wasteToTreatment.add(ProductExchangeRow.read(line)));
+            line -> process.wasteToTreatment.add(TechExchangeRow.read(line)));
           break;
 
         case "Separated waste":
@@ -624,7 +624,7 @@ public class ProcessBlock implements CsvBlock {
     }
   }
 
-  public List<ProductExchangeRow> exchangesOf(ProductType type) {
+  public List<TechExchangeRow> exchangesOf(ProductType type) {
     if (type == null)
       return Collections.emptyList();
     switch (type) {
