@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 import org.apache.commons.csv.CSVFormat;
 import org.openlca.simapro.csv.process.ProcessBlock;
+import org.openlca.simapro.csv.process.ProductStageBlock;
 import org.openlca.simapro.csv.refdata.UnitBlock;
 
 public final class Csv {
@@ -70,6 +71,12 @@ public final class Csv {
         if (line.first().equals("Process")) {
           var process = ProcessBlock.read(iter);
           fn.accept(process);
+          continue;
+        }
+
+        if (line.first().equals("Product stage")) {
+          var block = ProductStageBlock.read(iter);
+          fn.accept(block);
           continue;
         }
 
