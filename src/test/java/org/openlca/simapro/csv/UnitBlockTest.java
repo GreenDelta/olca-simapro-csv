@@ -57,4 +57,12 @@ public class UnitBlockTest {
     return Csv.readerOf(stream, StandardCharsets.UTF_8);
   }
 
+  @Test
+  public void testUnits() {
+    var dataSet = Tests.testFile("process.csv");
+    assertEquals(34, dataSet.units().size());
+
+  }
+
+
 }

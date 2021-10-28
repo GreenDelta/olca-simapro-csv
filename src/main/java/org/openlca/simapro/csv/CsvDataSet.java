@@ -293,6 +293,12 @@ public class CsvDataSet {
         // TODO: process.write(buffer)
       }
 
+      if (!units.isEmpty()) {
+        buffer.putString("Units").writeln();
+        for (var row : units) {
+          row.write(buffer);
+        }
+      }
 
 
 
