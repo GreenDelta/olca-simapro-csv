@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Optional;
 
-import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
 public class CsvHeader {
@@ -208,6 +207,46 @@ public class CsvHeader {
       return Optional.empty();
     var m = s.substring(prefix.length());
     return Optional.of(m.trim());
+  }
+
+  public void write(CsvBuffer buffer) {
+
+    // version
+    var v = version == null
+      ? 8.0
+      : version;
+    buffer.putString("{SimaPro " + v + "}").writeln();
+
+    // TODO: write the current date and time if data/time are null
+    if (date != null) {
+      buffer.putString("{Date: " + date + "}").writeln();
+    }
+    if (time != null) {
+      buffer.putString("{Time: " + time + "}").writeln();
+    }
+
+    if (project != null) {
+      buffer.putString("{Project: " + time + "}").writeln();
+    }
+
+    // TODO: default to a version here?
+    if (formatVersion != null) {
+      buffer.putString("{CSV Format version: " + formatVersion + "}").writeln();
+    }
+
+    var csvSep = csvSeparator == ';'
+      ? "Semicolon"
+      : "Comma";
+    buffer.putString("{CSV separator: " + csvSep + "}").writeln();
+    buffer.putString("{Decimal separator: " + decimalSeparator + "}").writeln();
+    buffer.putString("{Date separator: " + dateSeparator + "}").writeln();
+
+    // TODO: take dd.MM.yyyy by default here?
+    if (shortDateFormat != null) {
+      buffer.putString("{Short date format: " + shortDateFormat + "}").writeln();
+    }
+
+    buffer.writeln();
   }
 
 }

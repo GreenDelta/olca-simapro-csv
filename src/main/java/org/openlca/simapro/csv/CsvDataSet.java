@@ -157,7 +157,7 @@ public class CsvDataSet {
     var dataSet = new CsvDataSet(header);
     var iter = CsvLine.iter(header, reader);
     var lines = iter.iterator();
-    while(lines.hasNext()) {
+    while (lines.hasNext()) {
       var line = lines.next();
 
       if (line.first().equals("Product stage")) {
@@ -282,8 +282,8 @@ public class CsvDataSet {
 
   public void write(File file) {
     try (var writer = new FileWriter(file, Csv.defaultCharset())) {
-      // TODO: write header
       var buffer = new CsvBuffer(writer, header);
+      header.write(buffer);
 
       for (var stage : productStages) {
         // TODO: stage.write(buffer);
@@ -298,8 +298,10 @@ public class CsvDataSet {
         for (var row : units) {
           row.write(buffer);
         }
+        buffer.writeln()
+          .putString("End").writeln()
+          .writeln();
       }
-
 
 
     } catch (IOException e) {
