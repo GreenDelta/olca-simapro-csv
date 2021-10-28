@@ -32,15 +32,26 @@ public final class CsvLine {
       : Optional.ofNullable(it.next());
   }
 
+  /**
+   * Reads the next sequence of rows and calls the given function until it
+   * finds an empty line or a line with the word {@code End}.
+   */
   public static void untilEmpty(Iterator<CsvLine> it, Consumer<CsvLine> fn) {
     if (it == null || fn == null)
       return;
     while (it.hasNext()) {
-      var next = it.next();
-      if (next.isEmpty())
+      var line = it.next();
+      if (line.isEmpty() || line.first().equals("End"))
         break;
-      fn.accept(next);
+      fn.accept(line);
     }
+  }
+
+  /**
+   * Returns the number of cells in this line.
+   */
+  public int size() {
+    return csv.size();
   }
 
   public String getString(int pos) {
