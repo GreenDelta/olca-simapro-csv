@@ -7,9 +7,9 @@ import org.openlca.simapro.csv.CsvRecord;
 public class UnitRow implements CsvRecord {
 
   private double conversionFactor = 1;
-  private String name;
-  private String referenceUnit;
-  private String quantity;
+  private String name = "";
+  private String referenceUnit = "";
+  private String quantity = "";
 
   public double conversionFactor() {
     return conversionFactor;
@@ -25,7 +25,7 @@ public class UnitRow implements CsvRecord {
   }
 
   public UnitRow name(String name) {
-    this.name = name;
+    this.name = name != null ? name : "";
     return this;
   }
 
@@ -34,7 +34,7 @@ public class UnitRow implements CsvRecord {
   }
 
   public UnitRow referenceUnit(String referenceUnit) {
-    this.referenceUnit = referenceUnit;
+    this.referenceUnit = referenceUnit != null ? referenceUnit : "";
     return this;
   }
 
@@ -43,7 +43,7 @@ public class UnitRow implements CsvRecord {
   }
 
   public UnitRow quantity(String quantity) {
-    this.quantity = quantity;
+    this.quantity = quantity != null ? quantity : "";
     return this;
   }
 
