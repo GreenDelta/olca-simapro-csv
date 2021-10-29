@@ -6,12 +6,11 @@ https://github.com/massimopizzol/Simapro-CSV-converter
 * `;;;;;`
 
 ## TODO:
-* read & write quantity blocks + tests
-* test reading of product stage blocks
-* read & write parameter blocks
-* read & write elementary flow blocks
+* finish ref-block tests
+* product stage blocks: some fields are missing
 * write process blocks + tests
-* write product stage blocks + tests
+* test product stage blocks
+* support new format fields: `PlatformId`, UUIDs?
 
 * remove the Pedigree fields and the Pedigree matcher; this should go into the
   openLCA import then
