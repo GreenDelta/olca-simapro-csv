@@ -286,7 +286,7 @@ public class CsvDataSet {
       header.write(buffer);
 
       for (var stage : productStages) {
-        // TODO: stage.write(buffer);
+        stage.write(buffer);
       }
 
       for (var process : processes) {

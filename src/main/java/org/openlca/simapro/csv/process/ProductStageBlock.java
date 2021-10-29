@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.openlca.simapro.csv.CsvBlock;
+import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
+import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.enums.ProductStageCategory;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
-public class ProductStageBlock implements CsvBlock {
+public class ProductStageBlock implements CsvBlock, CsvRecord {
 
   private ProductStageCategory category;
   private String status;
@@ -194,5 +196,86 @@ public class ProductStageBlock implements CsvBlock {
     return block;
   }
 
+  @Override
+  public void write(CsvBuffer buffer) {
+
+    buffer.putString("Product stage").writeln()
+      .writeln();
+
+    // Category type
+    buffer.putString("Category type").writeln();
+    buffer.putString(category == null
+        ? ProductStageCategory.ASSEMBLY.toString()
+        : category.toString())
+      .writeln()
+      .writeln();
+
+    // Status
+    buffer.putString("Status").writeln()
+      .putString(status).writeln()
+      .writeln();
+
+    // Products
+    writeRows(buffer, "Products", products);
+
+    // Assembly
+    // TODO: Assembly is a section in product stages of type `life cycle`
+    // buffer.putString("Assembly").writeln();
+
+    // Reference assembly
+    if (referenceAssembly != null) {
+      buffer.putString("Reference assembly").writeln();
+      referenceAssembly.write(buffer);
+      buffer.writeln();
+    }
+
+    // Materials/assemblies
+    writeRows(buffer, "Materials/assemblies", materialsAndAssemblies);
+
+    // Processes
+    writeRows(buffer, "Processes", processes);
+
+    // Waste/Disposal scenario
+    // TODO: Waste/Disposal scenario is a section in product stages of type `life cycle`
+    // buffer.putString("Waste/Disposal scenario").writeln();
+
+    // Additional life cycles
+    // TODO: Additional life cycles is a section in product stages of type `life cycle`
+    // writeRows(buffer, "Additional life cycles", additionalLifeCycles);
+
+    // Disposal scenarios
+    writeRows(buffer, "Disposal scenarios", disposalScenarios);
+
+    // Waste scenarios
+    writeRows(buffer, "Waste scenarios", wasteScenarios);
+
+    // Disassemblies
+    writeRows(buffer, "Disassemblies", disassemblies);
+
+    // Reuses
+    writeRows(buffer, "Reuses", reuses);
+
+    // Input parameters
+    writeRows(buffer, "Input parameters", inputParameters);
+
+    // Calculated parameters
+    writeRows(buffer, "Calculated parameters", calculatedParameters);
+
+    // End
+    buffer.writeln()
+      .putString("End").writeln()
+      .writeln();
+  }
+
+  private void writeRows(
+    CsvBuffer buffer, String header, List<? extends CsvRecord> rows) {
+    if (rows.isEmpty())
+      return;
+    buffer.putString(header).writeln();
+    for (var row : rows) {
+      row.write(buffer);
+    }
+    buffer.writeln();
+  }
 
 }
