@@ -293,20 +293,40 @@ public class CsvDataSet {
         // TODO: process.write(buffer)
       }
 
-      if (!units.isEmpty()) {
-        buffer.putString("Units").writeln();
-        for (var row : units) {
-          row.write(buffer);
-        }
-        buffer.writeln()
-          .putString("End").writeln()
-          .writeln();
+      for (var description : systemDescriptions) {
+        // TODO: description.write(buffer);
       }
 
+      writeRows(buffer, "Quantities", quantities);
+      writeRows(buffer, "Units", units);
+      writeRows(buffer, "Raw materials", rawMaterials);
+      writeRows(buffer, "Airborne emissions", airborneEmissions);
+      writeRows(buffer, "Waterborne emissions", waterborneEmissions);
+      writeRows(buffer, "Final waste flows", finalWasteFlows);
+      writeRows(buffer, "Emissions to soil", emissionsToSoil);
+      writeRows(buffer, "Non material emissions", nonMaterialEmissions);
+      writeRows(buffer, "Social issues", socialIssues);
+      writeRows(buffer, "Economic issues", economicIssues);
+      writeRows(buffer, "Database Input parameters", databaseInputParameters);
+      writeRows(buffer, "Database Calculated parameters", databaseCalculatedParameters);
+      writeRows(buffer, "Project Input parameters", projectInputParameters);
+      writeRows(buffer, "Project Calculated parameters", projectCalculatedParameters);
 
     } catch (IOException e) {
       throw new RuntimeException("failed to write file: " + file, e);
     }
   }
 
+  private void writeRows(
+    CsvBuffer buffer, String header, List<? extends CsvRecord> rows) {
+    if (rows.isEmpty())
+      return;
+    buffer.putString(header).writeln();
+    for (var row : rows) {
+      row.write(buffer);
+    }
+    buffer.writeln()
+      .putString("End").writeln()
+      .writeln();
+  }
 }
