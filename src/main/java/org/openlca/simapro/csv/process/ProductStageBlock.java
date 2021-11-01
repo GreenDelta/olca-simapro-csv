@@ -2,6 +2,7 @@ package org.openlca.simapro.csv.process;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.openlca.simapro.csv.CsvBlock;
@@ -16,7 +17,11 @@ public class ProductStageBlock implements CsvBlock, CsvRecord {
 
   private ProductStageCategory category;
   private String status;
+
+  private TechExchangeRow assembly;
   private TechExchangeRow referenceAssembly;
+  private TechExchangeRow wasteOrDisposalScenario;
+
   private final List<ProductStageOutputRow> products = new ArrayList<>();
   private final List<TechExchangeRow> materialsAndAssemblies = new ArrayList<>();
   private final List<TechExchangeRow> processes = new ArrayList<>();
@@ -24,6 +29,8 @@ public class ProductStageBlock implements CsvBlock, CsvRecord {
   private final List<TechExchangeRow> disassemblies = new ArrayList<>();
   private final List<TechExchangeRow> disposalScenarios = new ArrayList<>();
   private final List<TechExchangeRow> reuses = new ArrayList<>();
+  private final List<TechExchangeRow> additionalLifeCycles = new ArrayList<>();
+
   private final List<InputParameterRow> inputParameters = new ArrayList<>();
   private final List<CalculatedParameterRow> calculatedParameters = new ArrayList<>();
 
@@ -51,6 +58,25 @@ public class ProductStageBlock implements CsvBlock, CsvRecord {
 
   public ProductStageBlock referenceAssembly(TechExchangeRow referenceAssembly) {
     this.referenceAssembly = referenceAssembly;
+    return this;
+  }
+
+  public TechExchangeRow assembly() {
+    return assembly;
+  }
+
+  public ProductStageBlock assembly(TechExchangeRow assembly) {
+    this.assembly = assembly;
+    return this;
+  }
+
+  public TechExchangeRow wasteOrDisposalScenario() {
+    return wasteOrDisposalScenario;
+  }
+
+  public ProductStageBlock wasteOrDisposalScenario(
+    TechExchangeRow wasteOrDisposalScenario) {
+    this.wasteOrDisposalScenario = wasteOrDisposalScenario;
     return this;
   }
 
@@ -90,13 +116,31 @@ public class ProductStageBlock implements CsvBlock, CsvRecord {
     return calculatedParameters;
   }
 
+  public List<TechExchangeRow> additionalLifeCycles() {
+    return additionalLifeCycles;
+  }
+
   public static ProductStageBlock read(Iterable<CsvLine> lines) {
 
     var iter = lines.iterator();
     var block = new ProductStageBlock();
+
+    // utility functions
     Supplier<String> nextFirst = () -> CsvLine.nextOf(iter)
       .map(CsvLine::first)
       .orElse("");
+    Consumer<Consumer<TechExchangeRow>> nextTechExchange = setter ->
+      CsvLine.nextOf(iter).ifPresent(nextLine -> {
+        if (nextLine.isEmpty())
+          return;
+        var row = TechExchangeRow.read(nextLine);
+        setter.accept(row);
+      });
+    Consumer<List<TechExchangeRow>> nextTechExchanges = list ->
+      CsvLine.untilEmpty(iter, nextLine -> {
+        var row = TechExchangeRow.read(nextLine);
+        list.add(row);
+      });
 
     while (iter.hasNext()) {
 
@@ -127,55 +171,44 @@ public class ProductStageBlock implements CsvBlock, CsvRecord {
           });
           break;
 
+        case "Assembly":
+          nextTechExchange.accept(block::assembly);
+          break;
+
+        case "Waste/Disposal scenario":
+          nextTechExchange.accept(block::wasteOrDisposalScenario);
+          break;
+
         case "Reference assembly":
-          CsvLine.nextOf(iter).ifPresent(nextLine -> {
-            if (nextLine.isEmpty())
-              return;
-            var row = TechExchangeRow.read(nextLine);
-            block.referenceAssembly(row);
-          });
+          nextTechExchange.accept(block::referenceAssembly);
           break;
 
         case "Materials/assemblies":
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var row = TechExchangeRow.read(nextLine);
-            block.materialsAndAssemblies.add(row);
-          });
+          nextTechExchanges.accept(block.materialsAndAssemblies);
           break;
 
         case "Processes":
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var row = TechExchangeRow.read(nextLine);
-            block.processes.add(row);
-          });
+          nextTechExchanges.accept(block.processes);
           break;
 
         case "Disposal scenarios":
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var row = TechExchangeRow.read(nextLine);
-            block.disposalScenarios.add(row);
-          });
+          nextTechExchanges.accept(block.disposalScenarios);
           break;
 
         case "Waste scenarios":
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var row = TechExchangeRow.read(nextLine);
-            block.wasteScenarios.add(row);
-          });
+          nextTechExchanges.accept(block.wasteScenarios);
           break;
 
         case "Disassemblies":
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var row = TechExchangeRow.read(nextLine);
-            block.disassemblies.add(row);
-          });
+          nextTechExchanges.accept(block.disassemblies);
           break;
 
         case "Reuses":
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var row = TechExchangeRow.read(nextLine);
-            block.reuses.add(row);
-          });
+          nextTechExchanges.accept(block.reuses);
+          break;
+
+        case "Additional life cycles":
+          nextTechExchanges.accept(block.additionalLifeCycles);
           break;
 
         case "Input parameters":
@@ -219,14 +252,17 @@ public class ProductStageBlock implements CsvBlock, CsvRecord {
     writeRows(buffer, "Products", products);
 
     // Assembly
-    // TODO: Assembly is a section in product stages of type `life cycle`
-    // buffer.putString("Assembly").writeln();
+    if (assembly != null) {
+      buffer.putString("Assembly").writeln()
+        .putRecord(assembly)
+        .writeln();
+    }
 
     // Reference assembly
     if (referenceAssembly != null) {
-      buffer.putString("Reference assembly").writeln();
-      referenceAssembly.write(buffer);
-      buffer.writeln();
+      buffer.putString("Reference assembly").writeln()
+        .putRecord(referenceAssembly)
+        .writeln();
     }
 
     // Materials/assemblies
@@ -236,12 +272,14 @@ public class ProductStageBlock implements CsvBlock, CsvRecord {
     writeRows(buffer, "Processes", processes);
 
     // Waste/Disposal scenario
-    // TODO: Waste/Disposal scenario is a section in product stages of type `life cycle`
-    // buffer.putString("Waste/Disposal scenario").writeln();
+    if (wasteOrDisposalScenario != null) {
+      buffer.putString("Waste/Disposal scenario").writeln()
+        .putRecord(wasteOrDisposalScenario)
+        .writeln();
+    }
 
     // Additional life cycles
-    // TODO: Additional life cycles is a section in product stages of type `life cycle`
-    // writeRows(buffer, "Additional life cycles", additionalLifeCycles);
+    writeRows(buffer, "Additional life cycles", additionalLifeCycles);
 
     // Disposal scenarios
     writeRows(buffer, "Disposal scenarios", disposalScenarios);

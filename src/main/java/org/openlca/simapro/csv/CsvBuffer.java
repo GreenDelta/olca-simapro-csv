@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
 public class CsvBuffer {
 
@@ -60,6 +61,13 @@ public class CsvBuffer {
 
   public CsvBuffer putBoolean(boolean b) {
     return putString(b ? "Yes" : "No");
+  }
+
+  public CsvBuffer putRecord(CsvRecord record) {
+    if (record != null) {
+      record.write(this);
+    }
+    return this;
   }
 
   private String decimalPoint(String s) {
