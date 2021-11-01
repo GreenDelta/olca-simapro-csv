@@ -1,6 +1,8 @@
 package org.openlca.simapro.csv;
 
 import org.junit.Test;
+import org.openlca.simapro.csv.refdata.QuantityRow;
+import org.openlca.simapro.csv.refdata.UnitRow;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +12,33 @@ public class QuantityBlockTest {
   public void testQuantities() {
     var ds = Tests.testFile("process.csv");
     assertEquals(3, ds.quantities().size());
-    // TODO: @mg: assertContains as in UnitBlockTest
+
+    assertContains(ds, new QuantityRow()
+      .name("Mass")
+      .hasDimension(false)
+    );
+
+    assertContains(ds, new QuantityRow()
+      .name("Energy")
+      .hasDimension(false)
+    );
+
+    assertContains(ds, new QuantityRow()
+      .name("Length")
+      .hasDimension(false)
+    );
+
+  }
+
+  private void assertContains(CsvDataSet ds, QuantityRow expected) {
+    boolean found = false;
+    for (var quantity : ds.quantities()) {
+      if (quantity.name().equals(expected.name())) {
+        found = true;
+        assertEquals(expected.hasDimension(), quantity.hasDimension());
+      }
+    }
+    assertTrue(found);
   }
 
 }
