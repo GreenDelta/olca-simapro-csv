@@ -2,7 +2,6 @@ package org.openlca.simapro.csv;
 
 import org.junit.Test;
 import org.openlca.simapro.csv.refdata.QuantityRow;
-import org.openlca.simapro.csv.refdata.UnitRow;
 
 import static org.junit.Assert.*;
 
@@ -15,18 +14,15 @@ public class QuantityBlockTest {
 
     assertContains(ds, new QuantityRow()
       .name("Mass")
-      .hasDimension(false)
-    );
+      .hasDimension(true));
 
     assertContains(ds, new QuantityRow()
       .name("Energy")
-      .hasDimension(false)
-    );
+      .hasDimension(true));
 
     assertContains(ds, new QuantityRow()
       .name("Length")
-      .hasDimension(false)
-    );
+      .hasDimension(true));
 
   }
 

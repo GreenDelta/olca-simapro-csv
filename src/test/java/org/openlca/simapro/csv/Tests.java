@@ -65,8 +65,7 @@ class Tests {
       var file = Files.createTempFile("__sp_csv_", ".csv").toFile();
       dataSet.write(file);
       var copy = CsvDataSet.read(file);
-      // Files.delete(file.toPath());
-      System.out.println(file.toPath());
+      Files.delete(file.toPath());
 
       return copy;
     } catch (IOException e) {
