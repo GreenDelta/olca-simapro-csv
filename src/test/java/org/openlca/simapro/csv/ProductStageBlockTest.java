@@ -10,13 +10,15 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class ProductStageBlockTest {
-  CsvDataSet ds = Tests.testFile("stages.csv");
+
+  private final CsvDataSet ds = Tests.testFile("stages.csv");
 
   @Test
   public void testProductStagBlock() {
     assertEquals(5, ds.productStages().size());
     boolean found = false;
     for (var productStage : ds.productStages()) {
+
       if (productStage.category() == ProductStageCategory.ASSEMBLY) {
         found = true;
         assertEquals("", productStage.status());
@@ -65,6 +67,7 @@ public class ProductStageBlockTest {
         assertEquals("param1 *2", calculatedParameter.comment());
 
       }
+
       if (productStage.category() == ProductStageCategory.DISPOSAL_SCENARIO) {
         found = true;
         assertEquals("", productStage.status());

@@ -3,9 +3,11 @@ package org.openlca.simapro.csv.method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
+import org.openlca.simapro.csv.CsvRecord;
 
-public class ImpactMethodBlock {
+public class ImpactMethodBlock implements CsvRecord {
 
   private String name;
   private VersionRow version;
@@ -31,6 +33,9 @@ public class ImpactMethodBlock {
   }
 
   public VersionRow version() {
+    if (version == null) {
+      version = new VersionRow();
+    }
     return version;
   }
 
@@ -210,4 +215,74 @@ public class ImpactMethodBlock {
     return method;
   }
 
+  @Override
+  public void write(CsvBuffer buffer) {
+
+    buffer.putString("Method").writeln()
+      .writeln();
+
+    // Name
+    buffer.putString("Name").writeln()
+      .putString(name()).writeln()
+      .writeln();
+
+    // Version
+    buffer.putString("Version").writeln()
+      .putRecord(version())
+      .writeln();
+
+    // Comment
+    buffer.putString("Comment").writeln()
+      .putString(comment()).writeln()
+      .writeln();
+
+    // Category
+    var c = category();
+    if (c == null || c.isEmpty()) {
+      c = "Others";
+    }
+    buffer.putString("Category").writeln()
+      .putString(c).writeln()
+      .writeln();
+
+    // Use Damage Assessment
+    buffer.putString("Use Damage Assessment").writeln()
+      .putBoolean(useDamageAssessment()).writeln()
+      .writeln();
+
+    // Use Normalization
+    buffer.putString("Use Normalization").writeln()
+      .putBoolean(useNormalization()).writeln()
+      .writeln();
+
+    // Use Weighting
+    buffer.putString("Use Weighting").writeln()
+      .putBoolean(useWeighting()).writeln()
+      .writeln();
+
+    // Use Addition
+    buffer.putString("Use Addition").writeln()
+      .putBoolean(useAddition()).writeln()
+      .writeln();
+
+    // Weighting unit
+    buffer.putString("Weighting unit").writeln()
+      .putString(weightingUnit()).writeln()
+      .writeln();
+
+    // Impact categories
+    buffer.putRecords(impactCategories())
+      .writeln();
+
+    // Damage categories
+    buffer.putRecords(damageCategories())
+      .writeln();
+
+    // Normalization-weighting sets
+    buffer.putRecords(nwSets())
+      .writeln();
+
+    buffer.putString("End").writeln()
+      .writeln();
+  }
 }

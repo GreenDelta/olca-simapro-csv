@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openlca.simapro.csv.enums.ElementaryFlowType;
+import org.openlca.simapro.csv.method.ImpactMethodBlock;
 import org.openlca.simapro.csv.process.ProcessBlock;
 import org.openlca.simapro.csv.process.ProductStageBlock;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
@@ -24,6 +25,7 @@ public class CsvDataSet {
   private final List<ProductStageBlock> productStages = new ArrayList<>();
   private final List<ProcessBlock> processes = new ArrayList<>();
   private final List<SystemDescriptionBlock> systemDescriptions = new ArrayList<>();
+  private final List<ImpactMethodBlock> methods = new ArrayList<>();
   private final List<QuantityRow> quantities = new ArrayList<>();
   private final List<UnitRow> units = new ArrayList<>();
   private final List<ElementaryFlowRow> rawMaterials = new ArrayList<>();
@@ -61,6 +63,10 @@ public class CsvDataSet {
 
   public List<SystemDescriptionBlock> systemDescriptions() {
     return systemDescriptions;
+  }
+
+  public List<ImpactMethodBlock> methods() {
+    return methods;
   }
 
   public List<QuantityRow> quantities() {
@@ -175,6 +181,12 @@ public class CsvDataSet {
       if (line.first().equals("System description")) {
         var block = SystemDescriptionBlock.read(iter);
         dataSet.systemDescriptions.add(block);
+        continue;
+      }
+
+      if (line.first().equals("Method")) {
+        var block = ImpactMethodBlock.read(iter);
+        dataSet.methods.add(block);
         continue;
       }
 
@@ -295,6 +307,10 @@ public class CsvDataSet {
 
       for (var description : systemDescriptions) {
         // TODO: description.write(buffer);
+      }
+
+      for (var method : methods) {
+        method.write(buffer);
       }
 
       writeRows(buffer, "Quantities", quantities);
