@@ -7,9 +7,11 @@ import org.openlca.simapro.csv.enums.ProcessType;
 import static org.junit.Assert.*;
 
 public class ProcessBlockTest {
+
+  CsvDataSet ds = Tests.testFile("process.csv");
+
   @Test
   public void testProcessBlock() {
-    var ds = Tests.testFile("process.csv");
     assertEquals(1, ds.processes().size());
     var process = ds.processes().get(0);
     assertEquals("Test process", process.name());
@@ -39,12 +41,38 @@ public class ProcessBlockTest {
 
   @Test
   public void testLiteratureRow() {
-    var ds = Tests.testFile("process.csv");
     assertEquals(1, ds.processes().size());
     var process = ds.processes().get(0);
     assertEquals(1, process.literatures().size());
     var literature = process.literatures().get(0);
     assertEquals("Ecoinvent 3", literature.name());
     assertEquals("is copyright protected: false", literature.comment());
+  }
+
+  @Test
+  public void testProductOutputRow() {
+    assertEquals(1, ds.processes().size());
+    var process = ds.processes().get(0);
+    assertEquals(1, process.products().size());
+    var product = process.products().get(0);
+    assertEquals("my product", product.name());
+    assertEquals("", product.comment());
+    assertEquals(0.5, product.amount().value(), 0.0001);
+    assertEquals("Agricultural", product.category());
+    assertEquals(100, product.allocation().value(), 0.0001);
+    assertEquals("kg", product.unit());
+    assertEquals("not defined", product.wasteType());
+  }
+
+  @Test
+  public void testTechExchangeRow() {
+    assertEquals(1, ds.processes().size());
+    var process = ds.processes().get(0);
+    assertEquals(1, process.avoidedProducts().size());
+    var avoidedProduct = process.avoidedProducts().get(0);
+    assertEquals("Wool, at field/US", avoidedProduct.name());
+    assertEquals("", avoidedProduct.comment());
+    assertEquals(1, avoidedProduct.amount().value(), 0.0001);
+    assertTrue(avoidedProduct.uncertainty().isUndefined());
   }
 }
