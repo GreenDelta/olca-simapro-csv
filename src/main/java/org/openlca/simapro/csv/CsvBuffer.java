@@ -48,6 +48,11 @@ public class CsvBuffer {
     return putString(decimalPoint(s));
   }
 
+  public CsvBuffer putInt(int i) {
+    var s = Integer.toString(i);
+    return putString(s);
+  }
+
   public CsvBuffer putNumeric(Numeric n) {
     if (n == null) {
       putDouble(0);

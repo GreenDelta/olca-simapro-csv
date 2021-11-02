@@ -10,13 +10,13 @@ import org.apache.commons.csv.CSVRecord;
 
 public final class CsvLine {
 
-	private final CSVRecord csv;
-	private final char decimalSeparator;
+  private final CSVRecord csv;
+  private final char decimalSeparator;
 
-	private CsvLine(CSVRecord csv, CsvHeader header) {
-		this.csv = Objects.requireNonNull(csv);
-		this.decimalSeparator = header.decimalSeparator();
-	}
+  private CsvLine(CSVRecord csv, CsvHeader header) {
+    this.csv = Objects.requireNonNull(csv);
+    this.decimalSeparator = header.decimalSeparator();
+  }
 
   static CsvLine of(CSVRecord csv, CsvHeader header) {
     return new CsvLine(csv, header);
@@ -26,10 +26,29 @@ public final class CsvLine {
     return new CsvScanner(header, reader);
   }
 
+  /**
+   * Advances the iterator and returns the next line if present.
+   */
   public static Optional<CsvLine> nextOf(Iterator<CsvLine> it) {
     return it == null || !it.hasNext()
       ? Optional.empty()
       : Optional.ofNullable(it.next());
+  }
+
+  /**
+   * Advances the iterator and returns the string value of the first cell from
+   * the next line. If there is no such value, an empty string is returned.
+   */
+  public static String nextString(Iterator<CsvLine> it) {
+    return nextOf(it).map(CsvLine::first).orElse("");
+  }
+
+  /**
+   * Advances the iterator and returns the boolean value of the first cell from
+   * the next line. Returns {@code false}, if there is no such value.
+   */
+  public static boolean nextBool(Iterator<CsvLine> it) {
+    return nextOf(it).map(line -> line.getBoolean(0)).orElse(false);
   }
 
   /**
@@ -58,54 +77,61 @@ public final class CsvLine {
     if (pos < 0 || pos >= csv.size())
       return "";
     return csv.get(pos).replace((char) 127, '\n');
-	}
+  }
 
   public double getDouble(int pos) {
-		var str = getString(pos);
-		return str.length() == 0
-				? 0
-				: Double.parseDouble(decimalPoint(str));
-	}
+    var str = getString(pos);
+    return str.length() == 0
+      ? 0
+      : Double.parseDouble(decimalPoint(str));
+  }
+
+  public int getInt(int pos) {
+    var str = getString(pos);
+    return str.length() == 0
+      ? 0
+      : Integer.parseInt(str);
+  }
 
   public Numeric getNumeric(int pos) {
-		var cleaned = decimalPoint(getString(pos));
-		if (cleaned.length() == 0)
-			return Numeric.of(0);
-		try {
-			var number = Double.parseDouble(cleaned);
-			return Numeric.of(number);
-		} catch (NumberFormatException e) {
-			return Numeric.of(cleaned);
-		}
-	}
+    var cleaned = decimalPoint(getString(pos));
+    if (cleaned.length() == 0)
+      return Numeric.of(0);
+    try {
+      var number = Double.parseDouble(cleaned);
+      return Numeric.of(number);
+    } catch (NumberFormatException e) {
+      return Numeric.of(cleaned);
+    }
+  }
 
   public String getFormula(int pos) {
-		return decimalPoint(getString(pos));
-	}
+    return decimalPoint(getString(pos));
+  }
 
   public boolean getBoolean(int pos) {
     var s = getString(pos);
     return s.equalsIgnoreCase("yes");
   }
 
-	private String decimalPoint(String s) {
-		if (decimalSeparator == '.')
-			return s;
-		if (s.length() == 0)
-			return "";
-		var buffer = new StringBuilder(s.length());
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (c == '.')
-				continue;
-			if (c == decimalSeparator) {
-				buffer.append('.');
-				continue;
-			}
-			buffer.append(c);
-		}
-		return buffer.toString();
-	}
+  private String decimalPoint(String s) {
+    if (decimalSeparator == '.')
+      return s;
+    if (s.length() == 0)
+      return "";
+    var buffer = new StringBuilder(s.length());
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (c == '.')
+        continue;
+      if (c == decimalSeparator) {
+        buffer.append('.');
+        continue;
+      }
+      buffer.append(c);
+    }
+    return buffer.toString();
+  }
 
   /**
    * Returns true if this line is empty. It is empty when every cell of this
