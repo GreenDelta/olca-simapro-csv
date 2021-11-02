@@ -23,7 +23,6 @@ public class QuantityBlockTest {
     assertContains(ds, new QuantityRow()
       .name("Length")
       .hasDimension(true));
-
   }
 
   private void assertContains(CsvDataSet ds, QuantityRow expected) {
