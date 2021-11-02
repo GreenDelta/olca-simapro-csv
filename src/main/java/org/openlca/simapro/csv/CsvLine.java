@@ -85,7 +85,7 @@ public final class CsvLine {
 
   public boolean getBoolean(int pos) {
     var s = getString(pos);
-    return s.equals("yes");
+    return s.equalsIgnoreCase("yes");
   }
 
 	private String decimalPoint(String s) {
