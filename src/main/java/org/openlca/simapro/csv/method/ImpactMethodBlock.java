@@ -2,7 +2,6 @@ package org.openlca.simapro.csv.method;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.openlca.simapro.csv.CsvLine;
 
@@ -168,7 +167,14 @@ public class ImpactMethodBlock {
           break;
 
         case "Impact category":
-          // TODO: read an impact category block
+          var impactCategory = new ImpactCategoryBlock();
+          impactCategory.name(CsvLine.nextString(iter));
+          CsvLine.moveTo(iter, "Substances");
+          CsvLine.untilEmpty(iter, nextLine -> {
+            var factor = ImpactFactorRow.read(nextLine);
+            impactCategory.factors().add(factor);
+          });
+          method.impactCategories().add(impactCategory);
           break;
 
         case "Damage category":
@@ -179,9 +185,7 @@ public class ImpactMethodBlock {
           // TODO: read a nw-set block
           break;
       }
-
     }
-
     return method;
   }
 

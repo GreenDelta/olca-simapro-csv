@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 
 public class CsvBuffer {
 
@@ -71,6 +70,13 @@ public class CsvBuffer {
   public CsvBuffer putRecord(CsvRecord record) {
     if (record != null) {
       record.write(this);
+    }
+    return this;
+  }
+
+  public CsvBuffer putRecords(Iterable<? extends CsvRecord> records) {
+    for (var record : records) {
+      putRecord(record);
     }
     return this;
   }

@@ -36,6 +36,18 @@ public final class CsvLine {
   }
 
   /**
+   * Advances the given iterator until it finds a line where the first cell
+   * has a string with the given value.
+   */
+  public static void moveTo(Iterator<CsvLine> it, String section) {
+    while (it.hasNext()) {
+      var next = it.next();
+      if (next.first().equals(section))
+        break;
+    }
+  }
+
+  /**
    * Advances the iterator and returns the string value of the first cell from
    * the next line. If there is no such value, an empty string is returned.
    */
