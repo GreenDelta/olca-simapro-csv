@@ -19,7 +19,6 @@ public class ParameterBlockTest {
     assertEquals(1, inputParameter.uncertainty().getAsLogNormal().xsd(), 0.0001);
   }
 
-
   @Test
   public void testDatabaseCalculatedParameters() {
     var ds = Tests.testFile("process.csv");
@@ -29,7 +28,6 @@ public class ParameterBlockTest {
     assertEquals("calculated database parameter\n", calculatedParameter.comment());
     assertEquals("db_input_param * 3", calculatedParameter.expression());
   }
-
 
   @Test
   public void testProjectInputParameters() {
