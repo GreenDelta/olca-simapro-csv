@@ -187,11 +187,23 @@ public class ImpactMethodBlock {
             var factor = DamageFactorRow.read(nextLine);
             damageCategory.factors().add(factor);
           });
-          method.damageCategories.add(damageCategory);
+          method.damageCategories().add(damageCategory);
           break;
 
         case "Normalization-Weighting set":
-          // TODO: read a nw-set block
+          var nwSet = new NwSetBlock();
+          nwSet.name(CsvLine.nextString(iter));
+          CsvLine.moveTo(iter, "Normalization");
+          CsvLine.untilEmpty(iter, nextLine -> {
+            var factor = NwSetFactorRow.read(nextLine);
+            nwSet.normalizationFactors().add(factor);
+          });
+          CsvLine.moveTo(iter, "Weighting");
+          CsvLine.untilEmpty(iter, nextLine -> {
+            var factor = NwSetFactorRow.read(nextLine);
+            nwSet.weightingFactors().add(factor);
+          });
+          method.nwSets().add(nwSet);
           break;
       }
     }
