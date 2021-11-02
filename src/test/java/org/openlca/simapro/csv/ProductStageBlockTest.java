@@ -49,7 +49,7 @@ public class ProductStageBlockTest {
           .comment(""));
 
         var inputParameters = productStage.inputParameters();
-        assertEquals(1, processes.size());
+        assertEquals(1, inputParameters.size());
         var inputParameter = inputParameters.get(0);
         assertEquals("param1", inputParameter.name());
         assertEquals(1, inputParameter.value(), 0.0001);
@@ -58,11 +58,11 @@ public class ProductStageBlockTest {
         assertEquals("", inputParameter.comment());
 
         var calculatedParameters = productStage.calculatedParameters();
-        assertEquals(1, processes.size());
+        assertEquals(1, calculatedParameters.size());
         var calculatedParameter = calculatedParameters.get(0);
         assertEquals("param2", calculatedParameter.name());
-        assertEquals("", calculatedParameter.expression());
-        assertEquals("param1 *2", calculatedParameter.comment());
+        assertEquals("param1 *2", calculatedParameter.expression());
+        assertEquals("", calculatedParameter.comment());
 
       }
       if (productStage.category() == ProductStageCategory.DISPOSAL_SCENARIO) {
@@ -118,7 +118,7 @@ public class ProductStageBlockTest {
 
         var referenceAssembly = productStage.referenceAssembly();
         assertEquals("assembly", referenceAssembly.name());
-        assertEquals(1, referenceAssembly.amount().value(), 0.0001);
+        assertEquals(0, referenceAssembly.amount().value(), 0.0001);
         assertEquals("p", referenceAssembly.unit());
         assertTrue(referenceAssembly.uncertainty().isUndefined());
 
@@ -155,7 +155,6 @@ public class ProductStageBlockTest {
           .comment(""));
 
         var referenceAssembly = productStage.assembly();
-        assertEquals("assembly", referenceAssembly.name());
         assertEquals(1, referenceAssembly.amount().value(), 0.0001);
         assertEquals("p", referenceAssembly.unit());
         assertTrue(referenceAssembly.uncertainty().isUndefined());
@@ -169,14 +168,11 @@ public class ProductStageBlockTest {
           .uncertainty(UncertaintyRecord.undefined())
           .comment(""));
 
-        var wasteScenarios = productStage.wasteScenarios();
-        assertEquals(1, wasteScenarios.size());
-        assertContains(wasteScenarios, new TechExchangeRow()
-          .name("waste scenario 1")
-          .amount(Numeric.of(100))
-          .unit("%")
-          .uncertainty(UncertaintyRecord.undefined())
-          .comment(""));
+        var wasteScenario = productStage.wasteOrDisposalScenario();
+        assertEquals("waste scenario 1", wasteScenario.name());
+        assertEquals(0, wasteScenario.amount().value(), 0.0001);
+        assertEquals("", wasteScenario.unit());
+        assertTrue(wasteScenario.uncertainty().isUndefined());
 
         var additionalLifeCycles = productStage.additionalLifeCycles();
         assertEquals(1, additionalLifeCycles.size());
