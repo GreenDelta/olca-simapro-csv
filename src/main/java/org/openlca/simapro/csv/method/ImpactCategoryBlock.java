@@ -8,15 +8,18 @@ import org.openlca.simapro.csv.CsvRecord;
 
 public class ImpactCategoryBlock implements CsvRecord {
 
-  private String name;
+  private ImpactCategoryRow info;
   private final List<ImpactFactorRow> factors = new ArrayList<>();
 
-  public String name() {
-    return name;
+  public ImpactCategoryRow info() {
+    if (info == null) {
+      info = new ImpactCategoryRow();
+    }
+    return info;
   }
 
-  public ImpactCategoryBlock name(String name) {
-    this.name = name;
+  public ImpactCategoryBlock info(ImpactCategoryRow info) {
+    this.info = info;
     return this;
   }
 
@@ -27,7 +30,7 @@ public class ImpactCategoryBlock implements CsvRecord {
   @Override
   public void write(CsvBuffer buffer) {
     buffer.putString("Impact category").writeln()
-      .putString(name()).writeln()
+      .putRecord(info())
       .writeln()
       .putString("Substances").writeln()
       .putRecords(factors())

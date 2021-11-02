@@ -168,7 +168,8 @@ public class ImpactMethodBlock {
 
         case "Impact category":
           var impactCategory = new ImpactCategoryBlock();
-          impactCategory.name(CsvLine.nextString(iter));
+          CsvLine.nextOf(iter).ifPresent(nextLine ->
+            impactCategory.info(ImpactCategoryRow.read(nextLine)));
           CsvLine.moveTo(iter, "Substances");
           CsvLine.untilEmpty(iter, nextLine -> {
             var factor = ImpactFactorRow.read(nextLine);
@@ -178,7 +179,15 @@ public class ImpactMethodBlock {
           break;
 
         case "Damage category":
-          // TODO: read a damage category block
+          var damageCategory = new DamageCategoryBlock();
+          CsvLine.nextOf(iter).ifPresent(nextLine ->
+            damageCategory.info(DamageCategoryRow.read(nextLine)));
+          CsvLine.moveTo(iter, "Impact categories");
+          CsvLine.untilEmpty(iter, nextLine -> {
+            var factor = DamageFactorRow.read(nextLine);
+            damageCategory.factors().add(factor);
+          });
+          method.damageCategories.add(damageCategory);
           break;
 
         case "Normalization-Weighting set":
