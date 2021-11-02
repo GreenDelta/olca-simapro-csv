@@ -155,6 +155,7 @@ public class ProductStageBlockTest {
           .comment(""));
 
         var referenceAssembly = productStage.assembly();
+        assertEquals("assembly", referenceAssembly.name());
         assertEquals(1, referenceAssembly.amount().value(), 0.0001);
         assertEquals("p", referenceAssembly.unit());
         assertTrue(referenceAssembly.uncertainty().isUndefined());
