@@ -15,17 +15,17 @@ public class QuantityBlockTest {
 
     assertContains(ds, new QuantityRow()
       .name("Mass")
-      .hasDimension(false)
+      .hasDimension(true)
     );
 
     assertContains(ds, new QuantityRow()
       .name("Energy")
-      .hasDimension(false)
+      .hasDimension(true)
     );
 
     assertContains(ds, new QuantityRow()
       .name("Length")
-      .hasDimension(false)
+      .hasDimension(true)
     );
 
   }
