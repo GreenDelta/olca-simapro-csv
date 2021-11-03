@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.openlca.simapro.csv.CsvBlock;
+import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
-import org.openlca.simapro.csv.enums.ElementaryFlowType;
-import org.openlca.simapro.csv.enums.ProcessCategory;
-import org.openlca.simapro.csv.enums.ProcessType;
-import org.openlca.simapro.csv.enums.ProductType;
+import org.openlca.simapro.csv.CsvRecord;
+import org.openlca.simapro.csv.enums.*;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
-public class ProcessBlock implements CsvBlock {
+public class ProcessBlock implements CsvBlock, CsvRecord {
 
   private ProcessCategory category;
   private String identifier;
@@ -599,6 +598,193 @@ public class ProcessBlock implements CsvBlock {
 
   }
 
+  @Override
+  public void write(CsvBuffer buffer) {
+
+    buffer.putString("Process").writeln()
+      .writeln();
+
+    // Category type
+    buffer.putString("Category type").writeln();
+    buffer.putString(category == null
+        ? ProcessCategory.MATERIAL.toString()
+        : category.toString())
+      .writeln()
+      .writeln();
+
+    // Process identifier
+    buffer.putString("Process identifier").writeln()
+      .putString(identifier).writeln()
+      .writeln();
+
+    // Process type
+    buffer.putString("Type").writeln();
+    buffer.putString(processType == null
+        ? ProcessType.UNIT_PROCESS.toString()
+        : processType.toString())
+      .writeln()
+      .writeln();
+
+    // Process name
+    buffer.putString("Process name").writeln()
+      .putString(name).writeln()
+      .writeln();
+
+    // Status
+    buffer.putString("Status").writeln()
+      .putString(status).writeln()
+      .writeln();
+
+    // Time period
+    buffer.putString("Time period").writeln()
+      .putString(time).writeln()
+      .writeln();
+
+    // Geography
+    buffer.putString("Geography").writeln()
+      .putString(geography).writeln()
+      .writeln();
+
+    // Technology
+    buffer.putString("Technology").writeln()
+      .putString(technology).writeln()
+      .writeln();
+
+    // Representativeness
+    buffer.putString("Representativeness").writeln()
+      .putString(representativeness).writeln()
+      .writeln();
+
+    // Multiple output allocation
+    buffer.putString("Multiple output allocation").writeln()
+      .putString(allocation).writeln()
+      .writeln();
+
+    // Substitution allocation
+    buffer.putString("Substitution allocation").writeln()
+      .putString(substitution).writeln()
+      .writeln();
+
+    // Cut off rules
+    buffer.putString("Cut off rules").writeln()
+      .putString(cutoff).writeln()
+      .writeln();
+
+    // Capital goods
+    buffer.putString("Capital goods").writeln()
+      .putString(capitalGoods).writeln()
+      .writeln();
+
+    // Boundary with nature
+    buffer.putString("Boundary with nature").writeln()
+      .putString(boundaryWithNature).writeln()
+      .writeln();
+
+    // Infrastructure
+    buffer.putString("Infrastructure").writeln()
+      .putString(infrastructure ? "Yes" : "No").writeln()
+      .writeln();
+
+    // Date
+    buffer.putString("Date").writeln()
+      .putString(date).writeln()
+      .writeln();
+
+    // Record
+    buffer.putString("Record").writeln()
+      .putString(record).writeln()
+      .writeln();
+
+    // Generator
+    buffer.putString("Generator").writeln()
+      .putString(generator).writeln()
+      .writeln();
+
+    // Literature references
+    writeRows(buffer, "Literature references", literatures);
+
+    // Collection method
+    buffer.putString("Collection method").writeln()
+      .putString(collectionMethod).writeln()
+      .writeln();
+
+    // Data treatment
+    buffer.putString("Data treatment").writeln()
+      .putString(dataTreatment).writeln()
+      .writeln();
+
+    // Verification
+    buffer.putString("Verification").writeln()
+      .putString(verification).writeln()
+      .writeln();
+
+    // Comment
+    buffer.putString("Comment").writeln()
+      .putString(comment).writeln()
+      .writeln();
+
+    // Allocation rules
+    buffer.putString("Allocation rules").writeln()
+      .putString(allocationRules).writeln()
+      .writeln();
+
+    // System description
+    writeRow(buffer, "System description", systemDescription);
+
+    // Products
+    writeRows(buffer, "Products", products);
+
+    // Avoided Products
+    writeRows(buffer, "Avoided products", avoidedProducts);
+
+    // Resources
+    writeRows(buffer, "Resources", resources);
+
+    // Materials/fuels
+    writeRows(buffer, "Materials/fuels", materialsAndFuels);
+
+    // Electricity/heat
+    writeRows(buffer, "Electricity/heat", electricityAndHeat);
+
+    // Emissions to air
+    writeRows(buffer, "Emissions to air", emissionsToAir);
+
+    // Emissions to water
+    writeRows(buffer, "Emissions to water", emissionsToWater);
+
+    // Emissions to water
+    writeRows(buffer, "Emissions to water", emissionsToWater);
+
+    // Emissions to soil
+    writeRows(buffer, "Emissions to soil", emissionsToSoil);
+
+    // Final waste flows
+    writeRows(buffer, "Final waste flows", finalWasteFlows);
+
+    // Non material emissions
+    writeRows(buffer, "Non material emissions", nonMaterialEmissions);
+
+    // Social issues
+    writeRows(buffer, "Social issues", socialIssues);
+
+    // Economic issues
+    writeRows(buffer, "Economic issues", economicIssues);
+
+    // Waste to treatment
+    writeRows(buffer, "Waste to treatment", wasteToTreatment);
+
+    // Input parameters
+    writeRows(buffer, "Input parameters", inputParameters);
+
+    // Calculated parameters
+    writeRows(buffer, "Calculated parameters", calculatedParameters);
+
+    // End
+    buffer.writeln()
+      .putString("End").writeln()
+      .writeln();
+  }
+
   public List<ElementaryExchangeRow> exchangesOf(ElementaryFlowType type) {
     if (type == null)
       return Collections.emptyList();
@@ -639,6 +825,23 @@ public class ProcessBlock implements CsvBlock {
       default:
         return Collections.emptyList();
     }
+  }
+
+  private void writeRows(
+    CsvBuffer buffer, String header, List<? extends CsvRecord> rows) {
+    if (rows.isEmpty())
+      return;
+    buffer.putString(header).writeln();
+    for (var row : rows) {
+      row.write(buffer);
+    }
+    buffer.writeln();
+  }
+
+  private <T extends CsvRecord> void writeRow(CsvBuffer buffer, String header, T row) {
+    buffer.putString(header).writeln();
+    row.write(buffer);
+    buffer.writeln();
   }
 
 }
