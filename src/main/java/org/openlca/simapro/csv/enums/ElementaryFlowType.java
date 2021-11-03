@@ -1,62 +1,88 @@
 package org.openlca.simapro.csv.enums;
 
 /**
- * Allowed types of elementary flows in SimaPro. Elementary flows are written to
- * the elementary exchange sections of processes and reference flow sections at
- * the end of a SimaPro CSV file. These sections start with an header which
- * indicates the elementary flow type. For some of these flow types these
- * headers are different in the elementary exchange sections and reference flow
- * sections. Thus, this enumeration has two header values for each entry: the
- * exchange header and the reference flow header.
+ * An enumeration of the possible elementary flow types in SimaPro. Not that the
+ * SimaPro CSV format uses different names to identify these types in different
+ * contexts (see {@link #exchangeHeader()}, {@link #referenceHeader()}, and
+ * {@link #compartment()}).
  */
 public enum ElementaryFlowType {
 
-	RESOURCES("Resources", "Raw materials"),
+  RESOURCES(
+    "Resources", "Raw materials", "Raw"),
 
-	EMISSIONS_TO_AIR("Emissions to air", "Airborne emissions"),
+  EMISSIONS_TO_AIR(
+    "Emissions to air", "Airborne emissions", "Air"),
 
-	EMISSIONS_TO_WATER("Emissions to water", "Waterborne emissions"),
+  EMISSIONS_TO_WATER(
+    "Emissions to water", "Waterborne emissions", "Water"),
 
-	EMISSIONS_TO_SOIL("Emissions to soil", "Emissions to soil"),
+  EMISSIONS_TO_SOIL(
+    "Emissions to soil", "Emissions to soil", "Soil"),
 
-	FINAL_WASTE_FLOWS("Final waste flows", "Final waste flows"),
+  FINAL_WASTE_FLOWS(
+    "Final waste flows", "Final waste flows", "Waste"),
 
-	NON_MATERIAL_EMISSIONS("Non material emissions", "Non material emissions"),
+  NON_MATERIAL_EMISSIONS(
+    "Non material emissions", "Non material emissions", "Non mat."),
 
-	SOCIAL_ISSUES("Social issues", "Social issues"),
+  SOCIAL_ISSUES(
+    "Social issues", "Social issues", "Social"),
 
-	ECONOMIC_ISSUES("Economic issues", "Economic issues");
+  ECONOMIC_ISSUES(
+    "Economic issues", "Economic issues", "Economic");
 
-	private final String exchangeHeader;
-	private final String referenceHeader;
+  private final String exchangeHeader;
+  private final String refHeader;
+  private final String compartment;
 
-	ElementaryFlowType(String exchangeHeader, String referenceHeader) {
-		this.exchangeHeader = exchangeHeader;
-		this.referenceHeader = referenceHeader;
-	}
+  ElementaryFlowType(
+    String exchangeHeader, String refHeader, String compartment) {
+    this.exchangeHeader = exchangeHeader;
+    this.refHeader = refHeader;
+    this.compartment = compartment;
+  }
 
-	public String exchangeHeader() {
-		return exchangeHeader;
-	}
+  /**
+   * The section header of the flow type for exchanges in a process.
+   */
+  public String exchangeHeader() {
+    return exchangeHeader;
+  }
 
-	public String referenceHeader() {
-		return referenceHeader;
-	}
+  /**
+   * The section header of the flow type for flow lists outside a process.
+   */
+  public String referenceHeader() {
+    return refHeader;
+  }
 
-	public static ElementaryFlowType forExchangeHeader(String header) {
-		for (var type : values()) {
-			if (type.exchangeHeader().equalsIgnoreCase(header))
-				return type;
-		}
-		return null;
-	}
+  /**
+   * The compartment name of the flow type as used in LCIA characterization
+   * factors.
+   */
+  public String compartment() {
+    return compartment;
+  }
 
-	public static ElementaryFlowType forReferenceHeader(String header) {
-		for (var type : values()) {
-			if (type.referenceHeader().equalsIgnoreCase(header))
-				return type;
-		}
-		return null;
-	}
-
+  /**
+   * Returns the elementary flow type for the given string value.
+   *
+   * @param value an exchange header, ref. data header, or compartment name that
+   *              identifies the flow type.
+   * @return the matching flow type or {@code null} if no such type could be
+   * found
+   */
+  public static ElementaryFlowType of(String value) {
+    if (value == null)
+      return null;
+    var s = value.trim();
+    for (var t : values()) {
+      if (s.equalsIgnoreCase(t.exchangeHeader)
+        || s.equalsIgnoreCase(t.refHeader)
+        || s.equalsIgnoreCase(t.compartment))
+        return t;
+    }
+    return null;
+  }
 }
