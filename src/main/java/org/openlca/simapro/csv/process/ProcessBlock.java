@@ -613,9 +613,11 @@ public class ProcessBlock implements CsvBlock, CsvRecord {
       .writeln();
 
     // Process identifier
-    buffer.putString("Process identifier").writeln()
-      .putString(identifier).writeln()
-      .writeln();
+    if (identifier != null) {
+      buffer.putString("Process identifier").writeln()
+        .putString(identifier).writeln()
+        .writeln();
+    }
 
     // Process type
     buffer.putString("Type").writeln();
@@ -626,107 +628,147 @@ public class ProcessBlock implements CsvBlock, CsvRecord {
       .writeln();
 
     // Process name
-    buffer.putString("Process name").writeln()
-      .putString(name).writeln()
-      .writeln();
+    if (name != null) {
+      buffer.putString("Process name").writeln()
+        .putString(name).writeln()
+        .writeln();
+    }
 
     // Status
-    buffer.putString("Status").writeln()
-      .putString(status).writeln()
-      .writeln();
+    if (status != null) {
+      buffer.putString("Status").writeln()
+        .putString(status).writeln()
+        .writeln();
+    }
 
     // Time period
-    buffer.putString("Time period").writeln()
-      .putString(time).writeln()
-      .writeln();
+    if (time != null) {
+      buffer.putString("Time period").writeln()
+        .putString(time).writeln()
+        .writeln();
+    }
 
     // Geography
-    buffer.putString("Geography").writeln()
-      .putString(geography).writeln()
-      .writeln();
+    if (geography != null) {
+      buffer.putString("Geography").writeln()
+        .putString(geography).writeln()
+        .writeln();
+    }
 
     // Technology
-    buffer.putString("Technology").writeln()
-      .putString(technology).writeln()
-      .writeln();
+    if (technology != null) {
+      buffer.putString("Technology").writeln()
+        .putString(technology).writeln()
+        .writeln();
+    }
 
     // Representativeness
-    buffer.putString("Representativeness").writeln()
-      .putString(representativeness).writeln()
-      .writeln();
+    if (representativeness != null) {
+      buffer.putString("Representativeness").writeln()
+        .putString(representativeness).writeln()
+        .writeln();
+    }
 
     // Multiple output allocation
-    buffer.putString("Multiple output allocation").writeln()
-      .putString(allocation).writeln()
-      .writeln();
+    if (allocation != null) {
+      buffer.putString("Multiple output allocation").writeln()
+        .putString(allocation).writeln()
+        .writeln();
+    }
 
     // Substitution allocation
-    buffer.putString("Substitution allocation").writeln()
-      .putString(substitution).writeln()
-      .writeln();
+    if (substitution != null) {
+      buffer.putString("Substitution allocation").writeln()
+        .putString(substitution).writeln()
+        .writeln();
+    }
 
     // Cut off rules
-    buffer.putString("Cut off rules").writeln()
-      .putString(cutoff).writeln()
-      .writeln();
+    if (cutoff != null) {
+      buffer.putString("Cut off rules").writeln()
+        .putString(cutoff).writeln()
+        .writeln();
+    }
 
     // Capital goods
-    buffer.putString("Capital goods").writeln()
-      .putString(capitalGoods).writeln()
-      .writeln();
+    if (capitalGoods != null) {
+      buffer.putString("Capital goods").writeln()
+        .putString(capitalGoods).writeln()
+        .writeln();
+    }
 
     // Boundary with nature
-    buffer.putString("Boundary with nature").writeln()
-      .putString(boundaryWithNature).writeln()
-      .writeln();
+    if (boundaryWithNature != null) {
+      buffer.putString("Boundary with nature").writeln()
+        .putString(boundaryWithNature).writeln()
+        .writeln();
+    }
 
     // Infrastructure
-    buffer.putString("Infrastructure").writeln()
-      .putString(infrastructure ? "Yes" : "No").writeln()
-      .writeln();
+    if (infrastructure != null) {
+      buffer.putString("Infrastructure").writeln()
+        .putString(infrastructure ? "Yes" : "No").writeln()
+        .writeln();
+    }
 
     // Date
-    buffer.putString("Date").writeln()
-      .putString(date).writeln()
-      .writeln();
+    if (date != null) {
+      buffer.putString("Date").writeln()
+        .putString(date).writeln()
+        .writeln();
+    }
 
     // Record
-    buffer.putString("Record").writeln()
-      .putString(record).writeln()
-      .writeln();
+    if (record != null) {
+      buffer.putString("Record").writeln()
+        .putString(record).writeln()
+        .writeln();
+    }
 
     // Generator
-    buffer.putString("Generator").writeln()
-      .putString(generator).writeln()
-      .writeln();
+    if (generator != null) {
+      buffer.putString("Generator").writeln()
+        .putString(generator).writeln()
+        .writeln();
+    }
 
     // Literature references
     writeRows(buffer, "Literature references", literatures);
 
     // Collection method
-    buffer.putString("Collection method").writeln()
-      .putString(collectionMethod).writeln()
-      .writeln();
+    if (collectionMethod != null) {
+      buffer.putString("Collection method").writeln()
+        .putString(collectionMethod).writeln()
+        .writeln();
+    }
 
     // Data treatment
-    buffer.putString("Data treatment").writeln()
-      .putString(dataTreatment).writeln()
-      .writeln();
+    if (dataTreatment != null) {
+      buffer.putString("Data treatment").writeln()
+        .putString(dataTreatment).writeln()
+        .writeln();
+    }
 
     // Verification
-    buffer.putString("Verification").writeln()
-      .putString(verification).writeln()
-      .writeln();
+    if (verification != null) {
+      buffer.putString("Verification").writeln()
+        .putString(verification).writeln()
+        .writeln();
+    }
 
     // Comment
-    buffer.putString("Comment").writeln()
-      .putString(comment).writeln()
-      .writeln();
+    if (comment != null) {
+      buffer.putString("Comment").writeln()
+        .putString(comment).writeln()
+        .writeln();
+    }
 
     // Allocation rules
-    buffer.putString("Allocation rules").writeln()
-      .putString(allocationRules).writeln()
-      .writeln();
+    if (allocationRules != null) {
+      buffer.putString("Allocation rules").writeln()
+        .putString(allocationRules).writeln()
+        .writeln();
+    }
 
     // System description
     writeRow(buffer, "System description", systemDescription);
@@ -839,6 +881,7 @@ public class ProcessBlock implements CsvBlock, CsvRecord {
   }
 
   private <T extends CsvRecord> void writeRow(CsvBuffer buffer, String header, T row) {
+    if (row == null) return;
     buffer.putString(header).writeln();
     row.write(buffer);
     buffer.writeln();
