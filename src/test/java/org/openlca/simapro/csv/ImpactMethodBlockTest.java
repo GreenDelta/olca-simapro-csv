@@ -1,10 +1,7 @@
 package org.openlca.simapro.csv;
 
 import org.junit.Test;
-import org.openlca.simapro.csv.enums.ProductStageCategory;
 import org.openlca.simapro.csv.method.*;
-import org.openlca.simapro.csv.process.ProductStageBlock;
-import org.openlca.simapro.csv.process.TechExchangeRow;
 
 import java.util.List;
 
