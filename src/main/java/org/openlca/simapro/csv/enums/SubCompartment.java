@@ -40,19 +40,19 @@ public enum SubCompartment {
 
   // emissions to water
   WATER_FOSSIL(
-    ElementaryFlowType.EMISSIONS_TO_SOIL, "fossilwater"),
+    ElementaryFlowType.EMISSIONS_TO_WATER, "fossilwater"),
   WATER_GROUND(
-    ElementaryFlowType.EMISSIONS_TO_SOIL, "groundwater"),
+    ElementaryFlowType.EMISSIONS_TO_WATER, "groundwater"),
   WATER_GROUND_LONG_TERM(
-    ElementaryFlowType.EMISSIONS_TO_SOIL, "groundwater, long-term"),
+    ElementaryFlowType.EMISSIONS_TO_WATER, "groundwater, long-term"),
   WATER_LAKE(
-    ElementaryFlowType.EMISSIONS_TO_SOIL, "lake"),
+    ElementaryFlowType.EMISSIONS_TO_WATER, "lake"),
   WATER_OCEAN(
-    ElementaryFlowType.EMISSIONS_TO_SOIL, "ocean"),
+    ElementaryFlowType.EMISSIONS_TO_WATER, "ocean"),
   WATER_RIVER(
-    ElementaryFlowType.EMISSIONS_TO_SOIL, "river"),
+    ElementaryFlowType.EMISSIONS_TO_WATER, "river"),
   WATER_RIVER_LONG_TERM(
-    ElementaryFlowType.EMISSIONS_TO_SOIL, "river, long-term"),
+    ElementaryFlowType.EMISSIONS_TO_WATER, "river, long-term"),
 
   UNSPECIFIED(null, "");
 
