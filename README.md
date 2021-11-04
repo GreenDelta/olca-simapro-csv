@@ -6,15 +6,14 @@ https://github.com/massimopizzol/Simapro-CSV-converter
 * `;;;;;`
 
 ## TODO:
-* finish ref-block tests
-* product stage blocks: some fields are missing
-* write process blocks + tests
-* test product stage blocks
+* are sub-compartments really a close list? -> test them
 * support new format fields: `PlatformId`, UUIDs?
+* what is the 4th column of a WasteFractionRow?
+* what are the separators for function parameters in formulas?
+* parse date-fields into type `Date`
 
 * remove the Pedigree fields and the Pedigree matcher; this should go into the
   openLCA import then
-* what is the 4th column of a WasteFractionRow?
 * header: check which separators could occur
 * header: add a write-method, and write necessary defaults
 * need a clean definition how we handle decimal separators and how this
