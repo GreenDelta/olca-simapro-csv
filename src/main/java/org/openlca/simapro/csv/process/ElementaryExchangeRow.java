@@ -64,6 +64,7 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
   public String comment() {
     return comment;
   }

@@ -5,7 +5,7 @@ import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.Numeric;
 
-public class WasteTreatmentRow implements CsvRecord, ExchangeRow {
+public class WasteTreatmentRow implements CsvRecord, RefExchangeRow {
 
   private String name;
   private String unit;
@@ -53,6 +53,7 @@ public class WasteTreatmentRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
   public String category() {
     return category;
   }
@@ -62,6 +63,7 @@ public class WasteTreatmentRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
   public String comment() {
     return comment;
   }

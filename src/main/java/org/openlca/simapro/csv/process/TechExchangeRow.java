@@ -54,6 +54,7 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
   public String comment() {
     return comment;
   }

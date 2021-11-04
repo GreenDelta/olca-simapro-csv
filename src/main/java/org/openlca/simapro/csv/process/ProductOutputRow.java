@@ -5,7 +5,7 @@ import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.Numeric;
 
-public class ProductOutputRow implements CsvRecord, ExchangeRow {
+public class ProductOutputRow implements CsvRecord, RefExchangeRow {
 
   private String name;
   private String unit;
@@ -67,6 +67,7 @@ public class ProductOutputRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
   public String category() {
     return category;
   }
@@ -76,6 +77,7 @@ public class ProductOutputRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
   public String comment() {
     return comment;
   }
