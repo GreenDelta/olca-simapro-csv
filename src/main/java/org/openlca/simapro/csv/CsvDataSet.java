@@ -11,12 +11,7 @@ import org.openlca.simapro.csv.enums.ElementaryFlowType;
 import org.openlca.simapro.csv.method.ImpactMethodBlock;
 import org.openlca.simapro.csv.process.ProcessBlock;
 import org.openlca.simapro.csv.process.ProductStageBlock;
-import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
-import org.openlca.simapro.csv.refdata.ElementaryFlowRow;
-import org.openlca.simapro.csv.refdata.InputParameterRow;
-import org.openlca.simapro.csv.refdata.QuantityRow;
-import org.openlca.simapro.csv.refdata.SystemDescriptionBlock;
-import org.openlca.simapro.csv.refdata.UnitRow;
+import org.openlca.simapro.csv.refdata.*;
 
 public class CsvDataSet {
 
@@ -40,6 +35,7 @@ public class CsvDataSet {
   private final List<CalculatedParameterRow> databaseCalculatedParameters = new ArrayList<>();
   private final List<InputParameterRow> projectInputParameters = new ArrayList<>();
   private final List<CalculatedParameterRow> projectCalculatedParameters = new ArrayList<>();
+  private final List<LiteratureReferenceBlock> literatureReferences = new ArrayList<>();
 
   public CsvDataSet() {
     this(new CsvHeader());
@@ -123,6 +119,10 @@ public class CsvDataSet {
 
   public List<CalculatedParameterRow> projectCalculatedParameters() {
     return projectCalculatedParameters;
+  }
+
+  public List<LiteratureReferenceBlock> literatureReferences() {
+    return literatureReferences;
   }
 
   public List<ElementaryFlowRow> getElementaryFlows(ElementaryFlowType type) {
@@ -288,6 +288,13 @@ public class CsvDataSet {
           dataSet.projectCalculatedParameters.add(row);
         });
       }
+
+      if (line.first().equals("Literature reference")) {
+        var block = LiteratureReferenceBlock.read(iter);
+        dataSet.literatureReferences.add(block);
+        continue;
+      }
+
     }
     return dataSet;
   }
@@ -327,6 +334,7 @@ public class CsvDataSet {
       writeRows(buffer, "Database Calculated parameters", databaseCalculatedParameters);
       writeRows(buffer, "Project Input parameters", projectInputParameters);
       writeRows(buffer, "Project Calculated parameters", projectCalculatedParameters);
+      writeRows(buffer, "Literature reference", literatureReferences);
 
     } catch (IOException e) {
       throw new RuntimeException("failed to write file: " + file, e);
