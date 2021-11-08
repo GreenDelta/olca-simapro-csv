@@ -12,6 +12,7 @@ calls of the respective readers and writers.
 
 ### Header
 Each dataset starts with a file header which looks like this:
+
 ```
 {SimaPro 8.5.0.0}
 {methods}
@@ -69,15 +70,23 @@ As for the blocks each section has a header, however it does not end with the ke
 Data rows of a block or section are directly located in the next line under the header.
 A section of a block starts with an empty line.
 
-### Data type nuances
-#### Boolean
+### Nuances
+#### Boolean data type
 Boolean type is represented in SimaPro CSV format as the following strings:
 * `Yes` == `true`
 * `No` == `false`
 
-#### Numeric
+#### Numeric data type
 In the different entities of the SimaPro CSV format, their `amount` attribute could be a `double` type, but also
 it may be a formula. To handle this attribute, a `Numeric` class is provided in the API.
+
+#### Flow identification
+In SimaPro flows are identified by name. There is an unique constraint that checks for `Category` and `Name` combination.
+This way, you can not create a product with the same name in the same Product stage category, for example.
+
+Therefore, you can have a `Material` process with the same name as an `Assembly`. Then, both may be inputs to another `Assembly`
+and you can export it to SimaPro CSV data format. However, this file cannot be imported to SimaPro because the program can not
+identify what flow is the `Material` and what is the `Assembly`, as both have the same name.
 
 ## SimaPro CSV entities
 ### Reference data
@@ -403,6 +412,7 @@ Literature references
 Ecoinvent 3;is copyright protected: false
 ```
 Attributes:
+
 0. name
 1. comment
 
@@ -412,6 +422,7 @@ System description
 U.S. LCI Database;system description comment
 ```
 Attributes:
+
 0. name
 1. comment
 
@@ -421,6 +432,7 @@ Products
 my product;kg;0,5;100;not defined;Agricultural;
 ```
 Attributes:
+
 0. name
 1. unit
 2. amount
@@ -441,6 +453,7 @@ Electricity/heat
 Electricity, biomass, at power plant/US;kWh;0,1;Undefined;0;0;0;
 ```
 Attributes:
+
 0. name
 1. unit
 2. amount
@@ -465,6 +478,7 @@ Emissions to soil
 1'-Acetoxysafrole;forestry;kg;1;Triangle;0;1;5;
 ```
 Attributes:
+
 0. name
 1. subcompartment
 2. unit
@@ -510,6 +524,7 @@ Products
 assembly;p;1;Others;;
 ```
 Attributes:
+
 0. name
 1. unit
 2. amount
@@ -544,6 +559,7 @@ Version
 1;431
 ```
 Attributes:
+
 0. major
 1. minor
 
@@ -553,6 +569,7 @@ Impact category
 Climate change, ecosystem quality, short term;PDF.m2.yr
 ```
 Attributes:
+
 0. name
 1. unit
 
@@ -563,6 +580,7 @@ Air;(unspecified);(E)-HFC-1225ye;10/8/5595;0;kg
 Air;(unspecified);(E)-HFC-1234ze;1645-83-6;0.177;kg
 ```
 Each row has the following attributes:
+
 0. compartment
 1. subcompartment
 2. flow
@@ -576,6 +594,7 @@ Damage category
 Ecosystem quality;PDF.m2.yr
 ```
 Attributes:
+
 0. name
 1. unit
 
@@ -586,6 +605,7 @@ Climate change, ecosystem quality, long term;1.00E+00
 Climate change, ecosystem quality, short term;1.00E+00
 ```
 Each row has the following attributes:
+
 0. impact category
 1. factor
 
@@ -595,6 +615,7 @@ Normalization-Weighting set
 IMPACT World+ (Stepwise 2006 values)
 ```
 Attributes:
+
 0. name
 
 Each set has a `Normalization` and a `Weighting` sections:
@@ -608,6 +629,7 @@ Human health;5401.459854
 Ecosystem quality;1386.138614
 ```
 Attributes:
+
 0. impact category
 1. factor
 
@@ -679,3 +701,4 @@ https://github.com/massimopizzol/Simapro-CSV-converter
 * make it `null` friendly: **no** getter should **ever** return `null` (use
   `Optional` or default values like `""` or `0` ) but accept
   `null` in the setters
+* status -> enum: `null`, `Temporary`, `Draft`, `To be revised`, `To be reviewed` and `Finished`
