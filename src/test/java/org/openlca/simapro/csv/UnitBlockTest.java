@@ -9,7 +9,7 @@ public class UnitBlockTest {
 
   @Test
   public void testUnits() {
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     assertEquals(34, ds.units().size());
 
     assertContains(ds, new UnitRow()

@@ -10,13 +10,18 @@ import java.nio.charset.Charset;
 import java.util.function.Consumer;
 
 import org.apache.commons.csv.CSVFormat;
+import org.openlca.simapro.csv.enums.ElementaryFlowType;
 import org.openlca.simapro.csv.method.ImpactMethodBlock;
 import org.openlca.simapro.csv.process.ProcessBlock;
 import org.openlca.simapro.csv.process.ProductStageBlock;
+import org.openlca.simapro.csv.refdata.CalculatedParameterBlock;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
+import org.openlca.simapro.csv.refdata.ElementaryFlowBlock;
 import org.openlca.simapro.csv.refdata.ElementaryFlowRow;
+import org.openlca.simapro.csv.refdata.InputParameterBlock;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 import org.openlca.simapro.csv.refdata.LiteratureReferenceBlock;
+import org.openlca.simapro.csv.refdata.QuantityBlock;
 import org.openlca.simapro.csv.refdata.QuantityRow;
 import org.openlca.simapro.csv.refdata.SystemDescriptionBlock;
 import org.openlca.simapro.csv.refdata.UnitBlock;
@@ -76,9 +81,39 @@ public final class SimaProCsv {
       var iter = CsvLine.iter(header, reader);
       for (var line : iter) {
 
+        if (line.first().equals("Project Calculated parameters")) {
+          var block = CalculatedParameterBlock.readProjectParameters(iter);
+          fn.accept(block);
+          continue;
+        }
+
+        if (line.first().equals("Database Calculated parameters")) {
+          var block = CalculatedParameterBlock.readDatabaseParameters(iter);
+          fn.accept(block);
+          continue;
+        }
+
+        if (line.first().equals("Method")) {
+          var block = ImpactMethodBlock.read(iter);
+          fn.accept(block);
+          continue;
+        }
+
+        if (line.first().equals("Project Input parameters")) {
+          var block = InputParameterBlock.readProjectParameters(iter);
+          fn.accept(block);
+          continue;
+        }
+
+        if (line.first().equals("Database Input parameters")) {
+          var block = InputParameterBlock.readDatabaseParameters(iter);
+          fn.accept(block);
+          continue;
+        }
+
         if (line.first().equals("Process")) {
-          var process = ProcessBlock.read(iter);
-          fn.accept(process);
+          var block = ProcessBlock.read(iter);
+          fn.accept(block);
           continue;
         }
 
@@ -88,11 +123,29 @@ public final class SimaProCsv {
           continue;
         }
 
-        if (line.first().equals("Units")) {
-          var units = UnitBlock.read(iter);
-          fn.accept(units);
+        if (line.first().equals("Quantities")) {
+          var block = QuantityBlock.read(iter);
+          fn.accept(block);
+          continue;
         }
 
+        if (line.first().equals("System description")) {
+          var block = SystemDescriptionBlock.read(iter);
+          fn.accept(block);
+          continue;
+        }
+
+        if (line.first().equals("Units")) {
+          var block = UnitBlock.read(iter);
+          fn.accept(block);
+          continue;
+        }
+
+        var type = ElementaryFlowType.of(line.first());
+        if (type != null) {
+          var block = ElementaryFlowBlock.read(type, iter);
+          fn.accept(block);
+        }
       }
 
     } catch (IOException e) {

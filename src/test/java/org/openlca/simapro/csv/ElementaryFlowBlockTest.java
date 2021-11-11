@@ -9,7 +9,7 @@ public class ElementaryFlowBlockTest {
 
   @Test
   public void testElementaryFlows() {
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     for (var type : ElementaryFlowType.values()) {
       var flows = ds.getElementaryFlows(type);
       assertEquals(1, flows.size());

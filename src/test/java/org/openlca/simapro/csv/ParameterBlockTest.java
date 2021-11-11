@@ -8,7 +8,7 @@ public class ParameterBlockTest {
 
   @Test
   public void testDatabaseInputParameters() {
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     assertEquals(1, ds.databaseInputParameters().size());
     var inputParameter = ds.databaseInputParameters().get(0);
     assertEquals("db_input_param", inputParameter.name());
@@ -21,7 +21,7 @@ public class ParameterBlockTest {
 
   @Test
   public void testDatabaseCalculatedParameters() {
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     assertEquals(1, ds.databaseCalculatedParameters().size());
     var calculatedParameter = ds.databaseCalculatedParameters().get(0);
     assertEquals("db_calc_param", calculatedParameter.name());
@@ -31,7 +31,7 @@ public class ParameterBlockTest {
 
   @Test
   public void testProjectInputParameters() {
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     assertEquals(1, ds.projectInputParameters().size());
     var projectInputParameter = ds.projectInputParameters().get(0);
     assertEquals("proj_input_param", projectInputParameter.name());
@@ -46,7 +46,7 @@ public class ParameterBlockTest {
 
   @Test
   public void testProjectCalculatedParameters() {
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     assertEquals(1, ds.projectCalculatedParameters().size());
     var projectCalculatedParameter = ds.projectCalculatedParameters().get(0);
     assertEquals("proj_calc_param", projectCalculatedParameter.name());

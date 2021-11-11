@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class ImpactMethodBlockTest {
 
-  private final CsvDataSet ds = Tests.testFile("method.csv");
+  private final CsvDataSet ds = Tests.testDataSet("method.csv");
 
   @Test
   public void testImpactMethod() {

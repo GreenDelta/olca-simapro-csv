@@ -9,7 +9,7 @@ public class SystemDescriptionBlockTest {
   @Test
   public void testSystemDescription() {
 
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     assertEquals(1, ds.systemDescriptions().size());
     var block = ds.systemDescriptions().get(0);
     assertEquals("system name", block.name());

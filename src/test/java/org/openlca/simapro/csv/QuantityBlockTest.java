@@ -9,7 +9,7 @@ public class QuantityBlockTest {
 
   @Test
   public void testQuantities() {
-    var ds = Tests.testFile("process.csv");
+    var ds = Tests.testDataSet("process.csv");
     assertEquals(3, ds.quantities().size());
 
     assertContains(ds, new QuantityRow()

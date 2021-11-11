@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class ProductStageBlockTest {
 
-  private final CsvDataSet ds = Tests.testFile("stages.csv");
+  private final CsvDataSet ds = Tests.testDataSet("stages.csv");
 
   @Test
   public void testProductStages() {

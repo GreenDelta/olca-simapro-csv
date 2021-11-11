@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class ProcessBlockTest {
 
-  private final CsvDataSet ds = Tests.testFile("process.csv");
+  private final CsvDataSet ds = Tests.testDataSet("process.csv");
 
   @Test
   public void testProcessBlock() {

@@ -1,10 +1,12 @@
 package org.openlca.simapro.csv;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.apache.commons.csv.CSVParser;
@@ -44,8 +46,15 @@ class Tests {
    * targets. You just need to check that the expected elements are in the
    * returned CSV data set.
    */
-  static CsvDataSet testFile(String name) {
+  static CsvDataSet testDataSet(String name) {
+    var ref = new Object() {
+      CsvDataSet dataSet;
+    };
+    withTestFile(name, file -> ref.dataSet = SimaProCsv.read(file));
+    return ref.dataSet;
+  }
 
+  static void withTestFile(String name, Consumer<File> fn) {
     Supplier<Reader> reader = () -> {
       var stream = Tests.class.getResourceAsStream(name);
       return SimaProCsv.readerOf(stream, StandardCharsets.UTF_8);
@@ -63,10 +72,9 @@ class Tests {
 
       var file = Files.createTempFile("__sp_csv_", ".csv").toFile();
       dataSet.write(file);
-      var copy = SimaProCsv.read(file);
+      fn.accept(file);
       Files.delete(file.toPath());
 
-      return copy;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

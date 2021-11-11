@@ -9,7 +9,7 @@ public class LiteratureReferenceBlockTest {
   @Test
   public void testLiteratureReferenceBlock() {
 
-    var ds = Tests.testFile("literature.csv");
+    var ds = Tests.testDataSet("literature.csv");
     assertEquals(1, ds.literatureReferences().size());
     var literature = ds.literatureReferences().get(0);
     assertEquals("US EPA (1995)", literature.name());
