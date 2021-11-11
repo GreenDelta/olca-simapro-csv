@@ -1,7 +1,5 @@
 package org.openlca.simapro.csv;
 
-import java.awt.desktop.AboutEvent;
-
 import org.openlca.simapro.csv.process.ProcessBlock;
 import org.openlca.simapro.csv.process.ProductStageBlock;
 import org.openlca.simapro.csv.refdata.UnitBlock;

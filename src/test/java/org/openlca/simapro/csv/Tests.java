@@ -3,7 +3,6 @@ package org.openlca.simapro.csv;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.function.Supplier;
@@ -14,7 +13,7 @@ class Tests {
 
   static CsvLine lineOf(String line) {
     try {
-      var r = CSVParser.parse(line, Csv.formatOf(';'))
+      var r = CSVParser.parse(line, SimaProCsv.formatOf(';'))
         .iterator()
         .next();
       var h = new CsvHeader()
@@ -49,7 +48,7 @@ class Tests {
 
     Supplier<Reader> reader = () -> {
       var stream = Tests.class.getResourceAsStream(name);
-      return Csv.readerOf(stream, StandardCharsets.UTF_8);
+      return SimaProCsv.readerOf(stream, StandardCharsets.UTF_8);
     };
 
     try {
@@ -59,12 +58,12 @@ class Tests {
       }
       CsvDataSet dataSet;
       try (var r = reader.get()) {
-        dataSet = CsvDataSet.read(header, r);
+        dataSet = SimaProCsv.read(header, r);
       }
 
       var file = Files.createTempFile("__sp_csv_", ".csv").toFile();
       dataSet.write(file);
-      var copy = CsvDataSet.read(file);
+      var copy = SimaProCsv.read(file);
       Files.delete(file.toPath());
 
       return copy;

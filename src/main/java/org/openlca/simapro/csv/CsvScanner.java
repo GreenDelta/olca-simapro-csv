@@ -15,7 +15,7 @@ class CsvScanner implements Iterable<CsvLine> {
 
   CsvScanner(CsvHeader header, Reader reader) {
     this.header = Objects.requireNonNull(header);
-    var format = Csv.formatOf(header.csvSeparator());
+    var format = SimaProCsv.formatOf(header.csvSeparator());
     try {
       this.parser = CSVParser.parse(reader, format);
     } catch (IOException e) {

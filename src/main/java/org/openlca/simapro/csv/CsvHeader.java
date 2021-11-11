@@ -102,7 +102,7 @@ public class CsvHeader {
   }
 
   public static CsvHeader readFrom(File file) {
-    try (var reader = Csv.readerOf(file)) {
+    try (var reader = SimaProCsv.readerOf(file)) {
       return readFrom(reader);
     } catch (IOException e) {
       throw new RuntimeException("failed to read header from " + file, e);
@@ -115,7 +115,7 @@ public class CsvHeader {
       return header;
 
     try {
-      var parser = CSVParser.parse(reader, Csv.formatOf(';'));
+      var parser = CSVParser.parse(reader, SimaProCsv.formatOf(';'));
       for (var record : parser) {
         var s = unbraced(record.get(0));
         if (s.isEmpty())

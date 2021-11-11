@@ -15,7 +15,7 @@ public class CsvBuffer {
 
   public CsvBuffer(Writer writer, CsvHeader header) {
     this.decimalSeparator = header.decimalSeparator();
-    var format = Csv.formatOf(header.csvSeparator());
+    var format = SimaProCsv.formatOf(header.csvSeparator());
     try {
       printer = new CSVPrinter(writer, format);
     } catch (IOException e) {
