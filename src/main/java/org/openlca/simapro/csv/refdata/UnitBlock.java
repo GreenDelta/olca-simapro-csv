@@ -6,9 +6,8 @@ import java.util.List;
 import org.openlca.simapro.csv.CsvBlock;
 import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
-import org.openlca.simapro.csv.CsvRecord;
 
-public class UnitBlock implements CsvRecord, CsvBlock {
+public class UnitBlock implements CsvBlock {
 
   private final List<UnitRow> units = new ArrayList<>();
 
@@ -31,12 +30,9 @@ public class UnitBlock implements CsvRecord, CsvBlock {
 
   @Override
   public void write(CsvBuffer buffer) {
-    buffer.putString("Units")
-      .writeln();
-    for (var row : units) {
-      row.write(buffer);
-    }
-    buffer.writeln()
+    buffer.putString("Units").writeln()
+      .putRecords(units)
+      .writeln()
       .putString("End")
       .writeln()
       .writeln();
