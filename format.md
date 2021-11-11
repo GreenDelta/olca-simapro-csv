@@ -118,6 +118,8 @@ and material with the same name in the database, you have a problem.
 
 ### System descriptions
 
+A system description block in the CSV looks like this:
+
 ```
 System description
 
@@ -159,6 +161,8 @@ End
 
 ### Literature references
 
+A literature reference block in the CSV looks like this:
+
 ```
 Literature reference
 
@@ -179,6 +183,8 @@ End
 
 ### Quantities
 
+A block of quantities looks like this:
+
 ```
 Quantities
 
@@ -198,6 +204,8 @@ Each row in a quantity block represents a quantity. The attributes of a row are:
 
 
 ### Units
+
+A block of units looks like this:
 
 ```
 Units
@@ -223,6 +231,8 @@ Each row in a unit block represents a unit. The attributes of a unit are:
 ```
 
 ### Database input parameters
+
+A block of database input parameters looks like this:
 
 ```
 Database Input parameters
