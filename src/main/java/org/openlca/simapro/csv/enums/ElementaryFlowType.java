@@ -3,7 +3,7 @@ package org.openlca.simapro.csv.enums;
 /**
  * An enumeration of the possible elementary flow types in SimaPro. Not that the
  * SimaPro CSV format uses different names to identify these types in different
- * contexts (see {@link #exchangeHeader()}, {@link #referenceHeader()}, and
+ * contexts (see {@link #exchangeHeader()}, {@link #blockHeader()}, and
  * {@link #compartment()}).
  */
 public enum ElementaryFlowType {
@@ -33,13 +33,13 @@ public enum ElementaryFlowType {
     "Economic issues", "Economic issues", "Economic");
 
   private final String exchangeHeader;
-  private final String refHeader;
+  private final String blockHeader;
   private final String compartment;
 
   ElementaryFlowType(
-    String exchangeHeader, String refHeader, String compartment) {
+    String exchangeHeader, String blockHeader, String compartment) {
     this.exchangeHeader = exchangeHeader;
-    this.refHeader = refHeader;
+    this.blockHeader = blockHeader;
     this.compartment = compartment;
   }
 
@@ -51,10 +51,10 @@ public enum ElementaryFlowType {
   }
 
   /**
-   * The section header of the flow type for flow lists outside a process.
+   * The header of an elementary flow block of this type in a CSV file.
    */
-  public String referenceHeader() {
-    return refHeader;
+  public String blockHeader() {
+    return blockHeader;
   }
 
   /**
@@ -79,7 +79,7 @@ public enum ElementaryFlowType {
     var s = value.trim();
     for (var t : values()) {
       if (s.equalsIgnoreCase(t.exchangeHeader)
-        || s.equalsIgnoreCase(t.refHeader)
+        || s.equalsIgnoreCase(t.blockHeader)
         || s.equalsIgnoreCase(t.compartment))
         return t;
     }

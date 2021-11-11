@@ -13,7 +13,7 @@ import org.openlca.simapro.csv.enums.ProductStageCategory;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
-public class ProductStageBlock implements CsvBlock, CsvRecord {
+public class ProductStageBlock implements CsvBlock {
 
   private ProductStageCategory category;
   private String status;

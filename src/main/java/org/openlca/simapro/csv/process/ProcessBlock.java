@@ -9,11 +9,14 @@ import org.openlca.simapro.csv.CsvBlock;
 import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
-import org.openlca.simapro.csv.enums.*;
+import org.openlca.simapro.csv.enums.ElementaryFlowType;
+import org.openlca.simapro.csv.enums.ProcessCategory;
+import org.openlca.simapro.csv.enums.ProcessType;
+import org.openlca.simapro.csv.enums.ProductType;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
-public class ProcessBlock implements CsvBlock, CsvRecord {
+public class ProcessBlock implements CsvBlock {
 
   private ProcessCategory category;
   private String identifier;

@@ -3,11 +3,11 @@ package org.openlca.simapro.csv.method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openlca.simapro.csv.CsvBlock;
 import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
-import org.openlca.simapro.csv.CsvRecord;
 
-public class ImpactMethodBlock implements CsvRecord {
+public class ImpactMethodBlock implements CsvBlock {
 
   private String name;
   private VersionRow version;

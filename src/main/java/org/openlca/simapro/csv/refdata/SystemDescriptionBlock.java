@@ -7,7 +7,7 @@ import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
 
-public class SystemDescriptionBlock implements CsvBlock, CsvRecord {
+public class SystemDescriptionBlock implements CsvBlock {
 
   private String name;
   private String category;

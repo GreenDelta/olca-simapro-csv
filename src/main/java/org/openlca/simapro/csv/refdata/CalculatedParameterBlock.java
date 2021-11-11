@@ -16,6 +16,14 @@ public class CalculatedParameterBlock implements CsvBlock {
     this.forProject = forProject;
   }
 
+  public static CalculatedParameterBlock forProject() {
+    return new CalculatedParameterBlock(true);
+  }
+
+  public static CalculatedParameterBlock forDatabase() {
+    return new CalculatedParameterBlock(false);
+  }
+
   public boolean isForProject() {
     return forProject;
   }

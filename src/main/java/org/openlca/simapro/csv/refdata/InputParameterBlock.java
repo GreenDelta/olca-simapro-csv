@@ -16,6 +16,14 @@ public class InputParameterBlock implements CsvBlock {
     this.forProject = forProject;
   }
 
+  public static InputParameterBlock forProject() {
+    return new InputParameterBlock(true);
+  }
+
+  public static InputParameterBlock forDatabase() {
+    return new InputParameterBlock(false);
+  }
+
   public boolean isForProject() {
     return forProject;
   }

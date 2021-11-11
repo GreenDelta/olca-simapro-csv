@@ -4,7 +4,9 @@ import org.openlca.simapro.csv.method.ImpactMethodBlock;
 import org.openlca.simapro.csv.process.ProcessBlock;
 import org.openlca.simapro.csv.process.ProductStageBlock;
 import org.openlca.simapro.csv.refdata.CalculatedParameterBlock;
+import org.openlca.simapro.csv.refdata.ElementaryFlowBlock;
 import org.openlca.simapro.csv.refdata.InputParameterBlock;
+import org.openlca.simapro.csv.refdata.QuantityBlock;
 import org.openlca.simapro.csv.refdata.SystemDescriptionBlock;
 import org.openlca.simapro.csv.refdata.UnitBlock;
 
