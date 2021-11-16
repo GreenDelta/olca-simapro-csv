@@ -9,6 +9,7 @@ public class WasteFractionRow implements CsvRecord {
   private String wasteTreatment;
   private String wasteType;
   private double fraction;
+  private String comment;
 
   public String wasteTreatment() {
     return wasteTreatment;
@@ -37,11 +38,21 @@ public class WasteFractionRow implements CsvRecord {
     return this;
   }
 
+  public String comment() {
+    return comment;
+  }
+
+  public WasteFractionRow comment(String comment) {
+    this.comment = comment;
+    return this;
+  }
+
   public static WasteFractionRow read(CsvLine line) {
     return new WasteFractionRow()
       .wasteTreatment(line.getString(0))
       .wasteType(line.getString(1))
-      .fraction(line.getDouble(2));
+      .fraction(line.getDouble(2))
+      .comment(line.getString(3));
   }
 
   @Override
@@ -49,7 +60,7 @@ public class WasteFractionRow implements CsvRecord {
     buffer.putString(wasteTreatment)
       .putString(wasteType)
       .putDouble(fraction)
-      .putString("")
+      .putString(comment)
       .writeln();
   }
 }
