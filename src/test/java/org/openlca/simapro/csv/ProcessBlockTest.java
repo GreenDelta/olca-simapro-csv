@@ -14,6 +14,7 @@ public class ProcessBlockTest {
   public void testProcessBlock() {
     assertEquals(1, ds.processes().size());
     var process = ds.processes().get(0);
+    assertEquals("298f6b5c-46f5-11ec-81d3-0242ac130003", process.platformId());
     assertEquals("Test process", process.name());
     assertEquals(ProcessCategory.MATERIAL, process.category());
     assertEquals("DefaultX25250700002", process.identifier());

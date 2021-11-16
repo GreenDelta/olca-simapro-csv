@@ -18,6 +18,7 @@ import org.openlca.simapro.csv.refdata.InputParameterRow;
 
 public class ProcessBlock implements CsvBlock {
 
+  private String platformId;
   private ProcessCategory category;
   private String identifier;
   private ProcessType processType;
@@ -68,6 +69,15 @@ public class ProcessBlock implements CsvBlock {
 
   private final List<InputParameterRow> inputParameters = new ArrayList<>();
   private final List<CalculatedParameterRow> calculatedParameters = new ArrayList<>();
+
+  public String platformId() {
+    return platformId;
+  }
+
+  public ProcessBlock platformId(String platformId) {
+    this.platformId = platformId;
+    return this;
+  }
 
   public ProcessCategory category() {
     return category;
@@ -396,6 +406,10 @@ public class ProcessBlock implements CsvBlock {
 
       switch (header) {
 
+        case "PlatformId":
+          process.platformId(nextFirst.get());
+          break;
+
         case "Category type":
           var category = ProcessCategory.of(nextFirst.get());
           process.category(category);
@@ -606,6 +620,13 @@ public class ProcessBlock implements CsvBlock {
 
     buffer.putString("Process").writeln()
       .writeln();
+
+    // PlatformId
+    if (platformId != null) {
+      buffer.putString("PlatformId").writeln()
+        .putString(platformId).writeln()
+        .writeln();
+    }
 
     // Category type
     buffer.putString("Category type").writeln();
