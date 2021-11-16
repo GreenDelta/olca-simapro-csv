@@ -12,6 +12,7 @@ public class ProductStageOutputRow implements CsvRecord, RefExchangeRow {
   private Numeric amount;
   private String category;
   private String comment;
+  private String platformId;
 
   @Override
   public String name() {
@@ -62,13 +63,22 @@ public class ProductStageOutputRow implements CsvRecord, RefExchangeRow {
     return this;
   }
 
+  @Override
+  public String platformId() { return platformId; }
+
+  public ProductStageOutputRow platformId(String platformId) {
+    this.platformId = platformId;
+    return this;
+  }
+
   public static ProductStageOutputRow read(CsvLine line) {
     return new ProductStageOutputRow()
       .name(line.getString(0))
       .unit(line.getString(1))
       .amount(line.getNumeric(2))
       .category(line.getString(3))
-      .comment(line.getString(4));
+      .comment(line.getString(4))
+      .platformId(line.getString(5));
   }
 
   @Override
@@ -78,6 +88,7 @@ public class ProductStageOutputRow implements CsvRecord, RefExchangeRow {
       .putNumeric(amount)
       .putString(category)
       .putString(comment)
+      .putString(platformId)
       .writeln();
   }
 }

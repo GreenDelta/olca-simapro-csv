@@ -5,6 +5,7 @@ import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.Numeric;
 import org.openlca.simapro.csv.UncertaintyRecord;
+import org.openlca.simapro.csv.refdata.ElementaryFlowRow;
 
 public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
 
@@ -14,6 +15,7 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
   private Numeric amount;
   private UncertaintyRecord uncertainty;
   private String comment;
+  private String platformId;
   private String pedigree;
 
   @Override
@@ -83,13 +85,22 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
+  public String platformId() { return platformId; }
+
+  public ElementaryExchangeRow platformId(String platformId) {
+    this.platformId = platformId;
+    return this;
+  }
+
   public static ElementaryExchangeRow read(CsvLine line) {
     var row = new ElementaryExchangeRow()
       .name(line.getString(0))
       .subCompartment(line.getString(1))
       .unit(line.getString(2))
       .amount(line.getNumeric(3))
-      .uncertainty(UncertaintyRecord.read(line, 4));
+      .uncertainty(UncertaintyRecord.read(line, 4))
+      .platformId(line.getString(9));
 
     var comment = line.getString(8);
     row.comment(comment);
@@ -120,7 +131,8 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
         ? pedigree
         : "";
     }
-    buffer.putString(c);
+    buffer.putString(c)
+      .putString(platformId);
     buffer.writeln();
   }
 }

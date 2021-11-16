@@ -105,7 +105,7 @@ Emissions to air
 (+-)-Citronellol;low. pop.;kg;1;Lognormal;2;0;0;(1,2,3,4,5)with comment
 
 Emissions to water
-(1r,4r)-(+)-Camphor;lake;kg;1;Normal;3;0;0;
+(1r,4r)-(+)-Camphor;lake;kg;1;Normal;3;0;0;;80db70fc-46d4-11ec-81d3-0242ac130003
 
 Emissions to soil
 1'-Acetoxysafrole;forestry;kg;1;Triangle;0;1;5;

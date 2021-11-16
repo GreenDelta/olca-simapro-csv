@@ -12,7 +12,7 @@ public class ElementaryExchangeRowTest {
   public void testRead() {
     var line = Tests.lineOf(
       "Methane, fossil;high. pop.;kg;0,00011855;Lognormal;"
-      + "2,3802;0;0;(4,5,5,5,5,na)Estimation");
+      + "2,3802;0;0;(4,5,5,5,5,na)Estimation;3d39c98e-46d4-11ec-81d3-0242ac130003");
 
     var e = ElementaryExchangeRow.read(line);
     assertEquals("Methane, fossil", e.name());
@@ -22,6 +22,7 @@ public class ElementaryExchangeRowTest {
     assertTrue(e.uncertainty().isLogNormal());
     assertEquals(2.3802, e.uncertainty().getAsLogNormal().xsd(), 1e-10);
     assertEquals("(4,5,5,5,5,na)", e.pedigree());
+    assertEquals("3d39c98e-46d4-11ec-81d3-0242ac130003", e.platformId());
   }
 
   @Test

@@ -14,6 +14,7 @@ public class ProductOutputRow implements CsvRecord, RefExchangeRow {
   private String wasteType;
   private String category;
   private String comment;
+  private String platformId;
 
   @Override
   public String name() {
@@ -87,6 +88,14 @@ public class ProductOutputRow implements CsvRecord, RefExchangeRow {
     return this;
   }
 
+  @Override
+  public String platformId() { return platformId; }
+
+  public ProductOutputRow platformId(String platformId) {
+    this.platformId = platformId;
+    return this;
+  }
+
   public static ProductOutputRow read(CsvLine line) {
     return new ProductOutputRow()
       .name(line.getString(0))
@@ -95,7 +104,8 @@ public class ProductOutputRow implements CsvRecord, RefExchangeRow {
       .allocation(line.getNumeric(3))
       .wasteType(line.getString(4))
       .category(line.getString(5))
-      .comment(line.getString(6));
+      .comment(line.getString(6))
+      .platformId(line.getString(7));
   }
 
   @Override
@@ -107,6 +117,7 @@ public class ProductOutputRow implements CsvRecord, RefExchangeRow {
       .putString(wasteType)
       .putString(category)
       .putString(comment)
+      .putString(platformId)
       .writeln();
   }
 }

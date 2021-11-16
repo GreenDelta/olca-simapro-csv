@@ -13,6 +13,7 @@ public class WasteTreatmentRow implements CsvRecord, RefExchangeRow {
   private String wasteType;
   private String category;
   private String comment;
+  private String platformId;
 
   @Override
   public String name() {
@@ -73,6 +74,14 @@ public class WasteTreatmentRow implements CsvRecord, RefExchangeRow {
     return this;
   }
 
+  @Override
+  public String platformId() { return platformId; }
+
+  public WasteTreatmentRow platformId(String platformId) {
+    this.platformId = platformId;
+    return this;
+  }
+
   public static WasteTreatmentRow read(CsvLine line) {
     return new WasteTreatmentRow()
       .name(line.getString(0))
@@ -80,7 +89,8 @@ public class WasteTreatmentRow implements CsvRecord, RefExchangeRow {
       .amount(line.getNumeric(2))
       .wasteType(line.getString(3))
       .category(line.getString(4))
-      .comment(line.getString(5));
+      .comment(line.getString(5))
+      .platformId(line.getString(6));
   }
 
   @Override
@@ -91,6 +101,7 @@ public class WasteTreatmentRow implements CsvRecord, RefExchangeRow {
       .putString(wasteType)
       .putString(category)
       .putString(comment)
+      .putString(platformId)
       .writeln();
   }
 }

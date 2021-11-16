@@ -10,6 +10,7 @@ public class ElementaryFlowRow implements CsvRecord {
   private String unit;
   private String cas;
   private String comment;
+  private String platformId;
 
   public String name() {
     return name;
@@ -47,12 +48,20 @@ public class ElementaryFlowRow implements CsvRecord {
     return this;
   }
 
+  public String platformId() { return platformId; }
+
+  public ElementaryFlowRow platformId(String platformId) {
+    this.platformId = platformId;
+    return this;
+  }
+
   public static ElementaryFlowRow read(CsvLine line) {
     return new ElementaryFlowRow()
       .name(line.getString(0))
       .unit(line.getString(1))
       .cas(line.getString(2))
-      .comment(line.getString(3));
+      .comment(line.getString(3))
+      .platformId(line.getString(4));
   }
 
   @Override
@@ -61,6 +70,7 @@ public class ElementaryFlowRow implements CsvRecord {
       .putString(unit)
       .putString(cas)
       .putString(comment)
+      .putString(platformId)
       .writeln();
   }
 }
