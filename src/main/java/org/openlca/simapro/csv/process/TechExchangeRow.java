@@ -14,6 +14,7 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
   private UncertaintyRecord uncertainty;
   private String comment;
   private String pedigree;
+  private String platformId;
 
   @Override
   public String name() {
@@ -73,12 +74,21 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
+  @Override
+  public String platformId() { return platformId; }
+
+  public TechExchangeRow platformId(String platformId) {
+    this.platformId = platformId;
+    return this;
+  }
+
   public static TechExchangeRow read(CsvLine line) {
     var row = new TechExchangeRow()
       .name(line.getString(0))
       .unit(line.getString(1))
       .amount(line.getNumeric(2))
-      .uncertainty(UncertaintyRecord.read(line, 3));
+      .uncertainty(UncertaintyRecord.read(line, 3))
+      .platformId(line.getString(8));
 
     var comment = line.getString(7);
     row.comment(comment);
@@ -108,7 +118,8 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
         ? pedigree
         : "";
     }
-    buffer.putString(c);
+    buffer.putString(c)
+      .putString(platformId);
     buffer.writeln();
   }
 }

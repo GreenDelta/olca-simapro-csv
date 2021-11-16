@@ -28,4 +28,9 @@ public interface ExchangeRow {
    */
   String comment();
 
+  /**
+   * An optional platformId as UUID string.
+   */
+  String platformId();
+
 }
