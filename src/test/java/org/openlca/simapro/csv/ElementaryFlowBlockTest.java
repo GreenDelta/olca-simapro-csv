@@ -28,6 +28,7 @@ public class ElementaryFlowBlockTest {
         assertEquals("(1r,4r)-(+)-Camphor", flow.name());
         assertEquals("kg", flow.unit());
         assertEquals("000464-49-3", flow.cas());
+        assertEquals("80db70fc-46d4-11ec-81d3-0242ac130003", flow.platformId());
       }
       if (type == ElementaryFlowType.EMISSIONS_TO_SOIL) {
         assertEquals("1'-Acetoxysafrole", flow.name());
