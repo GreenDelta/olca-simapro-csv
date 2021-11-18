@@ -13,7 +13,6 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
   private Numeric amount;
   private UncertaintyRecord uncertainty;
   private String comment;
-  private String pedigree;
   private String platformId;
 
   @Override
@@ -65,17 +64,10 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
-  public String pedigree() {
-    return pedigree;
-  }
-
-  public TechExchangeRow pedigree(String pedigree) {
-    this.pedigree = pedigree;
-    return this;
-  }
-
   @Override
-  public String platformId() { return platformId; }
+  public String platformId() {
+    return platformId;
+  }
 
   public TechExchangeRow platformId(String platformId) {
     this.platformId = platformId;
@@ -83,18 +75,13 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
   }
 
   public static TechExchangeRow read(CsvLine line) {
-    var row = new TechExchangeRow()
+    return new TechExchangeRow()
       .name(line.getString(0))
       .unit(line.getString(1))
       .amount(line.getNumeric(2))
       .uncertainty(UncertaintyRecord.read(line, 3))
+      .comment(line.getString(7))
       .platformId(line.getString(8));
-
-    var comment = line.getString(7);
-    row.comment(comment);
-    var pedigree = PedigreeMatcher.match(comment);
-    row.pedigree(pedigree);
-    return row;
   }
 
   @Override
@@ -108,17 +95,7 @@ public class TechExchangeRow implements CsvRecord, ExchangeRow {
       : UncertaintyRecord.undefined();
     u.write(buffer);
 
-    String c;
-    if (comment != null) {
-      c = pedigree != null
-        ? pedigree + "\n" + comment
-        : comment;
-    } else {
-      c = pedigree != null
-        ? pedigree
-        : "";
-    }
-    buffer.putString(c)
+    buffer.putString(comment)
       .putString(platformId);
     buffer.writeln();
   }

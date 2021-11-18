@@ -5,7 +5,6 @@ import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.Numeric;
 import org.openlca.simapro.csv.UncertaintyRecord;
-import org.openlca.simapro.csv.refdata.ElementaryFlowRow;
 
 public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
 
@@ -16,7 +15,6 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
   private UncertaintyRecord uncertainty;
   private String comment;
   private String platformId;
-  private String pedigree;
 
   @Override
   public String name() {
@@ -76,15 +74,6 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
     return this;
   }
 
-  public String pedigree() {
-    return pedigree;
-  }
-
-  public ElementaryExchangeRow pedigree(String pedigree) {
-    this.pedigree = pedigree;
-    return this;
-  }
-
   @Override
   public String platformId() { return platformId; }
 
@@ -94,19 +83,14 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
   }
 
   public static ElementaryExchangeRow read(CsvLine line) {
-    var row = new ElementaryExchangeRow()
+    return new ElementaryExchangeRow()
       .name(line.getString(0))
       .subCompartment(line.getString(1))
       .unit(line.getString(2))
       .amount(line.getNumeric(3))
       .uncertainty(UncertaintyRecord.read(line, 4))
+      .comment(line.getString(8))
       .platformId(line.getString(9));
-
-    var comment = line.getString(8);
-    row.comment(comment);
-    var pedigree = PedigreeMatcher.match(comment);
-    row.pedigree(pedigree);
-    return row;
   }
 
   @Override
@@ -121,17 +105,7 @@ public class ElementaryExchangeRow implements CsvRecord, ExchangeRow {
       : UncertaintyRecord.undefined();
     u.write(buffer);
 
-    String c;
-    if (comment != null) {
-      c = pedigree != null
-        ? pedigree + "\n" + comment
-        : comment;
-    } else {
-      c = pedigree != null
-        ? pedigree
-        : "";
-    }
-    buffer.putString(c)
+    buffer.putString(comment)
       .putString(platformId);
     buffer.writeln();
   }

@@ -21,7 +21,7 @@ public class ElementaryExchangeRowTest {
     assertEquals(0.00011855, e.amount().value(), 1e-10);
     assertTrue(e.uncertainty().isLogNormal());
     assertEquals(2.3802, e.uncertainty().getAsLogNormal().xsd(), 1e-10);
-    assertEquals("(4,5,5,5,5,na)", e.pedigree());
+    assertEquals("(4,5,5,5,5,na)\nEstimation\n", e.comment());
     assertEquals("3d39c98e-46d4-11ec-81d3-0242ac130003", e.platformId());
   }
 
