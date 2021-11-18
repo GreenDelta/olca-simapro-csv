@@ -3,6 +3,7 @@ package org.openlca.simapro.csv;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 import org.apache.commons.csv.CSVParser;
@@ -14,11 +15,11 @@ public class CsvHeader {
   private String time;
   private String project;
   private String formatVersion;
-  private String shortDateFormat;
+  private SimpleDateFormat shortDateFormat;
 
   private char csvSeparator = ';';
   private char decimalSeparator = '.';
-  private char dateSeparator = '-';
+  private char dateSeparator = '.';
 
   public String version() {
     return version;
@@ -92,11 +93,14 @@ public class CsvHeader {
     return this;
   }
 
-  public String shortDateFormat() {
+  public SimpleDateFormat shortDateFormat() {
+    if (shortDateFormat == null) {
+      shortDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    }
     return shortDateFormat;
   }
 
-  public CsvHeader shortDateFormat(String shortDateFormat) {
+  public CsvHeader shortDateFormat(SimpleDateFormat shortDateFormat) {
     this.shortDateFormat = shortDateFormat;
     return this;
   }
@@ -179,8 +183,12 @@ public class CsvHeader {
         }
 
         var dateFormat = match(s, "Short date format: ");
-        dateFormat.ifPresent(header::shortDateFormat);
-
+        if (dateFormat.isPresent()) {
+          try {
+            header.shortDateFormat = new SimpleDateFormat(dateFormat.get());
+          } catch (Exception ignored) {
+          }
+        }
       }
 
       return header;

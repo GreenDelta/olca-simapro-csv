@@ -1,6 +1,8 @@
 package org.openlca.simapro.csv;
 
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,10 +14,12 @@ public final class CsvLine {
 
   private final CSVRecord csv;
   private final char decimalSeparator;
+  private final SimpleDateFormat dateFormat;
 
   private CsvLine(CSVRecord csv, CsvHeader header) {
     this.csv = Objects.requireNonNull(csv);
     this.decimalSeparator = header.decimalSeparator();
+    this.dateFormat = header.shortDateFormat();
   }
 
   static CsvLine of(CSVRecord csv, CsvHeader header) {
@@ -106,14 +110,26 @@ public final class CsvLine {
   }
 
   public Numeric getNumeric(int pos) {
-    var cleaned = decimalPoint(getString(pos));
+    var raw = getString(pos);
+    var cleaned = decimalPoint(raw);
     if (cleaned.length() == 0)
       return Numeric.of(0);
     try {
       var number = Double.parseDouble(cleaned);
       return Numeric.of(number);
     } catch (NumberFormatException e) {
-      return Numeric.of(cleaned);
+      return Numeric.of(raw);
+    }
+  }
+
+  public Date getDate(int pos) {
+    var s = getString(pos);
+    if (s.isEmpty())
+      return null;
+    try {
+      return dateFormat.parse(s);
+    } catch (Exception e) {
+      return null;
     }
   }
 

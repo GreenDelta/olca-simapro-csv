@@ -2,6 +2,7 @@ package org.openlca.simapro.csv.process;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -34,7 +35,7 @@ public class ProcessBlock implements CsvBlock {
   private String capitalGoods;
   private String boundaryWithNature;
   private Boolean infrastructure;
-  private String date;
+  private Date date;
   private String record;
   private String generator;
   private String collectionMethod;
@@ -214,11 +215,11 @@ public class ProcessBlock implements CsvBlock {
     return this;
   }
 
-  public String date() {
+  public Date date() {
     return date;
   }
 
-  public ProcessBlock date(String date) {
+  public ProcessBlock date(Date date) {
     this.date = date;
     return this;
   }
@@ -474,7 +475,8 @@ public class ProcessBlock implements CsvBlock {
           break;
 
         case "Date":
-          process.date(nextFirst.get());
+          CsvLine.nextOf(iter).ifPresent(
+            line -> process.date(line.getDate(0)));
           break;
 
         case "Record":
@@ -738,7 +740,7 @@ public class ProcessBlock implements CsvBlock {
     // Date
     if (date != null) {
       buffer.putString("Date").writeln()
-        .putString(date).writeln()
+        .putDate(date).writeln()
         .writeln();
     }
 

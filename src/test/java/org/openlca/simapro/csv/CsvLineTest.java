@@ -40,7 +40,7 @@ public class CsvLineTest {
 
     var num2 = line.getNumeric(1);
     assertTrue(num2.hasFormula());
-    assertEquals("sin(42.0)", num2.formula());
+    assertEquals("sin(42,0)", num2.formula());
 
     var num3 = line.getNumeric(2);
     assertFalse(num3.hasFormula());

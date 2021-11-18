@@ -2,7 +2,9 @@ package org.openlca.simapro.csv;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.csv.CSVPrinter;
@@ -11,10 +13,12 @@ public class CsvBuffer {
 
   private final CSVPrinter printer;
   private final char decimalSeparator;
+  private final SimpleDateFormat dateFormat;
   private final List<String> buffer = new ArrayList<>();
 
   public CsvBuffer(Writer writer, CsvHeader header) {
     this.decimalSeparator = header.decimalSeparator();
+    this.dateFormat = header.shortDateFormat();
     var format = SimaProCsv.formatOf(header.csvSeparator());
     try {
       printer = new CSVPrinter(writer, format);
@@ -65,6 +69,17 @@ public class CsvBuffer {
 
   public CsvBuffer putBoolean(boolean b) {
     return putString(b ? "Yes" : "No");
+  }
+
+  public CsvBuffer putDate(Date date) {
+    if (date == null)
+      return putString("");
+    try {
+      var s = dateFormat.format(date);
+      return putString(s);
+    } catch (Exception e) {
+      return putString("");
+    }
   }
 
   public CsvBuffer putRecord(CsvRecord record) {

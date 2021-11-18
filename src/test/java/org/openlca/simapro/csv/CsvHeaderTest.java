@@ -13,7 +13,7 @@ public class CsvHeaderTest {
     var header = new CsvHeader();
     assertEquals(';', header.csvSeparator());
     assertEquals('.', header.decimalSeparator());
-    assertEquals('-', header.dateSeparator());
+    assertEquals('.', header.dateSeparator());
   }
 
   @Test
@@ -31,7 +31,7 @@ public class CsvHeaderTest {
       assertEquals(';', header.csvSeparator());
       assertEquals('.', header.decimalSeparator());
       assertEquals('-', header.dateSeparator());
-      assertEquals("yyyy-MM-dd", header.shortDateFormat());
+      assertEquals("yyyy-MM-dd", header.shortDateFormat().toPattern());
     }
   }
 }
