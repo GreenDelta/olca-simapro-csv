@@ -808,6 +808,18 @@ public class ProcessBlock implements CsvBlock {
     // Resources
     writeRows(buffer, "Resources", resources);
 
+    // Waste treatment
+    writeRow(buffer, "Waste treatment", wasteTreatment);
+
+    // Waste scenario
+    writeRow(buffer, "Waste scenario", wasteScenario);
+
+    // Separated waste
+    writeRows(buffer, "Separated waste", separatedWaste);
+
+    // Remaining waste
+    writeRows(buffer, "Remaining waste", remainingWaste);
+
     // Materials/fuels
     writeRows(buffer, "Materials/fuels", materialsAndFuels);
 
