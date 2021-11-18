@@ -802,6 +802,12 @@ public class ProcessBlock implements CsvBlock {
     // Products
     writeRows(buffer, "Products", products);
 
+    // Waste scenario
+    if (wasteScenario != null) {
+      buffer.putString("Waste scenario").writeln();
+      buffer.putRecord(wasteScenario).writeln();
+    }
+
     // Avoided Products
     writeRows(buffer, "Avoided products", avoidedProducts);
 
@@ -840,6 +846,12 @@ public class ProcessBlock implements CsvBlock {
 
     // Waste to treatment
     writeRows(buffer, "Waste to treatment", wasteToTreatment);
+
+    // Separated waste
+    writeRows(buffer, "Separated waste", separatedWaste);
+
+    // Remaining waste
+    writeRows(buffer, "Remaining waste", remainingWaste);
 
     // Input parameters
     writeRows(buffer, "Input parameters", inputParameters);
