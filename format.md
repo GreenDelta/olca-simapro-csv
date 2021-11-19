@@ -283,7 +283,7 @@ proj_calc_param;db_input_param *4;project calculated parameter
 End
 ```
 
-### Elementary flow blocks and rows
+### Elementary flows
 Different blocks are presented for different elementary flow types:
 ```
 Raw materials
@@ -357,11 +357,11 @@ slot contains the distribution type:
 
 The other slots contain the distribution parameters.
 
-### Process block
+### Processes
 
 A process block has the following sections:
 
-#### Simple sections
+#### Single sections
 Sections with only one entry (no rows). In code block their corresponding
 type in the API:
 
@@ -491,10 +491,10 @@ Analogous to the explained rows in the Reference data section.
 #### Waste treatment and waste scenario
 TODO.
 
-### Product stage block
+### Product stages
 A product stage block has the following sections:
 
-#### Simple sections
+#### Single sections
 Sections with only one entry (no rows). In code block their corresponding
 type in the API:
 
@@ -523,10 +523,10 @@ Analogous to `Processes`.
 ##### Input and calculated parameters
 Analogous to `Processes`.
 
-### Method block
+### Methods
 An impact method block has the following sections:
 
-#### Simple sections
+#### Single sections
 Sections with only one entry (no rows). In code block their corresponding
 type in the API:
 
