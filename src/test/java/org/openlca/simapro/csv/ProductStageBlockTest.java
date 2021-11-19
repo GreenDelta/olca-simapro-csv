@@ -2,6 +2,7 @@ package org.openlca.simapro.csv;
 
 import org.junit.Test;
 import org.openlca.simapro.csv.enums.ProductStageCategory;
+import org.openlca.simapro.csv.enums.Status;
 import org.openlca.simapro.csv.process.ProductStageBlock;
 import org.openlca.simapro.csv.process.ProductStageOutputRow;
 import org.openlca.simapro.csv.process.TechExchangeRow;
@@ -18,7 +19,7 @@ public class ProductStageBlockTest {
   public void testProductStages() {
     assertEquals(5, ds.productStages().size());
     for (var stage : ds.productStages()) {
-      assertTrue(stage.status().isEmpty());
+      assertEquals(Status.NONE, stage.status());
       assertEquals(1, stage.products().size());
     }
   }
