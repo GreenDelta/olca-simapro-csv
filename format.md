@@ -230,13 +230,34 @@ Each row in a unit block represents a unit. The attributes of a unit are:
 3  Reference unit
 ```
 
-### Database input parameters
+### Parameters
+
+There are two levels of parameters:
+
+* Database parameters
+* Project parameters
+
+Furthermore, there are two types of parameters:
+
+* Input parameters: they are named values which can have an associated uncertainty.
+* Calculates parameters: they are expressions which can refer other parameters.
+
+#### Input parameters
 
 A block of database input parameters looks like this:
 
 ```
 Database Input parameters
 db_input_param;1;Lognormal;1;0;0;No;database parameter
+
+End
+```
+
+While a block of project input parameters is as follows:
+
+```
+Project Input parameters
+proj_input_param;32;Uniform;0;10;35;No;project input parameter
 
 End
 ```
@@ -251,29 +272,13 @@ Each row is an input parameter with the following attributes:
 7    Comment
 ```
 
-### Database calculated parameters
+#### Calculated parameters
 
-A block including the calculated parameters in the database level:
+A block including the calculated parameters in the database level and in the project level:
 
 ```
 Database Calculated parameters
 db_calc_param;db_input_param * 3;calculated database parameter
-
-End
-```
-
-Each row is a calculated parameter with the following attributes:
-
-0. name
-1. expression
-2. comment
-
-### Project input and calculated parameters
-These are analogous to the previous, but in the project level:
-
-```
-Project Input parameters
-proj_input_param;32;Uniform;0;10;35;No;project input parameter
 
 End
 
@@ -281,6 +286,13 @@ Project Calculated parameters
 proj_calc_param;db_input_param *4;project calculated parameter
 
 End
+```
+
+Each row is a calculated parameter with the following attributes:
+```
+0    name
+1    expression
+2    comment
 ```
 
 ### Elementary flows
