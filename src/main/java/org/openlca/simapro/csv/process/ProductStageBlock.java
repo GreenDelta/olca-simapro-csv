@@ -10,13 +10,14 @@ import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
 import org.openlca.simapro.csv.enums.ProductStageCategory;
+import org.openlca.simapro.csv.enums.Status;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
 public class ProductStageBlock implements CsvBlock {
 
   private ProductStageCategory category;
-  private String status;
+  private Status status;
 
   private TechExchangeRow assembly;
   private TechExchangeRow referenceAssembly;
@@ -43,11 +44,9 @@ public class ProductStageBlock implements CsvBlock {
     return this;
   }
 
-  public String status() {
-    return status;
-  }
+  public Status status() { return status; }
 
-  public ProductStageBlock status(String status) {
+  public ProductStageBlock status(Status status) {
     this.status = status;
     return this;
   }
@@ -161,7 +160,8 @@ public class ProductStageBlock implements CsvBlock {
           break;
 
         case "Status":
-          block.status(nextFirst.get());
+          var status = Status.of(nextFirst.get());
+          block.status(status);
           break;
 
         case "Products":
@@ -245,7 +245,10 @@ public class ProductStageBlock implements CsvBlock {
 
     // Status
     buffer.putString("Status").writeln()
-      .putString(status).writeln()
+      .putString(status == null
+        ? Status.NONE.toString()
+        : status.toString())
+      .writeln()
       .writeln();
 
     // Products
