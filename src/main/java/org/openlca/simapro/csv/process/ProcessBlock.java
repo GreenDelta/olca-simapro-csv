@@ -10,10 +10,7 @@ import org.openlca.simapro.csv.CsvBlock;
 import org.openlca.simapro.csv.CsvBuffer;
 import org.openlca.simapro.csv.CsvLine;
 import org.openlca.simapro.csv.CsvRecord;
-import org.openlca.simapro.csv.enums.ElementaryFlowType;
-import org.openlca.simapro.csv.enums.ProcessCategory;
-import org.openlca.simapro.csv.enums.ProcessType;
-import org.openlca.simapro.csv.enums.ProductType;
+import org.openlca.simapro.csv.enums.*;
 import org.openlca.simapro.csv.refdata.CalculatedParameterRow;
 import org.openlca.simapro.csv.refdata.InputParameterRow;
 
@@ -24,7 +21,7 @@ public class ProcessBlock implements CsvBlock {
   private String identifier;
   private ProcessType processType;
   private String name;
-  private String status;
+  private Status status;
   private String time;
   private String geography;
   private String technology;
@@ -116,11 +113,11 @@ public class ProcessBlock implements CsvBlock {
     return this;
   }
 
-  public String status() {
+  public Status status() {
     return status;
   }
 
-  public ProcessBlock status(String status) {
+  public ProcessBlock status(Status status) {
     this.status = status;
     return this;
   }
@@ -430,7 +427,8 @@ public class ProcessBlock implements CsvBlock {
           break;
 
         case "Status":
-          process.status(nextFirst.get());
+          var status = Status.of(nextFirst.get());
+          process.status(status);
           break;
 
         case "Time period":
@@ -661,11 +659,12 @@ public class ProcessBlock implements CsvBlock {
     }
 
     // Status
-    if (status != null) {
-      buffer.putString("Status").writeln()
-        .putString(status).writeln()
-        .writeln();
-    }
+    buffer.putString("Status").writeln()
+      .putString(status == null
+        ? Status.NONE.toString()
+        : status.toString())
+      .writeln()
+      .writeln();
 
     // Time period
     if (time != null) {

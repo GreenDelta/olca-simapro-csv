@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import org.junit.Test;
 import org.openlca.simapro.csv.enums.ProcessCategory;
 import org.openlca.simapro.csv.enums.ProcessType;
+import org.openlca.simapro.csv.enums.Status;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +23,7 @@ public class ProcessBlockTest {
     assertEquals(ProcessCategory.MATERIAL, process.category());
     assertEquals("DefaultX25250700002", process.identifier());
     assertEquals(ProcessType.UNIT_PROCESS, process.processType());
-    assertEquals("Draft", process.status());
+    assertEquals(Status.DRAFT, process.status());
     assertEquals("2005-2009", process.time());
     assertEquals("Mixed data", process.geography());
     assertEquals("Worst case", process.technology());
