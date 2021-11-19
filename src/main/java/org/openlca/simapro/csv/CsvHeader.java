@@ -221,9 +221,9 @@ public class CsvHeader {
   public void write(CsvBuffer buffer) {
 
     // version
-    var v = version == null
-      ? 8.0
-      : version;
+    var v = version != null
+      ? version
+      : "9.1.0.0";
     buffer.putString("{SimaPro " + v + "}").writeln();
 
     // date
@@ -238,20 +238,27 @@ public class CsvHeader {
       : time;
     buffer.putString("{Time: " + timeStr + "}").writeln();
 
+    // project
     if (project != null) {
       buffer.putString("{Project: " + project + "}").writeln();
     }
 
-    // TODO: default to a version here?
-    if (formatVersion != null) {
-      buffer.putString("{CSV Format version: " + formatVersion + "}").writeln();
-    }
+    // CSV Format version
+    var f = formatVersion != null
+      ? formatVersion
+      : "9.0.0";
+    buffer.putString("{CSV Format version: " + formatVersion + "}").writeln();
 
+    // CSV separator
     var csvSep = csvSeparator == ';'
       ? "Semicolon"
       : "Comma";
     buffer.putString("{CSV separator: " + csvSep + "}").writeln();
+
+    // Decimal separator
     buffer.putString("{Decimal separator: " + decimalSeparator + "}").writeln();
+
+    // Date separator
     buffer.putString("{Date separator: " + dateSeparator + "}").writeln();
 
     buffer.putString(
