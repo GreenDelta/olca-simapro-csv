@@ -516,10 +516,61 @@ Attributes:
 ```
 
 ##### Input and calculated parameters
+
 Analogous to the explained rows in the Reference data section, but applied to the process level.
 
 #### Waste treatment and waste scenario
-TODO.
+
+A waste treatment block looks like this:
+
+```
+Waste treatment
+Waste treatment 1;kg;1;All waste types;Others;
+```
+
+While a waste scenario block is as follows:
+
+```
+Waste scenario
+Waste scenario 1;kg;1;All waste types;Others;
+```
+
+Both have one line with the following attributes:
+
+```
+0    name
+1    unit
+2    amount
+3    waste type
+4    category
+5    comment
+```
+
+#### Waste fractions
+
+There are two types of waste fractions:
+
+* Separated waste: Defines the waste treatments of the separated fractions.
+* Remaining waste: Defines the waste treatment of the remaining fractions after the separation processes.
+
+A separated waste and a remaining waste blocks looks like this in the CSV:
+
+```
+Separated waste
+Waste treatment 1;All waste types;90;
+
+Remaining waste
+Waste treatment 2;Plastics;100;
+```
+
+Each block could have several rows with the following attributes:
+
+```
+0    waste treatment
+1    waste type
+2    fraction (%)
+3    comment
+```
 
 ### Product stages
 A product stage block has the following sections:
