@@ -22,15 +22,6 @@ public class ProcessBlock implements CsvBlock {
   private ProcessType processType;
   private String name;
   private Status status;
-  private String time;
-  private String geography;
-  private String technology;
-  private String representativeness;
-  private String allocation;
-  private String substitution;
-  private String cutoff;
-  private String capitalGoods;
-  private String boundaryWithNature;
   private Boolean infrastructure;
   private Date date;
   private String record;
@@ -119,87 +110,6 @@ public class ProcessBlock implements CsvBlock {
 
   public ProcessBlock status(Status status) {
     this.status = status;
-    return this;
-  }
-
-  public String time() {
-    return time;
-  }
-
-  public ProcessBlock time(String time) {
-    this.time = time;
-    return this;
-  }
-
-  public String geography() {
-    return geography;
-  }
-
-  public ProcessBlock geography(String geography) {
-    this.geography = geography;
-    return this;
-  }
-
-  public String technology() {
-    return technology;
-  }
-
-  public ProcessBlock technology(String technology) {
-    this.technology = technology;
-    return this;
-  }
-
-  public String representativeness() {
-    return representativeness;
-  }
-
-  public ProcessBlock representativeness(String representativeness) {
-    this.representativeness = representativeness;
-    return this;
-  }
-
-  public String allocation() {
-    return allocation;
-  }
-
-  public ProcessBlock allocation(String allocation) {
-    this.allocation = allocation;
-    return this;
-  }
-
-  public String substitution() {
-    return substitution;
-  }
-
-  public ProcessBlock substitution(String substitution) {
-    this.substitution = substitution;
-    return this;
-  }
-
-  public String cutoff() {
-    return cutoff;
-  }
-
-  public ProcessBlock cutoff(String cutoff) {
-    this.cutoff = cutoff;
-    return this;
-  }
-
-  public String capitalGoods() {
-    return capitalGoods;
-  }
-
-  public ProcessBlock capitalGoods(String capitalGoods) {
-    this.capitalGoods = capitalGoods;
-    return this;
-  }
-
-  public String boundaryWithNature() {
-    return boundaryWithNature;
-  }
-
-  public ProcessBlock boundaryWithNature(String boundaryWithNature) {
-    this.boundaryWithNature = boundaryWithNature;
     return this;
   }
 
@@ -431,42 +341,6 @@ public class ProcessBlock implements CsvBlock {
           process.status(status);
           break;
 
-        case "Time period":
-          process.time(nextFirst.get());
-          break;
-
-        case "Geography":
-          process.geography(nextFirst.get());
-          break;
-
-        case "Technology":
-          process.technology(nextFirst.get());
-          break;
-
-        case "Representativeness":
-          process.representativeness(nextFirst.get());
-          break;
-
-        case "Multiple output allocation":
-          process.allocation(nextFirst.get());
-          break;
-
-        case "Substitution allocation":
-          process.substitution(nextFirst.get());
-          break;
-
-        case "Cut off rules":
-          process.cutoff(nextFirst.get());
-          break;
-
-        case "Capital goods":
-          process.capitalGoods(nextFirst.get());
-          break;
-
-        case "Boundary with nature":
-          process.boundaryWithNature(nextFirst.get());
-          break;
-
         case "Infrastructure":
           CsvLine.nextOf(iter).ifPresent(
             line -> process.infrastructure(line.getBoolean(0)));
@@ -665,69 +539,6 @@ public class ProcessBlock implements CsvBlock {
         : status.toString())
       .writeln()
       .writeln();
-
-    // Time period
-    if (time != null) {
-      buffer.putString("Time period").writeln()
-        .putString(time).writeln()
-        .writeln();
-    }
-
-    // Geography
-    if (geography != null) {
-      buffer.putString("Geography").writeln()
-        .putString(geography).writeln()
-        .writeln();
-    }
-
-    // Technology
-    if (technology != null) {
-      buffer.putString("Technology").writeln()
-        .putString(technology).writeln()
-        .writeln();
-    }
-
-    // Representativeness
-    if (representativeness != null) {
-      buffer.putString("Representativeness").writeln()
-        .putString(representativeness).writeln()
-        .writeln();
-    }
-
-    // Multiple output allocation
-    if (allocation != null) {
-      buffer.putString("Multiple output allocation").writeln()
-        .putString(allocation).writeln()
-        .writeln();
-    }
-
-    // Substitution allocation
-    if (substitution != null) {
-      buffer.putString("Substitution allocation").writeln()
-        .putString(substitution).writeln()
-        .writeln();
-    }
-
-    // Cut off rules
-    if (cutoff != null) {
-      buffer.putString("Cut off rules").writeln()
-        .putString(cutoff).writeln()
-        .writeln();
-    }
-
-    // Capital goods
-    if (capitalGoods != null) {
-      buffer.putString("Capital goods").writeln()
-        .putString(capitalGoods).writeln()
-        .writeln();
-    }
-
-    // Boundary with nature
-    if (boundaryWithNature != null) {
-      buffer.putString("Boundary with nature").writeln()
-        .putString(boundaryWithNature).writeln()
-        .writeln();
-    }
 
     // Infrastructure
     if (infrastructure != null) {
