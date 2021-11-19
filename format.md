@@ -357,6 +357,7 @@ Each row of one of these elementary flow blocks represent an elementary flow met
 1    unit
 2    cas
 3    comment
+4    platform ID
 ```
 
 ### Uncertainty record
@@ -381,6 +382,7 @@ A process block has the following sections:
 Sections with only one entry (no rows). In code block their corresponding
 type in the API:
 
+* PlatformId `String`
 * Category type `ProcessCategory`
 * Process identifier `String`
 * Type `ProcessType`
@@ -459,6 +461,7 @@ Attributes:
 4    waste type
 5    category
 6    comment
+7    platform ID
 ```
 
 ##### Technosphere exchanges
@@ -484,6 +487,7 @@ Attributes:
 2    amount
 3-6  uncertainty
 7    comment
+8    platform ID
 ```
 
 ##### Elementary flow exchanges
@@ -513,6 +517,7 @@ Attributes:
 3    amount
 4-7  uncertainty
 8    comment
+9    platform ID
 ```
 
 ##### Input and calculated parameters
@@ -544,6 +549,7 @@ Both have one line with the following attributes:
 3    waste type
 4    category
 5    comment
+6    platform ID
 ```
 
 #### Waste fractions
@@ -600,6 +606,7 @@ Attributes:
 2    amount
 3    category
 4    comment
+5    platform ID
 ```
 
 ##### Technosphere exchanges
