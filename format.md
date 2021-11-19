@@ -198,8 +198,8 @@ End
 Each row in a quantity block represents a quantity. The attributes of a row are:
 
 ```
-0  Name
-1  Has dimension
+0    Name
+1    Has dimension
 ```
 
 
@@ -224,10 +224,10 @@ End
 Each row in a unit block represents a unit. The attributes of a unit are:
 
 ```
-0  Name
-1  Quantity
-2  Conversion factor
-3  Reference unit
+0    Name
+1    Quantity
+2    Conversion factor
+3    Reference unit
 ```
 
 ### Parameters
@@ -296,7 +296,9 @@ Each row is a calculated parameter with the following attributes:
 ```
 
 ### Elementary flows
+
 Different blocks are presented for different elementary flow types:
+
 ```
 Raw materials
 Acids;kg;;
@@ -350,10 +352,12 @@ The SimaPro CSV format uses different names to identify these types in different
 
 Each row of one of these elementary flow blocks represent an elementary flow metadata with the following attributes:
 
-0. name
-1. unit
-2. cas
-3. comment
+```
+0    name
+1    unit
+2    cas
+3    comment
+```
 
 ### Uncertainty record
 
@@ -406,6 +410,8 @@ type in the API:
 
 ##### Literature references
 
+A literature reference row looks like this in the CSV:
+
 ```
 Literature references
 Ecoinvent 3;is copyright protected: false
@@ -413,10 +419,14 @@ Ecoinvent 3;is copyright protected: false
 
 Attributes:
 
-0. name
-1. comment
+```
+0    name
+1    comment
+```
 
 ##### System description
+
+A system description row example in the CSV could be:
 
 ```
 System description
@@ -425,10 +435,14 @@ U.S. LCI Database;system description comment
 
 Attributes:
 
-0. name
-1. comment
+```
+0    name
+1    comment
+```
 
 ##### Products
+
+A product block in the CSV looks like follows. It can have multiple lines (one for each product):
 
 ```
 Products
@@ -437,15 +451,19 @@ my product;kg;0,5;100;not defined;Agricultural;
 
 Attributes:
 
-0. name
-1. unit
-2. amount
-3. allocation
-4. waste type
-5. category
-6. comment
+```
+0    name
+1    unit
+2    amount
+3    allocation
+4    waste type
+5    category
+6    comment
+```
 
 ##### Technosphere exchanges
+
+Different blocks are presented for different technosphere exchange types:
 
 ```
 Avoided products
@@ -460,16 +478,17 @@ Electricity, biomass, at power plant/US;kWh;0,1;Undefined;0;0;0;
 
 Attributes:
 
-0. name
-1. unit
-2. amount
-3. uncertainty
-
-From position 3 to 6, then:
-
-7. comment
+```
+0    name
+1    unit
+2    amount
+3-6  uncertainty
+7    comment
+```
 
 ##### Elementary flow exchanges
+
+There is one block for each elementary flow type:
 
 ```
 Resources
@@ -487,18 +506,17 @@ Emissions to soil
 
 Attributes:
 
-0. name
-1. subcompartment
-2. unit
-3. amount
-4. uncertainty
-
-From position 4 to 7, then:
-
-8. comment
+```
+0    name
+1    subcompartment
+2    unit
+3    amount
+4-7  uncertainty
+8    comment
+```
 
 ##### Input and calculated parameters
-Analogous to the explained rows in the Reference data section.
+Analogous to the explained rows in the Reference data section, but applied to the process level.
 
 #### Waste treatment and waste scenario
 TODO.
@@ -516,6 +534,8 @@ type in the API:
 #### Row sections
 ##### Products
 
+The products block looks like this:
+
 ```
 Products
 assembly;p;1;Others;;
@@ -523,14 +543,30 @@ assembly;p;1;Others;;
 
 Attributes:
 
-0. name
-1. unit
-2. amount
-3. category
-4. comment
+```
+0    name
+1    unit
+2    amount
+3    category
+4    comment
+```
 
 ##### Technosphere exchanges
-Analogous to `Processes`.
+Analogous to `Processes`, but with different types. On the one hand, there are single row exchanges:
+
+* Assembly
+* Reference assembly
+* Waste or disposal scenario
+
+On the other hand, there are technosphere exchange blocks:
+
+* Materials and assemblies
+* Processes
+* Waste scenarios
+* Dissassemblies
+* Disposal scenarios
+* Reuses
+* Additional life cycles
 
 ##### Input and calculated parameters
 Analogous to `Processes`.
@@ -555,6 +591,8 @@ type in the API:
 
 ##### Version
 
+A version block looks like this:
+
 ```
 Version
 1;431
@@ -562,10 +600,14 @@ Version
 
 Attributes:
 
-0. major
-1. minor
+```
+0    major
+1    minor
+```
 
 ##### Impact category
+
+An impact category block is as the following example:
 
 ```
 Impact category
@@ -574,8 +616,10 @@ Climate change, ecosystem quality, short term;PDF.m2.yr
 
 Attributes:
 
-0. name
-1. unit
+```
+0    name
+1    unit
+```
 
 Each impact category has a `Substances` section with the characterization factors:
 
@@ -587,14 +631,18 @@ Air;(unspecified);(E)-HFC-1234ze;1645-83-6;0.177;kg
 
 Each row has the following attributes:
 
-0. compartment
-1. subcompartment
-2. flow
-3. cas number
-4. factor
-5. unit
+```
+0    compartment
+1    subcompartment
+2    flow
+3    cas number
+4    factor
+5    unit
+```
 
 ##### Damage category
+
+A damage category block example could be:
 
 ```
 Damage category
@@ -603,8 +651,10 @@ Ecosystem quality;PDF.m2.yr
 
 Attributes:
 
-0. name
-1. unit
+```
+0    name
+1    unit
+```
 
 Each damage category has a `Impact categories` section with the damage factors:
 
@@ -616,10 +666,14 @@ Climate change, ecosystem quality, short term;1.00E+00
 
 Each row has the following attributes:
 
-0. impact category
-1. factor
+```
+0    impact category
+1    factor
+```
 
 ## Normalization-Weighting set
+
+A normalization and weighting set looks like this in the CSV file:
 
 ```
 Normalization-Weighting set
@@ -628,7 +682,9 @@ IMPACT World+ (Stepwise 2006 values)
 
 Attributes:
 
-0. name
+```
+0    name
+```
 
 Each set has a `Normalization` and a `Weighting` sections:
 
@@ -642,7 +698,9 @@ Human health;5401.459854
 Ecosystem quality;1386.138614
 ```
 
-Attributes:
+With the following attributes:
 
-0. impact category
-1. factor
+```
+0    impact category
+1    factor
+```
