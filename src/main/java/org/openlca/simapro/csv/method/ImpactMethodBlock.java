@@ -122,17 +122,22 @@ public class ImpactMethodBlock implements CsvBlock {
   public static ImpactMethodBlock read(Iterable<CsvLine> lines) {
     var iter = lines.iterator();
     var method = new ImpactMethodBlock();
+    String innerHeader = null;
 
     while (iter.hasNext()) {
 
-      var next = iter.next();
-      if (next.isEmpty())
-        continue;
-      var header = next.first();
+      String header;
+      if (innerHeader != null) {
+        header = innerHeader;
+      } else {
+        var next = iter.next();
+        if (next.isEmpty())
+          continue;
+        header = next.first();
+      }
       if (header.equalsIgnoreCase("End"))
         break;
 
-      beforeSwitch:
       switch (header) {
 
         case "Name":
@@ -202,28 +207,26 @@ public class ImpactMethodBlock implements CsvBlock {
           method.nwSets().add(nwSet);
 
           while (iter.hasNext()) {
-            var innerRow = iter.next();
-            if (innerRow.isEmpty())
-              continue ;
-            var innerHeader = innerRow.first();
-            switch (innerHeader) {
-              case "Normalization":
-                CsvLine.untilEmpty(iter, nextLine -> {
-                  var factor = NwSetFactorRow.read(nextLine);
-                  nwSet.normalizationFactors().add(factor);
-                });
-              case "Weighting":
-                CsvLine.untilEmpty(iter, nextLine -> {
-                  var factor = NwSetFactorRow.read(nextLine);
-                  nwSet.weightingFactors().add(factor);
-                });
-              default:
-                header = innerHeader;
-                break beforeSwitch;
+            var nwRow = iter.next();
+            if (nwRow.isEmpty())
+              continue;
+            var nwHeader = nwRow.first();
+            if ("Normalization".equals(nwHeader)) {
+              CsvLine.untilEmpty(iter, nextLine -> {
+                var factor = NwSetFactorRow.read(nextLine);
+                nwSet.normalizationFactors().add(factor);
+              });
+            } else if ("Weighting".equals(nwHeader)) {
+              CsvLine.untilEmpty(iter, nextLine -> {
+                var factor = NwSetFactorRow.read(nextLine);
+                nwSet.weightingFactors().add(factor);
+              });
+            } else {
+              innerHeader = nwHeader;
+              break; // while
             }
           }
-
-          break;
+          break; // case
       }
     }
     return method;
