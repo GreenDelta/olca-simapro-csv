@@ -132,6 +132,7 @@ public class ImpactMethodBlock implements CsvBlock {
       if (header.equalsIgnoreCase("End"))
         break;
 
+      beforeSwitch:
       switch (header) {
 
         case "Name":
@@ -198,17 +199,30 @@ public class ImpactMethodBlock implements CsvBlock {
         case "Normalization-Weighting set":
           var nwSet = new NwSetBlock();
           nwSet.name(CsvLine.nextString(iter));
-          CsvLine.moveTo(iter, "Normalization");
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var factor = NwSetFactorRow.read(nextLine);
-            nwSet.normalizationFactors().add(factor);
-          });
-          CsvLine.moveTo(iter, "Weighting");
-          CsvLine.untilEmpty(iter, nextLine -> {
-            var factor = NwSetFactorRow.read(nextLine);
-            nwSet.weightingFactors().add(factor);
-          });
           method.nwSets().add(nwSet);
+
+          while (iter.hasNext()) {
+            var innerRow = iter.next();
+            if (innerRow.isEmpty())
+              continue ;
+            var innerHeader = innerRow.first();
+            switch (innerHeader) {
+              case "Normalization":
+                CsvLine.untilEmpty(iter, nextLine -> {
+                  var factor = NwSetFactorRow.read(nextLine);
+                  nwSet.normalizationFactors().add(factor);
+                });
+              case "Weighting":
+                CsvLine.untilEmpty(iter, nextLine -> {
+                  var factor = NwSetFactorRow.read(nextLine);
+                  nwSet.weightingFactors().add(factor);
+                });
+              default:
+                header = innerHeader;
+                break beforeSwitch;
+            }
+          }
+
           break;
       }
     }
