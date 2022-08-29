@@ -13,8 +13,8 @@ public enum SubCompartment {
     ElementaryFlowType.EMISSIONS_TO_AIR, "low. pop., long-term"),
   AIR_STRATOSPHERE(
     ElementaryFlowType.EMISSIONS_TO_AIR, "stratosphere"),
-  AIR_STRATOSPHERE_TROPOSHERE(
-    ElementaryFlowType.EMISSIONS_TO_AIR, "stratosphere + troposhere"),
+  AIR_STRATOSPHERE_TROPOSPHERE(
+    ElementaryFlowType.EMISSIONS_TO_AIR, "stratosphere + troposphere"),
 
   // resources
   RESOURCES_BIOTIC(
