@@ -636,9 +636,6 @@ public class ProcessBlock implements CsvBlock {
     // Emissions to water
     writeRows(buffer, "Emissions to water", emissionsToWater);
 
-    // Emissions to water
-    writeRows(buffer, "Emissions to water", emissionsToWater);
-
     // Emissions to soil
     writeRows(buffer, "Emissions to soil", emissionsToSoil);
 
