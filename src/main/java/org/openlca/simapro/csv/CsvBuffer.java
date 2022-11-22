@@ -47,7 +47,7 @@ public class CsvBuffer {
   }
 
   public CsvBuffer putDouble(double d) {
-    var s = Double.toString(d);
+    var s = d == (int)d ? Integer.toString((int)d) : Double.toString(d);
     return putString(decimalPoint(s));
   }
 

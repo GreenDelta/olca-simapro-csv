@@ -40,3 +40,14 @@ A data set can be written to a file:
 ```java
 dataset.write(file);
 ```
+
+A daset set can also be written to a csvbuffer:
+
+```
+CsvDataSet csvDataSet = ...
+try (var writer = new FileWriter(file, SimaProCsv.defaultCharset())) {
+  csvDataSet.write(new CsvBuffer(writer, csvDataSet.header()));
+} catch (IOException e) {
+  throw new RuntimeException("failed to write file: " + file, e);
+}
+```

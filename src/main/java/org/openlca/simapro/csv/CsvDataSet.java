@@ -149,46 +149,49 @@ public class CsvDataSet {
     }
   }
 
+
   public void write(File file) {
     try (var writer = new FileWriter(file, SimaProCsv.defaultCharset())) {
-      var buffer = new CsvBuffer(writer, header);
-      header.write(buffer);
-
-      for (var stage : productStages) {
-        stage.write(buffer);
-      }
-
-      for (var process : processes) {
-        process.write(buffer);
-      }
-
-      for (var description : systemDescriptions) {
-        description.write(buffer);
-      }
-
-      for (var method : methods) {
-        method.write(buffer);
-      }
-
-      writeRows(buffer, "Quantities", quantities);
-      writeRows(buffer, "Units", units);
-      writeRows(buffer, "Raw materials", rawMaterials);
-      writeRows(buffer, "Airborne emissions", airborneEmissions);
-      writeRows(buffer, "Waterborne emissions", waterborneEmissions);
-      writeRows(buffer, "Final waste flows", finalWasteFlows);
-      writeRows(buffer, "Emissions to soil", emissionsToSoil);
-      writeRows(buffer, "Non material emissions", nonMaterialEmissions);
-      writeRows(buffer, "Social issues", socialIssues);
-      writeRows(buffer, "Economic issues", economicIssues);
-      writeRows(buffer, "Database Input parameters", databaseInputParameters);
-      writeRows(buffer, "Database Calculated parameters", databaseCalculatedParameters);
-      writeRows(buffer, "Project Input parameters", projectInputParameters);
-      writeRows(buffer, "Project Calculated parameters", projectCalculatedParameters);
-      writeRows(buffer, "Literature reference", literatureReferences);
-
+      write(new CsvBuffer(writer, header));
     } catch (IOException e) {
       throw new RuntimeException("failed to write file: " + file, e);
     }
+  }
+
+  public void write(CsvBuffer buffer) throws IOException {
+    header.write(buffer);
+
+    for (var stage : productStages) {
+      stage.write(buffer);
+    }
+
+    for (var process : processes) {
+      process.write(buffer);
+    }
+
+    for (var description : systemDescriptions) {
+      description.write(buffer);
+    }
+
+    for (var method : methods) {
+      method.write(buffer);
+    }
+
+    writeRows(buffer, "Quantities", quantities);
+    writeRows(buffer, "Units", units);
+    writeRows(buffer, "Raw materials", rawMaterials);
+    writeRows(buffer, "Airborne emissions", airborneEmissions);
+    writeRows(buffer, "Waterborne emissions", waterborneEmissions);
+    writeRows(buffer, "Final waste flows", finalWasteFlows);
+    writeRows(buffer, "Emissions to soil", emissionsToSoil);
+    writeRows(buffer, "Non material emissions", nonMaterialEmissions);
+    writeRows(buffer, "Social issues", socialIssues);
+    writeRows(buffer, "Economic issues", economicIssues);
+    writeRows(buffer, "Database Input parameters", databaseInputParameters);
+    writeRows(buffer, "Database Calculated parameters", databaseCalculatedParameters);
+    writeRows(buffer, "Project Input parameters", projectInputParameters);
+    writeRows(buffer, "Project Calculated parameters", projectCalculatedParameters);
+    writeRows(buffer, "Literature reference", literatureReferences);
   }
 
   private void writeRows(
