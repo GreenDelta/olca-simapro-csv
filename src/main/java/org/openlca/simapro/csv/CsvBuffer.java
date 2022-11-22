@@ -47,7 +47,11 @@ public class CsvBuffer {
   }
 
   public CsvBuffer putDouble(double d) {
-    var s = d == (int)d ? Integer.toString((int)d) : Double.toString(d);
+    if (d == (int) d) {
+      // reflect SimaPro behaviour when there is no fractional part
+      return putString(Integer.toString((int) d));
+    }
+    var s = Double.toString(d);
     return putString(decimalPoint(s));
   }
 

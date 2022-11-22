@@ -41,13 +41,11 @@ A data set can be written to a file:
 dataset.write(file);
 ```
 
-A daset set can also be written to a csvbuffer:
+There is also a more low-level API to write data sets to a `CsvBuffer`:
 
 ```
-CsvDataSet csvDataSet = ...
+CsvDataSet ds = ...
 try (var writer = new FileWriter(file, SimaProCsv.defaultCharset())) {
-  csvDataSet.write(new CsvBuffer(writer, csvDataSet.header()));
-} catch (IOException e) {
-  throw new RuntimeException("failed to write file: " + file, e);
+  ds.write(new CsvBuffer(writer, ds.header()));
 }
 ```
