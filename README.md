@@ -10,7 +10,7 @@ Include this dependency in your project:
 <dependency>
   <groupId>org.openlca</groupId>
   <artifactId>olca-simapro-csv</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.3</version>
 </dependency>
 ```
 
