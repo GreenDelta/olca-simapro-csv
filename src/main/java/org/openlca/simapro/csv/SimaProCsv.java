@@ -24,9 +24,7 @@ import org.openlca.simapro.csv.refdata.UnitRow;
 
 public final class SimaProCsv {
 
-  private static final int BUFFER_SIZE_FOR_HEADER = 1024 * 1024;
   private SimaProCsv() {
-
   }
 
   /**
@@ -72,28 +70,34 @@ public final class SimaProCsv {
     return new InputStreamReader(stream, cs);
   }
 
-  public static void read(File file, Consumer<CsvBlock> fn)
-  {
-    try (var reader = readerOf(file))
-    {
+  public static void read(File file, Consumer<CsvBlock> fn) {
+    try (var reader = readerOf(file)) {
       read(reader, fn);
-    }
-    catch (IOException e)
-    {
+    } catch (IOException e) {
       throw new RuntimeException("failed to read blocks from file: " + file, e);
     }
   }
 
-  public static void read(Reader rawReader, Consumer<CsvBlock> fn) throws IOException{
-    read(rawReader, fn,  BUFFER_SIZE_FOR_HEADER);
+  public static void read(Reader reader, Consumer<CsvBlock> fn) {
+    var buffer = reader instanceof BufferedReader
+      ? (BufferedReader) reader
+      : new BufferedReader(reader);
+    try {
+      // read the SimaPro header, a typical header size is ~500 bytes; we set
+      // a read-ahead limit to 2k, note that a larger limit could allocate a
+      // new buffer of that size if the input size is smaller than that limit
+      buffer.mark(2 * 1024);
+      var header = CsvHeader.readFrom(buffer);
+      buffer.reset();
+      read(header, buffer, fn);
+    } catch (IOException e) {
+      throw new RuntimeException("failed to read blocks from reader", e);
+    }
   }
 
-  public static void read( Reader rawReader, Consumer<CsvBlock> fn, int bufferSize) throws IOException
-  {
-    var reader = new BufferedReader(rawReader);
-    reader.mark(bufferSize);
-    var header = CsvHeader.readFrom(reader);
-    reader.reset();
+  public static void read(
+    CsvHeader header, Reader reader, Consumer<CsvBlock> fn
+  ) {
     var iter = CsvLine.iter(header, reader);
     for (var line : iter) {
 
