@@ -1,11 +1,6 @@
 package org.openlca.simapro.csv;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.function.Consumer;
 
@@ -29,7 +24,9 @@ import org.openlca.simapro.csv.refdata.UnitRow;
 
 public final class SimaProCsv {
 
+  private static final int BUFFER_SIZE_FOR_HEADER = 1024 * 1024;
   private SimaProCsv() {
+
   }
 
   /**
@@ -75,81 +72,96 @@ public final class SimaProCsv {
     return new InputStreamReader(stream, cs);
   }
 
-  public static void read(File file, Consumer<CsvBlock> fn) {
-    var header = CsvHeader.readFrom(file);
-    try (var reader = readerOf(file)) {
-      var iter = CsvLine.iter(header, reader);
-      for (var line : iter) {
+  public static void read(File file, Consumer<CsvBlock> fn)
+  {
+    try (var reader = readerOf(file))
+    {
+      read(reader, fn);
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException("failed to read blocks from file: " + file, e);
+    }
+  }
 
-        if (line.first().equals("Project Calculated parameters")) {
-          var block = CalculatedParameterBlock.readProjectParameters(iter);
-          fn.accept(block);
-          continue;
-        }
+  public static void read(Reader rawReader, Consumer<CsvBlock> fn) throws IOException{
+    read(rawReader, fn,  BUFFER_SIZE_FOR_HEADER);
+  }
 
-        if (line.first().equals("Database Calculated parameters")) {
-          var block = CalculatedParameterBlock.readDatabaseParameters(iter);
-          fn.accept(block);
-          continue;
-        }
+  public static void read( Reader rawReader, Consumer<CsvBlock> fn, int bufferSize) throws IOException
+  {
+    var reader = new BufferedReader(rawReader);
+    reader.mark(bufferSize);
+    var header = CsvHeader.readFrom(reader);
+    reader.reset();
+    var iter = CsvLine.iter(header, reader);
+    for (var line : iter) {
 
-        if (line.first().equals("Method")) {
-          var block = ImpactMethodBlock.read(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        if (line.first().equals("Project Input parameters")) {
-          var block = InputParameterBlock.readProjectParameters(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        if (line.first().equals("Database Input parameters")) {
-          var block = InputParameterBlock.readDatabaseParameters(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        if (line.first().equals("Process")) {
-          var block = ProcessBlock.read(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        if (line.first().equals("Product stage")) {
-          var block = ProductStageBlock.read(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        if (line.first().equals("Quantities")) {
-          var block = QuantityBlock.read(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        if (line.first().equals("System description")) {
-          var block = SystemDescriptionBlock.read(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        if (line.first().equals("Units")) {
-          var block = UnitBlock.read(iter);
-          fn.accept(block);
-          continue;
-        }
-
-        var type = ElementaryFlowType.of(line.first());
-        if (type != null) {
-          var block = ElementaryFlowBlock.read(type, iter);
-          fn.accept(block);
-        }
+      if (line.first().equals("Project Calculated parameters")) {
+        var block = CalculatedParameterBlock.readProjectParameters(iter);
+        fn.accept(block);
+        continue;
       }
 
-    } catch (IOException e) {
-      throw new RuntimeException("failed to read blocks from file: " + file, e);
+      if (line.first().equals("Database Calculated parameters")) {
+        var block = CalculatedParameterBlock.readDatabaseParameters(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("Method")) {
+        var block = ImpactMethodBlock.read(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("Project Input parameters")) {
+        var block = InputParameterBlock.readProjectParameters(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("Database Input parameters")) {
+        var block = InputParameterBlock.readDatabaseParameters(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("Process")) {
+        var block = ProcessBlock.read(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("Product stage")) {
+        var block = ProductStageBlock.read(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("Quantities")) {
+        var block = QuantityBlock.read(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("System description")) {
+        var block = SystemDescriptionBlock.read(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      if (line.first().equals("Units")) {
+        var block = UnitBlock.read(iter);
+        fn.accept(block);
+        continue;
+      }
+
+      var type = ElementaryFlowType.of(line.first());
+      if (type != null) {
+        var block = ElementaryFlowBlock.read(type, iter);
+        fn.accept(block);
+      }
     }
   }
 
