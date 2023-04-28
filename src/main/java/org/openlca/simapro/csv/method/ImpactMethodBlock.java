@@ -283,9 +283,11 @@ public class ImpactMethodBlock implements CsvBlock {
       .writeln();
 
     // Weighting unit
-    buffer.putString("Weighting unit").writeln()
-      .putString(weightingUnit()).writeln()
-      .writeln();
+    if (weightingUnit() != null && !weightingUnit().isBlank()) {
+      buffer.putString("Weighting unit").writeln()
+        .putString(weightingUnit()).writeln()
+        .writeln();
+    }
 
     // Impact categories
     buffer.putRecords(impactCategories())
