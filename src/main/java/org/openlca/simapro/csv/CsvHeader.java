@@ -247,7 +247,7 @@ public class CsvHeader {
     var f = formatVersion != null
       ? formatVersion
       : "9.0.0";
-    buffer.putString("{CSV Format version: " + formatVersion + "}").writeln();
+    buffer.putString("{CSV Format version: " + f + "}").writeln();
 
     // CSV separator
     var csvSep = csvSeparator == ';'
