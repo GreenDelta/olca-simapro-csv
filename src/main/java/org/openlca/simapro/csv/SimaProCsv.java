@@ -1,6 +1,12 @@
 package org.openlca.simapro.csv;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.function.Consumer;
 
@@ -101,61 +107,61 @@ public final class SimaProCsv {
     var iter = CsvLine.iter(header, reader);
     for (var line : iter) {
 
-      if (line.first().equals("Project Calculated parameters")) {
+      if (firstEq("Project calculated parameters", line)) {
         var block = CalculatedParameterBlock.readProjectParameters(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Database Calculated parameters")) {
+      if (firstEq("Database calculated parameters", line)) {
         var block = CalculatedParameterBlock.readDatabaseParameters(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Method")) {
+      if (firstEq("Method", line)) {
         var block = ImpactMethodBlock.read(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Project Input parameters")) {
+      if (firstEq("Project input parameters", line)) {
         var block = InputParameterBlock.readProjectParameters(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Database Input parameters")) {
+      if (firstEq("Database input parameters", line)) {
         var block = InputParameterBlock.readDatabaseParameters(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Process")) {
+      if (firstEq("Process", line)) {
         var block = ProcessBlock.read(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Product stage")) {
+      if (firstEq("Product stage", line)) {
         var block = ProductStageBlock.read(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Quantities")) {
+      if (firstEq("Quantities", line)) {
         var block = QuantityBlock.read(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("System description")) {
+      if (firstEq("System description", line)) {
         var block = SystemDescriptionBlock.read(iter);
         fn.accept(block);
         continue;
       }
 
-      if (line.first().equals("Units")) {
+      if (firstEq("Units", line)) {
         var block = UnitBlock.read(iter);
         fn.accept(block);
         continue;
@@ -185,31 +191,31 @@ public final class SimaProCsv {
     while (lines.hasNext()) {
       var line = lines.next();
 
-      if (line.first().equals("Product stage")) {
+      if (firstEq("Product stage", line)) {
         var block = ProductStageBlock.read(iter);
         dataSet.productStages().add(block);
         continue;
       }
 
-      if (line.first().equals("Process")) {
+      if (firstEq("Process", line)) {
         var block = ProcessBlock.read(iter);
         dataSet.processes().add(block);
         continue;
       }
 
-      if (line.first().equals("System description")) {
+      if (firstEq("System description", line)) {
         var block = SystemDescriptionBlock.read(iter);
         dataSet.systemDescriptions().add(block);
         continue;
       }
 
-      if (line.first().equals("Method")) {
+      if (firstEq("Method", line)) {
         var block = ImpactMethodBlock.read(iter);
         dataSet.methods().add(block);
         continue;
       }
 
-      if (line.first().equals("Quantities")) {
+      if (firstEq("Quantities", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = QuantityRow.read(nextLine);
           dataSet.quantities().add(row);
@@ -217,7 +223,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Units")) {
+      if (firstEq("Units", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = UnitRow.read(nextLine);
           dataSet.units().add(row);
@@ -225,7 +231,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Raw materials")) {
+      if (firstEq("Raw materials", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.rawMaterials().add(row);
@@ -233,7 +239,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Airborne emissions")) {
+      if (firstEq("Airborne emissions", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.airborneEmissions().add(row);
@@ -241,7 +247,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Waterborne emissions")) {
+      if (firstEq("Waterborne emissions", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.waterborneEmissions().add(row);
@@ -249,7 +255,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Final waste flows")) {
+      if (firstEq("Final waste flows", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.finalWasteFlows().add(row);
@@ -257,7 +263,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Emissions to soil")) {
+      if (firstEq("Emissions to soil", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.emissionsToSoil().add(row);
@@ -265,7 +271,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Non material emissions")) {
+      if (firstEq("Non material emissions", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.nonMaterialEmissions().add(row);
@@ -273,7 +279,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Social issues")) {
+      if (firstEq("Social issues", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.socialIssues().add(row);
@@ -281,7 +287,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Economic issues")) {
+      if (firstEq("Economic issues", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = ElementaryFlowRow.read(nextLine);
           dataSet.economicIssues().add(row);
@@ -289,7 +295,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Database Input parameters")) {
+      if (firstEq("Database input parameters", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = InputParameterRow.read(nextLine);
           dataSet.databaseInputParameters().add(row);
@@ -297,7 +303,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Database Calculated parameters")) {
+      if (firstEq("Database calculated parameters", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = CalculatedParameterRow.read(nextLine);
           dataSet.databaseCalculatedParameters().add(row);
@@ -305,7 +311,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Project Input parameters")) {
+      if (firstEq("Project input parameters", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = InputParameterRow.read(nextLine);
           dataSet.projectInputParameters().add(row);
@@ -313,7 +319,7 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Project Calculated parameters")) {
+      if (firstEq("Project calculated parameters", line)) {
         CsvLine.untilEmpty(lines, nextLine -> {
           var row = CalculatedParameterRow.read(nextLine);
           dataSet.projectCalculatedParameters().add(row);
@@ -321,11 +327,15 @@ public final class SimaProCsv {
         continue;
       }
 
-      if (line.first().equals("Literature reference")) {
+      if (firstEq("Literature reference", line)) {
         var block = LiteratureReferenceBlock.read(iter);
         dataSet.literatureReferences().add(block);
       }
     }
     return dataSet;
+  }
+
+  private static boolean firstEq(String literal, CsvLine line) {
+    return literal.equalsIgnoreCase(line.first());
   }
 }

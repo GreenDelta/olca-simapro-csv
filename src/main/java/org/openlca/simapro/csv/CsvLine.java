@@ -97,14 +97,14 @@ public final class CsvLine {
 
   public double getDouble(int pos) {
     var str = getString(pos);
-    return str.length() == 0
+    return str.isEmpty()
       ? 0
       : Double.parseDouble(decimalPoint(str));
   }
 
   public int getInt(int pos) {
     var str = getString(pos);
-    return str.length() == 0
+    return str.isEmpty()
       ? 0
       : Integer.parseInt(str);
   }
@@ -112,7 +112,7 @@ public final class CsvLine {
   public Numeric getNumeric(int pos) {
     var raw = getString(pos);
     var cleaned = decimalPoint(raw);
-    if (cleaned.length() == 0)
+    if (cleaned.isEmpty())
       return Numeric.of(0);
     try {
       var number = Double.parseDouble(cleaned);
@@ -145,7 +145,7 @@ public final class CsvLine {
   private String decimalPoint(String s) {
     if (decimalSeparator == '.')
       return s;
-    if (s.length() == 0)
+    if (s.isEmpty())
       return "";
     var buffer = new StringBuilder(s.length());
     for (int i = 0; i < s.length(); i++) {
@@ -171,7 +171,7 @@ public final class CsvLine {
   public boolean isEmpty() {
     for (int i = 0; i < csv.size(); i++) {
       var s = csv.get(i);
-      if (s.length() > 0)
+      if (!s.isEmpty())
         return false;
     }
     return true;

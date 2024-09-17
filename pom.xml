@@ -9,7 +9,7 @@
 
   <groupId>org.openlca</groupId>
   <artifactId>olca-simapro-csv</artifactId>
-  <version>3.0.5</version>
+  <version>3.0.6</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>This is an API for writing and reading datasets in the SimaPro CSV format.</description>
